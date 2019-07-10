@@ -1,4 +1,3 @@
-#include <Windows.h>
 #include "framework.h"
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,

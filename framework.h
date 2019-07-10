@@ -4,6 +4,10 @@
 
 #pragma once
 
+#pragma comment(lib, "d3dcompiler.lib")
+#pragma comment(lib, "D3D11.lib")
+#pragma comment(lib, "dxgi.lib")
+
 #include "targetver.h"
 #define WIN32_LEAN_AND_MEAN             // Selten verwendete Komponenten aus Windows-Headern ausschließen
 // Windows-Headerdateien
@@ -13,3 +17,4 @@
 #include <malloc.h>
 #include <memory.h>
 #include <tchar.h>
+
