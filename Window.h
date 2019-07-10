@@ -1,13 +1,11 @@
 #pragma once
 #include <Windows.h>
 
-namespace MeshSimplification
+class Window
 {
-	class Window
-	{
-	private:
-		HWND windowHandle;
-		HINSTANCE instanceHandle;
-	};
-}
+private:
+	HWND windowHandle;
+	HINSTANCE instanceHandle;
+};
+
 
