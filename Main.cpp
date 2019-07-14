@@ -1,5 +1,6 @@
 #include "framework.h"
 #include "Window.h"
+#include "Renderer.h"
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	_In_opt_ HINSTANCE hPrevInstance,
@@ -8,13 +9,24 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 {
 	Window mainWindow(hInstance, L"WindowClass", 1280, 1024);
 	ShowWindow(mainWindow.WindowHandle(), nCmdShow);
+	Renderer renderer = Renderer(mainWindow.WindowHandle());
 
 	MSG message = {};
-	while (GetMessage(&message, nullptr, 0, 0))
+
+	while (true)
 	{
-		TranslateMessage(&message);
-		DispatchMessage(&message);
+		if (PeekMessage(&message, nullptr, 0, 0, PM_REMOVE))
+		{
+			TranslateMessage(&message);
+			DispatchMessage(&message);
+		}
+		else
+		{
+			renderer.Render();
+		}
 	}
+	
 
 	return 0;
-}
+ }
+

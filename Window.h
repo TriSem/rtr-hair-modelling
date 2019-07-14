@@ -5,6 +5,9 @@ class Window
 {
 public:
 	
+	static LRESULT CALLBACK ProcessMessage(HWND windowHandle, UINT message, WPARAM wParam, LPARAM lParam);
+
+
 	Window(HINSTANCE instanceHandle, std::wstring windowClassName, int width, int height);
 	~Window();
 	HWND WindowHandle() const;
@@ -22,4 +25,3 @@ private:
 	int height;
 };
 
-extern LRESULT CALLBACK ProcessMessage(HWND windowHandle, UINT message, WPARAM wParam, LPARAM lParam);

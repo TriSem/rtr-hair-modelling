@@ -12,11 +12,7 @@ Window::Window(HINSTANCE instanceHandle, std::wstring windowClassName, int width
 
 Window::~Window()
 {
-	if (windowHandle != nullptr)
-	{
-		UnregisterClass(windowClassName.c_str(), instanceHandle);
-		DestroyWindow(windowHandle);
-	}
+	
 }
 
 HWND Window::WindowHandle() const
@@ -27,9 +23,10 @@ HWND Window::WindowHandle() const
 void Window::Register()
 {
 	WNDCLASS windowClass = {};
-	windowClass.lpfnWndProc = ProcessMessage;
+	windowClass.lpfnWndProc = Window::ProcessMessage;
 	windowClass.hInstance = instanceHandle;
 	windowClass.lpszClassName = windowClassName.c_str();
+	windowClass.style = CS_HREDRAW | CS_VREDRAW;
 
 	RegisterClass(&windowClass);
 
@@ -54,14 +51,15 @@ void Window::Register()
 	}
 }
 
-LRESULT CALLBACK ProcessMessage(HWND windowHandle, UINT message, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK Window::ProcessMessage(HWND windowHandle, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
 	{
-	case WM_DESTROY:
-		PostQuitMessage(0);
-		return 0;
+		case WM_DESTROY:
+		{
+			PostQuitMessage(0);
+			return 0;
+		}
 	}
-
 	return DefWindowProc(windowHandle, message, wParam, lParam);
 }
