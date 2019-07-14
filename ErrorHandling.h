@@ -3,7 +3,7 @@
 #include <comdef.h>
 #include <string>
 
-void SendErrorMessage(HRESULT result, std::wstring errorMessage)
+inline void SendErrorMessage(HRESULT result, std::wstring errorMessage)
 {
 	_com_error error(result);
 	std::wstring fullMessage = errorMessage + L"\n" + error.ErrorMessage();
@@ -14,7 +14,7 @@ void SendErrorMessage(HRESULT result, std::wstring errorMessage)
 #endif
 }
 
-void ThrowIfFailed(HRESULT result, std::wstring errorMessage)
+inline void ThrowIfFailed(HRESULT result, std::wstring errorMessage)
 {
 	if (FAILED(result))
 	{
