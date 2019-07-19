@@ -2,7 +2,6 @@
 #include "DirectXTK/Inc/GeometricPrimitive.h"
 #include <DirectXMath.h>
 #include "GeometryDataStructs.h"
-#include "VertexShader.h"
 
 using namespace DirectX::SimpleMath;
 using DirectX::GeometricPrimitive;
@@ -285,7 +284,9 @@ void Renderer::SetViewport()
 
 void Renderer::CreateShaders()
 {
+	// TODO: Define paths for all different build configurations.
 	vertexShader = std::make_unique<VertexShader>(device, L"./x64/Debug/VertexShader.cso");
+	pixelShader = std::make_unique<PixelShader>(device, L"./x64/Debug/PixelShader.cso");
 }
 
 void Renderer::Clear()

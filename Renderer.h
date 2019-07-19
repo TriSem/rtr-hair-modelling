@@ -3,7 +3,7 @@
 #include "framework.h"
 #include "Graphics.h"
 #include "Scene.h"
-#include "VertexShader.h"
+#include "Shader.h"
 
 using Microsoft::WRL::ComPtr;
 
@@ -57,5 +57,6 @@ private:
 	ComPtr<ID3D11DepthStencilView> depthStencilView;
 
 	std::unique_ptr<VertexShader> vertexShader;
+	std::unique_ptr<PixelShader> pixelShader;
 };
 

@@ -1,4 +1,4 @@
-#include "VertexShader.h"
+#include "Shader.h"
 
 VertexShader::VertexShader(ComPtr<ID3D11Device>& device, std::wstring directoryPath) 
 	: Shader::Shader(device, directoryPath)

@@ -28,6 +28,12 @@
     <Filter Include="Quelldateien\WavefrontObj">
       <UniqueIdentifier>{6ffc7873-3199-466b-b4c9-ecd92f1a3770}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Headerdateien\Rendering\Shaders">
+      <UniqueIdentifier>{3a25a718-243e-4419-b69c-914e428b7c60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Rendering\Shaders">
+      <UniqueIdentifier>{1545de75-f2d4-4c06-93db-02651dee4512}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -76,10 +82,7 @@
       <Filter>Headerdateien\WavefrontObj</Filter>
     </ClInclude>
     <ClInclude Include="Shader.h">
-      <Filter>Headerdateien\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="VertexShader.h">
-      <Filter>Headerdateien\Rendering</Filter>
+      <Filter>Headerdateien\Rendering\Shaders</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -110,11 +113,14 @@
     <ClCompile Include="ObjReader.cpp">
       <Filter>Quelldateien\WavefrontObj</Filter>
     </ClCompile>
-    <ClCompile Include="Shader.cpp">
-      <Filter>Quelldateien\Rendering</Filter>
-    </ClCompile>
     <ClCompile Include="VertexShader.cpp">
-      <Filter>Quelldateien\Rendering</Filter>
+      <Filter>Quelldateien\Rendering\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Quelldateien\Rendering\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="PixelShader.cpp">
+      <Filter>Quelldateien\Rendering\Shaders</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
