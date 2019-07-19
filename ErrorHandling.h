@@ -14,7 +14,7 @@ inline void SendErrorMessage(HRESULT result, std::wstring errorMessage)
 #endif
 }
 
-inline void ThrowIfFailed(HRESULT result, std::wstring errorMessage)
+inline void MessageAndThrowIfFailed(HRESULT result, std::wstring errorMessage)
 {
 	if (FAILED(result))
 	{

@@ -1,24 +1,115 @@
 #include "Renderer.h"
+#include "DirectXTK/Inc/GeometricPrimitive.h"
+#include <DirectXMath.h>
+#include "GeometryDataStructs.h"
+#include "VertexShader.h"
 
-using namespace Microsoft::WRL;
+using namespace DirectX::SimpleMath;
+using DirectX::GeometricPrimitive;
+using DirectX::XM_PI;
 
-Renderer::Renderer(HWND windowHandle) :
+
+Renderer::Renderer(HWND windowHandle, int width, int height) :
 	windowHandle(windowHandle),
 	multisampleCount(4),
-	width(1920),
-	height(1280),
+	width(width),
+	height(height),
 	device(nullptr),
 	context(nullptr),
 	swapChain(nullptr),
 	depthStencilBuffer(nullptr),
 	backBufferView(nullptr),
-	depthStencilView(nullptr)
+	depthStencilView(nullptr),
+	renderMode(RenderMode::SOLID),
+	vertexShader(nullptr)
 {
 	InitializeAPI();
 }
 
 Renderer::~Renderer()
 {
+}
+
+void Renderer::Render(const Scene& scene)
+{
+	Clear();
+
+	std::vector<SimpleVertex> vertices = {
+		{ XMFLOAT3(-1.0f, -1.0f, -1.0f) }, { XMFLOAT3(-1.0f, +1.0f, -1.0f) },
+		{ XMFLOAT3(+1.0f, +1.0f, -1.0f) }, { XMFLOAT3(+1.0f, -1.0f, -1.0f) },
+		{ XMFLOAT3(-1.0f, -1.0f, +1.0f) }, { XMFLOAT3(-1.0f, +1.0f, +1.0f) },
+		{ XMFLOAT3(+1.0f, +1.0f, +1.0f) }, { XMFLOAT3(+1.0f, -1.0f, +1.0f) }
+	};
+
+	D3D11_BUFFER_DESC bufferDescription = {};
+
+	bufferDescription.ByteWidth = sizeof(SimpleVertex) * vertices.size();
+	bufferDescription.Usage = D3D11_USAGE_DEFAULT;
+	bufferDescription.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+
+	D3D11_SUBRESOURCE_DATA subresourceData = {};
+	subresourceData.pSysMem = vertices.data();
+	
+	ComPtr<ID3D11Buffer> vertexBuffer = nullptr;
+
+	MessageAndThrowIfFailed(
+		device->CreateBuffer(
+			&bufferDescription,
+			&subresourceData,
+			vertexBuffer.ReleaseAndGetAddressOf()
+		),
+		L"Failed to create vertex buffer"
+	);
+
+	UINT stride = sizeof(SimpleVertex);
+	UINT offset = 0;
+	context->IASetVertexBuffers(0, 1, vertexBuffer.GetAddressOf(), &stride, &offset);
+	//context->Draw(8, 0);
+
+	std::vector<UINT> indices = {
+		0, 1, 2,
+		0, 2, 3,
+		0, 3, 4,
+		0, 4, 5,
+		0, 5, 6,
+		0, 6, 7,
+		0, 7, 8,
+		0, 8, 1
+	};
+
+	ComPtr<ID3D11Buffer> indexBuffer = nullptr;
+
+	ZeroMemory(&bufferDescription, sizeof(D3D11_BUFFER_DESC));
+	ZeroMemory(&subresourceData, sizeof(D3D11_SUBRESOURCE_DATA));
+
+	bufferDescription.Usage = D3D11_USAGE_IMMUTABLE;
+	bufferDescription.ByteWidth = sizeof(UINT) * 24;
+	bufferDescription.BindFlags = D3D11_BIND_INDEX_BUFFER;
+
+	subresourceData.pSysMem = indices.data();
+
+	MessageAndThrowIfFailed(
+		device->CreateBuffer(
+			&bufferDescription,
+			&subresourceData,
+			indexBuffer.ReleaseAndGetAddressOf()
+		),
+		L"Failed to create index buffer!"
+	);
+
+	context->IASetIndexBuffer(indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+	//context->DrawIndexed(24, 0, 0);
+
+	auto world = Matrix::Identity;
+
+	auto view = Matrix::CreateLookAt(Vector3(2.f, 2.f, 2.f),
+		Vector3::Zero, Vector3::UnitY);
+	auto projection = Matrix::CreatePerspectiveFieldOfView(XM_PI / 4.f,
+		float(1920) / float(1080), 0.1f, 10.f);
+
+	
+
+	swapChain->Present(0, 0);
 }
 
 void Renderer::InitializeAPI()
@@ -30,6 +121,7 @@ void Renderer::InitializeAPI()
 	CreateDepthStencilView();
 	BindViewsToPipeline();
 	SetViewport();
+	CreateShaders();
 }
 
 void Renderer::CreateDevice()
@@ -42,7 +134,7 @@ void Renderer::CreateDevice()
 
 	D3D_FEATURE_LEVEL featureLevel;
 
-	ThrowIfFailed(
+	MessageAndThrowIfFailed(
 		D3D11CreateDevice(
 			nullptr,
 			D3D_DRIVER_TYPE_HARDWARE,
@@ -93,19 +185,19 @@ void Renderer::CreateSwapChain()
 	description.Flags = 0;
 
 	ComPtr<IDXGIDevice> dxgiDevice = nullptr;
-	ThrowIfFailed(
+	MessageAndThrowIfFailed(
 		device->QueryInterface<IDXGIDevice>(dxgiDevice.GetAddressOf()),
 		L"Failed to query IDXGIDevice interface."
 	);
 
 	ComPtr<IDXGIAdapter> dxgiAdapter = nullptr;
-	ThrowIfFailed(
+	MessageAndThrowIfFailed(
 		dxgiDevice->GetAdapter(dxgiAdapter.GetAddressOf()),
 		L"Failed to get dxgiAdapter."
 	);
 
 	ComPtr<IDXGIFactory> dxgiFactory = nullptr;
-	ThrowIfFailed(
+	MessageAndThrowIfFailed(
 		dxgiAdapter->GetParent(
 			__uuidof(IDXGIFactory),
 			reinterpret_cast<void**>(dxgiFactory.GetAddressOf())),
@@ -113,7 +205,7 @@ void Renderer::CreateSwapChain()
 	);
 
 
-	ThrowIfFailed(
+	MessageAndThrowIfFailed(
 		dxgiFactory->CreateSwapChain(
 			device.Get(),
 			&description,
@@ -125,7 +217,7 @@ void Renderer::CreateSwapChain()
 void Renderer::CreateBackBufferView()
 {
 	ComPtr<ID3D11Texture2D> backBuffer = nullptr;
-	ThrowIfFailed(
+	MessageAndThrowIfFailed(
 		swapChain->GetBuffer(
 			0,
 			__uuidof(ID3D11Texture2D),
@@ -133,7 +225,7 @@ void Renderer::CreateBackBufferView()
 		L"Failed to get backBuffer."
 	);
 
-	ThrowIfFailed(
+	MessageAndThrowIfFailed(
 		device->CreateRenderTargetView(
 			backBuffer.Get(),
 			0,
@@ -157,7 +249,7 @@ void Renderer::CreateDepthStencilView()
 	depthStencilDescription.CPUAccessFlags = 0;
 	depthStencilDescription.MiscFlags = 0;
 
-	ThrowIfFailed(
+	MessageAndThrowIfFailed(
 		device->CreateTexture2D(
 			&depthStencilDescription,
 			nullptr,
@@ -165,7 +257,7 @@ void Renderer::CreateDepthStencilView()
 		L"Failed to create depthStencilBuffer."
 	);
 
-	ThrowIfFailed(
+	MessageAndThrowIfFailed(
 		device->CreateDepthStencilView(
 			depthStencilBuffer.Get(),
 			nullptr,
@@ -189,6 +281,23 @@ void Renderer::SetViewport()
 	viewport.MaxDepth = 1.0f;
 
 	context->RSSetViewports(1, &viewport);
+}
+
+void Renderer::CreateShaders()
+{
+	vertexShader = std::make_unique<VertexShader>(device, L"./x64/Debug/VertexShader.cso");
+}
+
+void Renderer::Clear()
+{
+	Color clearColor = DirectX::Colors::CornflowerBlue.v;
+	context->ClearRenderTargetView(backBufferView.Get(), clearColor);
+	context->ClearDepthStencilView(depthStencilView.Get(),
+		D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+	context->OMSetRenderTargets(1, backBufferView.GetAddressOf(),
+		depthStencilView.Get());
+
+	BindViewsToPipeline();
 }
 
 void Renderer::SetMultisampleCount(UINT count)

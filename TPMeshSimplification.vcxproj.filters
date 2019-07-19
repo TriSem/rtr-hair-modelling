@@ -19,6 +19,15 @@
     <Filter Include="Quelldateien\Rendering">
       <UniqueIdentifier>{cc168ff6-68e0-42d9-880a-4e6895f6bfc5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{2b6ad566-7bdf-4adf-a322-05e26b791b09}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\WavefrontObj">
+      <UniqueIdentifier>{d36e49ad-dd74-4ca6-a625-58f3aa94c878}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\WavefrontObj">
+      <UniqueIdentifier>{6ffc7873-3199-466b-b4c9-ecd92f1a3770}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -39,6 +48,39 @@
     <ClInclude Include="Renderer.h">
       <Filter>Headerdateien\Rendering</Filter>
     </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Headerdateien\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneObject.h">
+      <Filter>Headerdateien\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Headerdateien\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>Headerdateien\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics.h">
+      <Filter>Headerdateien\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Application.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="GeometryDataStructs.h">
+      <Filter>Headerdateien\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjData.h">
+      <Filter>Headerdateien\WavefrontObj</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjReader.h">
+      <Filter>Headerdateien\WavefrontObj</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Headerdateien\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexShader.h">
+      <Filter>Headerdateien\Rendering</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -48,6 +90,30 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Renderer.cpp">
+      <Filter>Quelldateien\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Quelldateien\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneObject.cpp">
+      <Filter>Quelldateien\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Quelldateien\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>Quelldateien\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Application.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjReader.cpp">
+      <Filter>Quelldateien\WavefrontObj</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Quelldateien\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexShader.cpp">
       <Filter>Quelldateien\Rendering</Filter>
     </ClCompile>
   </ItemGroup>
@@ -63,5 +129,13 @@
     <Image Include="TPMeshSimplification.ico">
       <Filter>Ressourcendateien</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="VertexShader.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="PixelShader.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

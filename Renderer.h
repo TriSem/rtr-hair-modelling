@@ -1,22 +1,30 @@
 #pragma once
 
-#pragma comment(lib, "d3dcompiler.lib")
-#pragma comment(lib, "D3D11.lib")
-#pragma comment(lib, "dxgi.lib")
-
 #include "framework.h"
-#include <d3d11.h>
+#include "Graphics.h"
+#include "Scene.h"
+#include "VertexShader.h"
 
+using Microsoft::WRL::ComPtr;
 
 class Renderer
 {
 public:
-	Renderer(HWND windowHandle);
+	Renderer(HWND windowHandle, int width, int height);
 	~Renderer();
 
-	void Render();
+	void Render(const Scene &scene);
+	void SetMultisampleCount(UINT count);
+
+	enum class RenderMode
+	{
+		SOLID,
+		WIREFRAME
+	};
 
 private:
+
+	Scene scene;
 
 	void InitializeAPI();
 	void CreateDevice();
@@ -26,8 +34,9 @@ private:
 	void CreateDepthStencilView();
 	void BindViewsToPipeline();
 	void SetViewport();
+	void CreateShaders();
 
-	void SetMultisampleCount(UINT count);
+	void Clear();
 
 	UINT multisampleCount;
 	UINT msaaQuality;
@@ -36,14 +45,17 @@ private:
 
 	int width;
 	int height;
+	RenderMode renderMode;
+
 	D3D11_VIEWPORT viewport;
 
-	Microsoft::WRL::ComPtr<ID3D11Device> device;
-	Microsoft::WRL::ComPtr<ID3D11DeviceContext> context;
-	Microsoft::WRL::ComPtr<IDXGISwapChain> swapChain;
-	Microsoft::WRL::ComPtr<ID3D11Texture2D> depthStencilBuffer;
-	Microsoft::WRL::ComPtr<ID3D11RenderTargetView> backBufferView;
-	Microsoft::WRL::ComPtr<ID3D11DepthStencilView> depthStencilView;
+	ComPtr<ID3D11Device> device;
+	ComPtr<ID3D11DeviceContext> context;
+	ComPtr<IDXGISwapChain> swapChain;
+	ComPtr<ID3D11Texture2D> depthStencilBuffer;
+	ComPtr<ID3D11RenderTargetView> backBufferView;
+	ComPtr<ID3D11DepthStencilView> depthStencilView;
 
+	std::unique_ptr<VertexShader> vertexShader;
 };
 

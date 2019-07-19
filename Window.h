@@ -7,10 +7,11 @@ public:
 	
 	static LRESULT CALLBACK ProcessMessage(HWND windowHandle, UINT message, WPARAM wParam, LPARAM lParam);
 
-
-	Window(HINSTANCE instanceHandle, std::wstring windowClassName, int width, int height);
+	Window(HINSTANCE instanceHandle, std::wstring windowClassName, std::wstring title, int width, int height);
 	~Window();
 	HWND WindowHandle() const;
+	int Width() const;
+	int Height() const;
 
 private:
 
@@ -20,7 +21,7 @@ private:
 	HINSTANCE instanceHandle;
 
 	std::wstring windowClassName;
-
+	std::wstring title;
 	int width;
 	int height;
 };
