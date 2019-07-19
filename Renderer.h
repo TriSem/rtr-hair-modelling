@@ -35,6 +35,7 @@ private:
 	void BindViewsToPipeline();
 	void SetViewport();
 	void CreateShaders();
+	void CreateBuffers();
 
 	void Clear();
 
@@ -55,6 +56,9 @@ private:
 	ComPtr<ID3D11Texture2D> depthStencilBuffer;
 	ComPtr<ID3D11RenderTargetView> backBufferView;
 	ComPtr<ID3D11DepthStencilView> depthStencilView;
+	ComPtr<ID3D11RasterizerState> rasterizerState;
+	ComPtr<ID3D11Buffer> vertexBuffer;
+	ComPtr<ID3D11Buffer> indexBuffer;
 
 	std::unique_ptr<VertexShader> vertexShader;
 	std::unique_ptr<PixelShader> pixelShader;

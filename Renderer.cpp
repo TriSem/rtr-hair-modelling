@@ -20,7 +20,8 @@ Renderer::Renderer(HWND windowHandle, int width, int height) :
 	backBufferView(nullptr),
 	depthStencilView(nullptr),
 	renderMode(RenderMode::SOLID),
-	vertexShader(nullptr)
+	vertexShader(nullptr),
+	pixelShader(nullptr)
 {
 	InitializeAPI();
 }
@@ -33,82 +34,15 @@ void Renderer::Render(const Scene& scene)
 {
 	Clear();
 
-	std::vector<SimpleVertex> vertices = {
-		{ XMFLOAT3(-1.0f, -1.0f, -1.0f) }, { XMFLOAT3(-1.0f, +1.0f, -1.0f) },
-		{ XMFLOAT3(+1.0f, +1.0f, -1.0f) }, { XMFLOAT3(+1.0f, -1.0f, -1.0f) },
-		{ XMFLOAT3(-1.0f, -1.0f, +1.0f) }, { XMFLOAT3(-1.0f, +1.0f, +1.0f) },
-		{ XMFLOAT3(+1.0f, +1.0f, +1.0f) }, { XMFLOAT3(+1.0f, -1.0f, +1.0f) }
-	};
+	context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	D3D11_BUFFER_DESC bufferDescription = {};
+	context->RSSetState(rasterizerState.Get());
+	context->VSSetShader(vertexShader->Shader().Get(), nullptr, 0);
+	context->PSSetShader(pixelShader->Shader().Get(), nullptr, 0);
 
-	bufferDescription.ByteWidth = sizeof(SimpleVertex) * vertices.size();
-	bufferDescription.Usage = D3D11_USAGE_DEFAULT;
-	bufferDescription.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	context->DrawIndexed(24, 0, 0);
 
-	D3D11_SUBRESOURCE_DATA subresourceData = {};
-	subresourceData.pSysMem = vertices.data();
-	
-	ComPtr<ID3D11Buffer> vertexBuffer = nullptr;
-
-	MessageAndThrowIfFailed(
-		device->CreateBuffer(
-			&bufferDescription,
-			&subresourceData,
-			vertexBuffer.ReleaseAndGetAddressOf()
-		),
-		L"Failed to create vertex buffer"
-	);
-
-	UINT stride = sizeof(SimpleVertex);
-	UINT offset = 0;
-	context->IASetVertexBuffers(0, 1, vertexBuffer.GetAddressOf(), &stride, &offset);
-	//context->Draw(8, 0);
-
-	std::vector<UINT> indices = {
-		0, 1, 2,
-		0, 2, 3,
-		0, 3, 4,
-		0, 4, 5,
-		0, 5, 6,
-		0, 6, 7,
-		0, 7, 8,
-		0, 8, 1
-	};
-
-	ComPtr<ID3D11Buffer> indexBuffer = nullptr;
-
-	ZeroMemory(&bufferDescription, sizeof(D3D11_BUFFER_DESC));
-	ZeroMemory(&subresourceData, sizeof(D3D11_SUBRESOURCE_DATA));
-
-	bufferDescription.Usage = D3D11_USAGE_IMMUTABLE;
-	bufferDescription.ByteWidth = sizeof(UINT) * 24;
-	bufferDescription.BindFlags = D3D11_BIND_INDEX_BUFFER;
-
-	subresourceData.pSysMem = indices.data();
-
-	MessageAndThrowIfFailed(
-		device->CreateBuffer(
-			&bufferDescription,
-			&subresourceData,
-			indexBuffer.ReleaseAndGetAddressOf()
-		),
-		L"Failed to create index buffer!"
-	);
-
-	context->IASetIndexBuffer(indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
-	//context->DrawIndexed(24, 0, 0);
-
-	auto world = Matrix::Identity;
-
-	auto view = Matrix::CreateLookAt(Vector3(2.f, 2.f, 2.f),
-		Vector3::Zero, Vector3::UnitY);
-	auto projection = Matrix::CreatePerspectiveFieldOfView(XM_PI / 4.f,
-		float(1920) / float(1080), 0.1f, 10.f);
-
-	
-
-	swapChain->Present(0, 0);
+	swapChain->Present(1, 0);
 }
 
 void Renderer::InitializeAPI()
@@ -120,7 +54,18 @@ void Renderer::InitializeAPI()
 	CreateDepthStencilView();
 	BindViewsToPipeline();
 	SetViewport();
+
+	D3D11_RASTERIZER_DESC rasterizerDescription = {};
+
+	rasterizerDescription.FillMode = D3D11_FILL_SOLID;
+	rasterizerDescription.CullMode = D3D11_CULL_NONE;
+	MessageAndThrowIfFailed(
+		device->CreateRasterizerState(&rasterizerDescription, rasterizerState.ReleaseAndGetAddressOf()),
+		L"Failed to create rasterizer state."
+	);
+
 	CreateShaders();
+	CreateBuffers();
 }
 
 void Renderer::CreateDevice()
@@ -151,14 +96,18 @@ void Renderer::CreateDevice()
 
 void Renderer::CheckMultisamplingSupport()
 {
-	device->CheckMultisampleQualityLevels(DXGI_FORMAT_R8G8B8A8_UNORM, multisampleCount, &msaaQuality);
+	MessageAndThrowIfFailed(
+		device->CheckMultisampleQualityLevels(DXGI_FORMAT_R8G8B8A8_UNORM, multisampleCount, &msaaQuality),
+		L"Failed to check multisample quality levels."
+	);
+	
 
 	// Look up docs for multisampling quality. This function is likely not implemented properly.
-	if (multisampleCount > msaaQuality)
+	/*if (multisampleCount > msaaQuality)
 	{
 		MessageBox(0, L"Using lowered multisample count.", 0, 0);
 		SetMultisampleCount(msaaQuality - 1);
-	}
+	}*/
 }
 
 void Renderer::CreateSwapChain()
@@ -172,7 +121,6 @@ void Renderer::CreateSwapChain()
 	description.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
 	description.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
 
-	// TODO: Check for correctness.
 	description.SampleDesc.Count = multisampleCount;
 	description.SampleDesc.Quality = msaaQuality - 1;
 
@@ -202,7 +150,6 @@ void Renderer::CreateSwapChain()
 			reinterpret_cast<void**>(dxgiFactory.GetAddressOf())),
 		L"Failed to get dxgiFactory"
 	);
-
 
 	MessageAndThrowIfFailed(
 		dxgiFactory->CreateSwapChain(
@@ -275,7 +222,7 @@ void Renderer::SetViewport()
 	viewport.TopLeftX = 0.0f;
 	viewport.TopLeftY = 0.0f;
 	viewport.Width = static_cast<float>(width);
-	viewport.Width = static_cast<float>(height);
+	viewport.Height = static_cast<float>(height);
 	viewport.MinDepth = 0.0f;
 	viewport.MaxDepth = 1.0f;
 
@@ -289,16 +236,83 @@ void Renderer::CreateShaders()
 	pixelShader = std::make_unique<PixelShader>(device, L"./x64/Debug/PixelShader.cso");
 }
 
+void Renderer::CreateBuffers()
+{
+	context->IASetInputLayout(vertexShader->InputLayout().Get());
+
+	SimpleVertex vertices[] =
+	{
+		{ XMFLOAT3(-0.5f, -0.5f, -0.5f) },
+		{ XMFLOAT3(-0.5f, +0.5f, -0.5f) },
+		{ XMFLOAT3(+0.5f, +0.5f, -0.5f) },
+		{ XMFLOAT3(+0.5f, -0.5f, -0.5f) },
+		{ XMFLOAT3(-0.5f, -0.5f, +0.5f) },
+		{ XMFLOAT3(-0.5f, +0.5f, +0.5f) },
+		{ XMFLOAT3(+0.5f, +0.5f, +0.5f) },
+		{ XMFLOAT3(+0.5f, -0.5f, +0.5f) }
+	};
+
+	D3D11_BUFFER_DESC bufferDescription = {};
+
+	bufferDescription.ByteWidth = sizeof(SimpleVertex) * 9;
+	bufferDescription.Usage = D3D11_USAGE_DEFAULT;
+	bufferDescription.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+
+	D3D11_SUBRESOURCE_DATA subresourceData = {};
+	subresourceData.pSysMem = vertices;
+
+	MessageAndThrowIfFailed(
+		device->CreateBuffer(
+			&bufferDescription,
+			&subresourceData,
+			vertexBuffer.ReleaseAndGetAddressOf()
+		),
+		L"Failed to create vertex buffer"
+	);
+
+	UINT stride = sizeof(SimpleVertex);
+	UINT offset = 0;
+	context->IASetVertexBuffers(0, 1, vertexBuffer.GetAddressOf(), &stride, &offset);
+
+	UINT indices[24] = 
+	{
+		0, 1, 2, // Triangle 0
+		0, 3, 2, // Triangle 1
+		0, 3, 4, // Triangle 2
+		0, 4, 5, // Triangle 3
+		0, 5, 6, // Triangle 4
+		0, 6, 7, // Triangle 5
+		0, 7, 8, // Triangle 6
+		0, 8, 1 // Triangle 7
+	};
+
+	D3D11_BUFFER_DESC indexBufferDescription = {};
+	D3D11_SUBRESOURCE_DATA indexSubresourceData = {};
+
+	indexBufferDescription.Usage = D3D11_USAGE_IMMUTABLE;
+	indexBufferDescription.ByteWidth = sizeof(UINT) * 24;
+	indexBufferDescription.BindFlags = D3D11_BIND_INDEX_BUFFER;
+
+	indexSubresourceData.pSysMem = indices;
+
+	MessageAndThrowIfFailed(
+		device->CreateBuffer(
+			&indexBufferDescription,
+			&indexSubresourceData,
+			indexBuffer.ReleaseAndGetAddressOf()
+		),
+		L"Failed to create index buffer!"
+	);
+
+	context->IASetIndexBuffer(indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+}
+
 void Renderer::Clear()
 {
-	Color clearColor = DirectX::Colors::CornflowerBlue.v;
+	Color clearColor = DirectX::Colors::Snow.v;
 	context->ClearRenderTargetView(backBufferView.Get(), clearColor);
 	context->ClearDepthStencilView(depthStencilView.Get(),
 		D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-	context->OMSetRenderTargets(1, backBufferView.GetAddressOf(),
-		depthStencilView.Get());
-
-	BindViewsToPipeline();
 }
 
 void Renderer::SetMultisampleCount(UINT count)
