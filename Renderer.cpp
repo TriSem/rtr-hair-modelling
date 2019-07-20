@@ -309,7 +309,7 @@ void Renderer::CreateBuffers()
 
 void Renderer::Clear()
 {
-	Color clearColor = DirectX::Colors::Snow.v;
+	Color clearColor = DirectX::Colors::CornflowerBlue.v;
 	context->ClearRenderTargetView(backBufferView.Get(), clearColor);
 	context->ClearDepthStencilView(depthStencilView.Get(),
 		D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
