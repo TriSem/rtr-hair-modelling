@@ -8,6 +8,8 @@
 class Scene
 {
 public:
+	Scene();
+
 	void Update();
 
 private:
