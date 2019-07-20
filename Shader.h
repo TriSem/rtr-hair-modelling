@@ -42,8 +42,6 @@ private:
 
 	void CreateShader() override;
 	void SetupInputLayout();
-
-	static const vector<D3D11_INPUT_ELEMENT_DESC> VERTEX_LAYOUT;
 };
 
 class PixelShader : public Shader
