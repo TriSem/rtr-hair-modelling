@@ -22,17 +22,17 @@
     <Filter Include="Shaders">
       <UniqueIdentifier>{2b6ad566-7bdf-4adf-a322-05e26b791b09}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Headerdateien\WavefrontObj">
-      <UniqueIdentifier>{d36e49ad-dd74-4ca6-a625-58f3aa94c878}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Quelldateien\WavefrontObj">
-      <UniqueIdentifier>{6ffc7873-3199-466b-b4c9-ecd92f1a3770}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Headerdateien\Rendering\Shaders">
       <UniqueIdentifier>{3a25a718-243e-4419-b69c-914e428b7c60}</UniqueIdentifier>
     </Filter>
     <Filter Include="Quelldateien\Rendering\Shaders">
       <UniqueIdentifier>{1545de75-f2d4-4c06-93db-02651dee4512}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Obj">
+      <UniqueIdentifier>{6ffc7873-3199-466b-b4c9-ecd92f1a3770}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\Obj">
+      <UniqueIdentifier>{d36e49ad-dd74-4ca6-a625-58f3aa94c878}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -76,10 +76,10 @@
       <Filter>Headerdateien\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="ObjData.h">
-      <Filter>Headerdateien\WavefrontObj</Filter>
+      <Filter>Headerdateien\Obj</Filter>
     </ClInclude>
     <ClInclude Include="ObjReader.h">
-      <Filter>Headerdateien\WavefrontObj</Filter>
+      <Filter>Headerdateien\Obj</Filter>
     </ClInclude>
     <ClInclude Include="Shader.h">
       <Filter>Headerdateien\Rendering\Shaders</Filter>
@@ -111,7 +111,7 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="ObjReader.cpp">
-      <Filter>Quelldateien\WavefrontObj</Filter>
+      <Filter>Quelldateien\Obj</Filter>
     </ClCompile>
     <ClCompile Include="VertexShader.cpp">
       <Filter>Quelldateien\Rendering\Shaders</Filter>
@@ -121,6 +121,9 @@
     </ClCompile>
     <ClCompile Include="PixelShader.cpp">
       <Filter>Quelldateien\Rendering\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="GeometryDataStructs.cpp">
+      <Filter>Quelldateien\Rendering</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
