@@ -240,7 +240,7 @@ void Renderer::CreateBuffers()
 {
 	context->IASetInputLayout(vertexShader->InputLayout().Get());
 
-	SimpleVertex vertices[] =
+	Vertex vertices[] =
 	{
 		{ XMFLOAT3(-0.5f, -0.5f, -0.5f) },
 		{ XMFLOAT3(-0.5f, +0.5f, -0.5f) },
@@ -254,7 +254,7 @@ void Renderer::CreateBuffers()
 
 	D3D11_BUFFER_DESC bufferDescription = {};
 
-	bufferDescription.ByteWidth = sizeof(SimpleVertex) * 9;
+	bufferDescription.ByteWidth = sizeof(Vertex) * 8;
 	bufferDescription.Usage = D3D11_USAGE_DEFAULT;
 	bufferDescription.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 
@@ -270,7 +270,7 @@ void Renderer::CreateBuffers()
 		L"Failed to create vertex buffer"
 	);
 
-	UINT stride = sizeof(SimpleVertex);
+	UINT stride = sizeof(Vertex);
 	UINT offset = 0;
 	context->IASetVertexBuffers(0, 1, vertexBuffer.GetAddressOf(), &stride, &offset);
 

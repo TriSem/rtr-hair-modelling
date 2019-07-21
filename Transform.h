@@ -1,5 +1,5 @@
 #pragma once
-#include "DirectXTK/Inc/SimpleMath.h"
+#include "Graphics.h"
 
 using namespace DirectX::SimpleMath;
 
@@ -12,9 +12,9 @@ public:
 
 	Matrix TransformationMatrix();
 
-	Vector3 Position() const;
-	Quaternion Rotation() const;
-	float Scale() const;
+	Vector3 GetPosition() const;
+	Quaternion GetRotation() const;
+	float GetScale() const;
 
 	void SetPosition(Vector3 position);
 	void SetRotation(Quaternion rotation);

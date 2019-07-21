@@ -5,6 +5,13 @@
 using namespace DirectX::SimpleMath;
 using DirectX::XMFLOAT2;
 
+
+enum class ProjectionMode
+{
+	PERSPECTIVE,
+	ORTHOGRAPHIC
+};
+
 class Camera
 {
 public:
@@ -21,12 +28,12 @@ public:
 	void SetViewingRectangle(float width, float height);
 
 
-	Vector3 Up() const;
-	Vector3 ViewingDirection() const;
-	Vector3 Position() const;
-	float FieldOfView() const;
+	Vector3 GetUp() const;
+	Vector3 GetViewingDirection() const;
+	Vector3 GetPosition() const;
+	float GetFieldOfView() const;
 
-	Matrix Projection();
+	Matrix GetProjection();
 
 private:
 
@@ -41,9 +48,3 @@ private:
 	XMFLOAT2 viewingRectangle;
 };
 
-
-enum class ProjectionMode
-{
-	PERSPECTIVE,
-	ORTHOGRAPHIC
-};

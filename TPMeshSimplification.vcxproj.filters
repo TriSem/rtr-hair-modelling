@@ -84,6 +84,9 @@
     <ClInclude Include="Shader.h">
       <Filter>Headerdateien\Rendering\Shaders</Filter>
     </ClInclude>
+    <ClInclude Include="Transform.h">
+      <Filter>Headerdateien\Rendering</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -123,6 +126,9 @@
       <Filter>Quelldateien\Rendering\Shaders</Filter>
     </ClCompile>
     <ClCompile Include="GeometryDataStructs.cpp">
+      <Filter>Quelldateien\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Transform.cpp">
       <Filter>Quelldateien\Rendering</Filter>
     </ClCompile>
   </ItemGroup>

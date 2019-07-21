@@ -23,17 +23,17 @@ Matrix Transform::TransformationMatrix()
 	return translationMatrix * rotatationMatrix * scaleMatrix;
 }
 
-Vector3 Transform::Position() const
+Vector3 Transform::GetPosition() const
 {
 	return position;
 }
 
-Quaternion Transform::Rotation() const
+Quaternion Transform::GetRotation() const
 {
 	return rotation;
 }
 
-float Transform::Scale() const
+float Transform::GetScale() const
 {
 	return scale;
 }

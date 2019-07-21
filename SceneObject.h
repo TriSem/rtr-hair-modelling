@@ -1,5 +1,6 @@
 #pragma once
 #include "Graphics.h"
+#include "Transform.h"
 
 using namespace DirectX::SimpleMath;
 
@@ -9,8 +10,9 @@ public:
 
 	virtual void Update();
 
+	const Transform& GetTransform() const;
+
 private:
-	Vector3 positition;
-	Quaternion rotation;
-	Vector3 scale;
+	
+	Transform transform;
 };
