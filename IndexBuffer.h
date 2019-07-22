@@ -4,17 +4,20 @@
 
 using Microsoft::WRL::ComPtr;
 
-class IndexBuffer
+namespace Rendering
 {
-public:
+	class IndexBuffer
+	{
+	public:
 
-	IndexBuffer(ComPtr<ID3D11Device> device, const std::vector<UINT>& indices);
+		IndexBuffer(ComPtr<ID3D11Device> device, const std::vector<UINT>& indices);
 
-	ComPtr<ID3D11Buffer> GetData();
+		ComPtr<ID3D11Buffer> GetData();
 
-private:
+	private:
 
-	ComPtr<ID3D11Buffer> indexBuffer;
-	ComPtr<ID3D11Device> device;
-};
+		ComPtr<ID3D11Buffer> indexBuffer;
+		ComPtr<ID3D11Device> device;
+	};
+}
 

@@ -9,49 +9,52 @@ enum class ShaderType;
 using Microsoft::WRL::ComPtr;
 using std::vector;
 
-class Shader
+namespace Rendering
 {
-public:
+	class Shader
+	{
+	public:
 
-	Shader(ComPtr<ID3D11Device> &device, std::wstring directoryPath);
+		Shader(ComPtr<ID3D11Device> &device, std::wstring directoryPath);
 
-	ComPtr<ID3DBlob> GetCompiledCode() const;
+		ComPtr<ID3DBlob> GetCompiledCode() const;
 
-protected:
+	protected:
 
-	ComPtr<ID3D11Device> device;
-	ComPtr<ID3DBlob> compiledCode;
+		ComPtr<ID3D11Device> device;
+		ComPtr<ID3DBlob> compiledCode;
 
-	virtual void CreateShader() = 0;
-};
+		virtual void CreateShader() = 0;
+	};
 
-class VertexShader : public Shader
-{
-public:
+	class VertexShader : public Shader
+	{
+	public:
 
-	VertexShader(ComPtr<ID3D11Device>& device, std::wstring directoryPath);
+		VertexShader(ComPtr<ID3D11Device>& device, std::wstring directoryPath);
 
-	ComPtr<ID3D11VertexShader> GetShader() const;
+		ComPtr<ID3D11VertexShader> GetShader() const;
 
 
-private:
+	private:
 
-	ComPtr<ID3D11VertexShader> shader;
+		ComPtr<ID3D11VertexShader> shader;
 
-	void CreateShader() override;
-};
+		void CreateShader() override;
+	};
 
-class PixelShader : public Shader
-{
-public:
+	class PixelShader : public Shader
+	{
+	public:
 
-	PixelShader(ComPtr<ID3D11Device>& device, std::wstring directoryPath);
+		PixelShader(ComPtr<ID3D11Device>& device, std::wstring directoryPath);
 
-	ComPtr<ID3D11PixelShader> GetShader() const;
+		ComPtr<ID3D11PixelShader> GetShader() const;
 
-private:
+	private:
 
-	void CreateShader() override;
+		void CreateShader() override;
 
-	ComPtr<ID3D11PixelShader> shader;
-};
+		ComPtr<ID3D11PixelShader> shader;
+	};
+}

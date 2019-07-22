@@ -3,28 +3,31 @@
 
 using namespace DirectX::SimpleMath;
 
-class Transform
+namespace Rendering
 {
-public:
+	class Transform
+	{
+	public:
 
-	Transform();
-	Transform(Vector3 position, Quaternion rotation, float scale);
+		Transform();
+		Transform(Vector3 position, Quaternion rotation, float scale);
 
-	Matrix TransformationMatrix();
+		Matrix TransformationMatrix();
 
-	Vector3 GetPosition() const;
-	Quaternion GetRotation() const;
-	float GetScale() const;
+		Vector3 GetPosition() const;
+		Quaternion GetRotation() const;
+		float GetScale() const;
 
-	void SetPosition(Vector3 position);
-	void SetRotation(Quaternion rotation);
-	void SetRotation(Vector3 eulerAngles);
-	void SetScale(float scale);
+		void SetPosition(Vector3 position);
+		void SetRotation(Quaternion rotation);
+		void SetRotation(Vector3 eulerAngles);
+		void SetScale(float scale);
 
-private:
+	private:
 
-	Vector3 position;
-	Quaternion rotation;
-	float scale;
-};
+		Vector3 position;
+		Quaternion rotation;
+		float scale;
+	};
+}
 

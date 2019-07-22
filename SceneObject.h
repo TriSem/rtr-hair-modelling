@@ -8,26 +8,29 @@
 
 using namespace DirectX::SimpleMath;
 
-class SceneObject
+namespace Rendering
 {
-public:
+	class SceneObject
+	{
+	public:
 
-	SceneObject(ComPtr<ID3D11Device> device, const Mesh& mesh, std::shared_ptr<VertexShader> vertexShader);
+		SceneObject(ComPtr<ID3D11Device> device, const Mesh& mesh, std::shared_ptr<VertexShader> vertexShader);
 
-	virtual void Update();
+		virtual void Update();
 
-	const Transform& GetTransform() const;
+		const Transform& GetTransform() const;
 
-	ComPtr<ID3D11Buffer> GetVertexBufferData();
-	ComPtr<ID3D11Buffer> GetIndexBufferData();
+		ComPtr<ID3D11Buffer> GetVertexBufferData();
+		ComPtr<ID3D11Buffer> GetIndexBufferData();
 
-private:
+	private:
 
-	std::unique_ptr<VertexBuffer> vertexBuffer;
-	std::unique_ptr<IndexBuffer> indexBuffer;
+		std::unique_ptr<VertexBuffer> vertexBuffer;
+		std::unique_ptr<IndexBuffer> indexBuffer;
 
-	std::shared_ptr<VertexShader> vertexShader;
+		std::shared_ptr<VertexShader> vertexShader;
 	
-	Transform transform;
-	Mesh mesh;
-};
+		Transform transform;
+		Mesh mesh;
+	};
+}

@@ -5,20 +5,23 @@
 #include "framework.h"
 #include "Light.h"
 
-class Scene
+namespace Rendering
 {
-public:
-	Scene();
+	class Scene
+	{
+	public:
+		Scene();
 
-	void Update();
-	void AddSceneObject(const SceneObject& object);
-	void DeleteSceneObject();
+		void Update();
+		void AddSceneObject(const SceneObject& object);
+		void DeleteSceneObject();
 
-	Camera& GetCamera();
+		Camera& GetCamera();
 
-private:
-	std::vector<SceneObject> sceneObjects;
-	Camera camera;
-	Light light;
-};
+	private:
+		std::vector<SceneObject> sceneObjects;
+		Camera camera;
+		Light light;
+	};
+}
 

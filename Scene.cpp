@@ -1,30 +1,33 @@
 #include "Scene.h"
 
-Scene::Scene() :
-	camera(Camera()),
-	light(Light())
+namespace Rendering
 {
-	
-}
-
-void Scene::Update()
-{
-	/*for (SceneObject object : sceneObjects)
+	Scene::Scene() :
+		camera(Camera()),
+		light(Light())
 	{
-		object.Update();
-	}*/
-}
-
-void Scene::AddSceneObject(const SceneObject& object)
-{
 	
-}
+	}
 
-void Scene::DeleteSceneObject()
-{
-}
+	void Scene::Update()
+	{
+		/*for (SceneObject object : sceneObjects)
+		{
+			object.Update();
+		}*/
+	}
 
-Camera& Scene::GetCamera()
-{
-	return camera;
+	void Scene::AddSceneObject(const SceneObject& object)
+	{
+	
+	}
+
+	void Scene::DeleteSceneObject()
+	{
+	}
+
+	Camera& Scene::GetCamera()
+	{
+		return camera;
+	}
 }

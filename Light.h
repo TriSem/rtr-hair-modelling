@@ -4,12 +4,15 @@
 using DirectX::SimpleMath::Vector3;
 using DirectX::SimpleMath::Color;
 
-struct Light
+namespace Rendering
 {
-	Light();
+	struct Light
+	{
+		Light();
 
-	Vector3 position;
-	Vector3 direction;
-	Color color;
-};
+		Vector3 position;
+		Vector3 direction;
+		Color color;
+	};
+}
 

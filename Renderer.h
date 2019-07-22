@@ -9,57 +9,60 @@
 
 using Microsoft::WRL::ComPtr;
 
-class Renderer
+namespace Rendering
 {
-public:
-	Renderer(HWND windowHandle, int width, int height);
-	~Renderer();
-
-	void Render(const Scene &scene);
-	void SetMultisampleCount(UINT count);
-
-	enum class RenderMode
+	class Renderer
 	{
-		SOLID,
-		WIREFRAME
+	public:
+		Renderer(HWND windowHandle, int width, int height);
+		~Renderer();
+
+		void Render(const Scene &scene);
+		void SetMultisampleCount(UINT count);
+
+		enum class RenderMode
+		{
+			SOLID,
+			WIREFRAME
+		};
+
+	private:
+
+		Scene scene;
+
+		void InitializeAPI();
+		void CreateDevice();
+		void CheckMultisamplingSupport();
+		void CreateSwapChain();
+		void CreateBackBufferView();
+		void CreateDepthStencilView();
+		void BindViewsToPipeline();
+		void SetViewport();
+		void CreateShaders();
+
+		void Clear();
+
+		UINT multisampleCount;
+		UINT msaaQuality;
+
+		HWND windowHandle;
+
+		int width;
+		int height;
+		RenderMode renderMode;
+
+		D3D11_VIEWPORT viewport;
+
+		ComPtr<ID3D11Device> device;
+		ComPtr<ID3D11DeviceContext> context;
+		ComPtr<IDXGISwapChain> swapChain;
+		ComPtr<ID3D11Texture2D> depthStencilBuffer;
+		ComPtr<ID3D11RenderTargetView> backBufferView;
+		ComPtr<ID3D11DepthStencilView> depthStencilView;
+		ComPtr<ID3D11RasterizerState> rasterizerState;
+
+		std::shared_ptr<VertexShader> vertexShader;
+		std::shared_ptr<PixelShader> pixelShader;
 	};
-
-private:
-
-	Scene scene;
-
-	void InitializeAPI();
-	void CreateDevice();
-	void CheckMultisamplingSupport();
-	void CreateSwapChain();
-	void CreateBackBufferView();
-	void CreateDepthStencilView();
-	void BindViewsToPipeline();
-	void SetViewport();
-	void CreateShaders();
-
-	void Clear();
-
-	UINT multisampleCount;
-	UINT msaaQuality;
-
-	HWND windowHandle;
-
-	int width;
-	int height;
-	RenderMode renderMode;
-
-	D3D11_VIEWPORT viewport;
-
-	ComPtr<ID3D11Device> device;
-	ComPtr<ID3D11DeviceContext> context;
-	ComPtr<IDXGISwapChain> swapChain;
-	ComPtr<ID3D11Texture2D> depthStencilBuffer;
-	ComPtr<ID3D11RenderTargetView> backBufferView;
-	ComPtr<ID3D11DepthStencilView> depthStencilView;
-	ComPtr<ID3D11RasterizerState> rasterizerState;
-
-	std::shared_ptr<VertexShader> vertexShader;
-	std::shared_ptr<PixelShader> pixelShader;
-};
+}
 
