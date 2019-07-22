@@ -149,6 +149,9 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Quelldateien\Rendering\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>Quelldateien\Obj</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="TPMeshSimplification.rc">

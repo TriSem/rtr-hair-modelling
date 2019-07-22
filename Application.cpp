@@ -1,6 +1,8 @@
 #include "Application.h"
 #include "ObjReader.h"
 
+using Rendering::Renderer;
+
 Application::Application(HINSTANCE instanceHandle, int nCmdShow, std::wstring appTitle) :
 	instanceHandle(instanceHandle),
 	appTitle(appTitle),

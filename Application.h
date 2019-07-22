@@ -25,8 +25,8 @@ private:
 	std::vector<Window> windows;
 	std::wstring appTitle;
 
-	std::unique_ptr<Renderer> renderer;
-	std::unique_ptr<Scene> mainScene;
+	std::unique_ptr<Rendering::Renderer> renderer;
+	std::unique_ptr<Rendering::Scene> mainScene;
 
 	void Init();
 	void Input();

@@ -60,10 +60,8 @@ namespace OBJ
 		Rendering::Mesh& ExtractMesh();
 		std::string GetName();
 
-	private:
-
-		std::string name;
 		ModelData modelData;
+		std::string name;
 	};
 
 	enum class PrimitiveMode

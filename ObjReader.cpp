@@ -122,7 +122,7 @@ namespace OBJ
 			vector<string> values = StringSplit(valueGroups.at(i), '/');
 			face.vertexIndices.push_back(std::stoi(values.at(0)));
 
-			int numberOfSlashes = std::count(values.begin(), values.end(), "/");
+			int numberOfSlashes = (int)std::count(values.begin(), values.end(), "/");
 			if (numberOfSlashes == 1)
 			{
 				face.textureCoordinateIndices.push_back(std::stoi(values.at(1)));
