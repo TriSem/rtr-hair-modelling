@@ -4,6 +4,8 @@
 #include "Graphics.h"
 #include "Scene.h"
 #include "Shader.h"
+#include "VertexBuffer.h"
+#include "IndexBuffer.h"
 
 using Microsoft::WRL::ComPtr;
 
@@ -57,10 +59,11 @@ private:
 	ComPtr<ID3D11RenderTargetView> backBufferView;
 	ComPtr<ID3D11DepthStencilView> depthStencilView;
 	ComPtr<ID3D11RasterizerState> rasterizerState;
-	ComPtr<ID3D11Buffer> vertexBuffer;
-	ComPtr<ID3D11Buffer> indexBuffer;
 
-	std::unique_ptr<VertexShader> vertexShader;
-	std::unique_ptr<PixelShader> pixelShader;
+	std::shared_ptr<VertexShader> vertexShader;
+	std::shared_ptr<PixelShader> pixelShader;
+
+	std::unique_ptr<VertexBuffer> vertexBuffer;
+	std::unique_ptr<IndexBuffer> indexBuffer;
 };
 

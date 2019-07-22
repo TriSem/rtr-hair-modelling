@@ -34,6 +34,12 @@
     <Filter Include="Headerdateien\Obj">
       <UniqueIdentifier>{d36e49ad-dd74-4ca6-a625-58f3aa94c878}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Quelldateien\Rendering\Scene">
+      <UniqueIdentifier>{6a72fa3e-2ed1-4808-a701-38985597c970}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\Rendering\Scene">
+      <UniqueIdentifier>{94bc5970-6c5e-450f-9d64-d87039558c57}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -52,18 +58,6 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="Renderer.h">
-      <Filter>Headerdateien\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene.h">
-      <Filter>Headerdateien\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneObject.h">
-      <Filter>Headerdateien\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Headerdateien\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="Light.h">
       <Filter>Headerdateien\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="Graphics.h">
@@ -87,6 +81,24 @@
     <ClInclude Include="Transform.h">
       <Filter>Headerdateien\Rendering</Filter>
     </ClInclude>
+    <ClInclude Include="VertexBuffer.h">
+      <Filter>Headerdateien\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="IndexBuffer.h">
+      <Filter>Headerdateien\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Headerdateien\Rendering\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneObject.h">
+      <Filter>Headerdateien\Rendering\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Headerdateien\Rendering\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>Headerdateien\Rendering\Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -96,18 +108,6 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Renderer.cpp">
-      <Filter>Quelldateien\Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene.cpp">
-      <Filter>Quelldateien\Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneObject.cpp">
-      <Filter>Quelldateien\Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Quelldateien\Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="Light.cpp">
       <Filter>Quelldateien\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="Application.cpp">
@@ -130,6 +130,24 @@
     </ClCompile>
     <ClCompile Include="Transform.cpp">
       <Filter>Quelldateien\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexBuffer.cpp">
+      <Filter>Quelldateien\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="IndexBuffer.cpp">
+      <Filter>Quelldateien\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>Quelldateien\Rendering\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Quelldateien\Rendering\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneObject.cpp">
+      <Filter>Quelldateien\Rendering\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Quelldateien\Rendering\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

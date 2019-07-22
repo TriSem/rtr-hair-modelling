@@ -69,27 +69,27 @@ void Camera::SetViewingRectangle(float width, float height)
 	viewingRectangle.y = height;
 }
 
-Vector3 Camera::Up() const
+Vector3 Camera::GetUp() const
 {
 	return up;
 }
 
-Vector3 Camera::ViewingDirection() const
+Vector3 Camera::GetViewingDirection() const
 {
 	return viewingDirection;
 }
 
-Vector3 Camera::Position() const
+Vector3 Camera::GetPosition() const
 {
 	return position;
 }
 
-float Camera::FieldOfView() const
+float Camera::GetFieldOfView() const
 {
 	return fieldOfView;
 }
 
-Matrix Camera::Projection()
+Matrix Camera::GetProjection()
 {
 	Matrix view = Matrix::CreateLookAt(position, viewingDirection, up);
 

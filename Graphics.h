@@ -8,3 +8,5 @@
 #include "DirectXTK/Inc/SimpleMath.h"
 #include <DirectXColors.h>
 #include <d3dcompiler.h>
+
+#include "GeometryDataStructs.h"

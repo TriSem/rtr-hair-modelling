@@ -1,11 +1,30 @@
 #include "Scene.h"
 
-Scene::Scene()
+Scene::Scene() :
+	camera(Camera()),
+	light(Light())
 {
-	camera = std::make_unique<Camera>(ProjectionMode::PERSPECTIVE);
+	
 }
 
 void Scene::Update()
 {
+	/*for (SceneObject object : sceneObjects)
+	{
+		object.Update();
+	}*/
+}
 
+void Scene::AddSceneObject(const SceneObject& object)
+{
+	
+}
+
+void Scene::DeleteSceneObject()
+{
+}
+
+Camera& Scene::GetCamera()
+{
+	return camera;
 }

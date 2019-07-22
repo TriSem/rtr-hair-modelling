@@ -1,6 +1,8 @@
 #pragma once
 #include "Graphics.h"
 #include "Transform.h"
+#include "GeometryDataStructs.h"
+#include <memory>
 
 using namespace DirectX::SimpleMath;
 
@@ -15,4 +17,5 @@ public:
 private:
 	
 	Transform transform;
+	std::shared_ptr<Mesh> mesh;
 };

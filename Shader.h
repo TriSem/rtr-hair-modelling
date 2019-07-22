@@ -15,7 +15,7 @@ public:
 
 	Shader(ComPtr<ID3D11Device> &device, std::wstring directoryPath);
 
-	ComPtr<ID3DBlob> CompiledCode() const;
+	ComPtr<ID3DBlob> GetCompiledCode() const;
 
 protected:
 
@@ -31,17 +31,14 @@ public:
 
 	VertexShader(ComPtr<ID3D11Device>& device, std::wstring directoryPath);
 
-	ComPtr<ID3D11VertexShader> Shader() const;
-	ComPtr<ID3D11InputLayout> InputLayout() const;
+	ComPtr<ID3D11VertexShader> GetShader() const;
 
 
 private:
 
 	ComPtr<ID3D11VertexShader> shader;
-	ComPtr<ID3D11InputLayout> inputLayout;
 
 	void CreateShader() override;
-	void SetupInputLayout();
 };
 
 class PixelShader : public Shader
@@ -50,7 +47,7 @@ public:
 
 	PixelShader(ComPtr<ID3D11Device>& device, std::wstring directoryPath);
 
-	ComPtr<ID3D11PixelShader> Shader() const;
+	ComPtr<ID3D11PixelShader> GetShader() const;
 
 private:
 

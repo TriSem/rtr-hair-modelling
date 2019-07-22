@@ -6,7 +6,7 @@ PixelShader::PixelShader(ComPtr<ID3D11Device>& device, std::wstring directoryPat
 	CreateShader();
 }
 
-ComPtr<ID3D11PixelShader> PixelShader::Shader() const
+ComPtr<ID3D11PixelShader> PixelShader::GetShader() const
 {
 	return shader;
 }

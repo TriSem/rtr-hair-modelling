@@ -11,10 +11,14 @@ public:
 	Scene();
 
 	void Update();
+	void AddSceneObject(const SceneObject& object);
+	void DeleteSceneObject();
+
+	Camera& GetCamera();
 
 private:
 	std::vector<SceneObject> sceneObjects;
-	std::shared_ptr<Camera> camera;
-	std::vector<Light> light;
+	Camera camera;
+	Light light;
 };
 

@@ -37,8 +37,10 @@ void Renderer::Render(const Scene& scene)
 	context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	context->RSSetState(rasterizerState.Get());
-	context->VSSetShader(vertexShader->Shader().Get(), nullptr, 0);
-	context->PSSetShader(pixelShader->Shader().Get(), nullptr, 0);
+	context->VSSetShader(vertexShader->GetShader().Get(), nullptr, 0);
+	context->PSSetShader(pixelShader->GetShader().Get(), nullptr, 0);
+
+	
 
 	context->DrawIndexed(24, 0, 0);
 
@@ -238,9 +240,7 @@ void Renderer::CreateShaders()
 
 void Renderer::CreateBuffers()
 {
-	context->IASetInputLayout(vertexShader->InputLayout().Get());
-
-	Vertex vertices[] =
+	std::vector<Vertex> vertices =
 	{
 		{ XMFLOAT3(-0.5f, -0.5f, -0.5f) },
 		{ XMFLOAT3(-0.5f, +0.5f, -0.5f) },
@@ -252,29 +252,7 @@ void Renderer::CreateBuffers()
 		{ XMFLOAT3(+0.5f, -0.5f, +0.5f) }
 	};
 
-	D3D11_BUFFER_DESC bufferDescription = {};
-
-	bufferDescription.ByteWidth = sizeof(Vertex) * 8;
-	bufferDescription.Usage = D3D11_USAGE_DEFAULT;
-	bufferDescription.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-
-	D3D11_SUBRESOURCE_DATA subresourceData = {};
-	subresourceData.pSysMem = vertices;
-
-	MessageAndThrowIfFailed(
-		device->CreateBuffer(
-			&bufferDescription,
-			&subresourceData,
-			vertexBuffer.ReleaseAndGetAddressOf()
-		),
-		L"Failed to create vertex buffer"
-	);
-
-	UINT stride = sizeof(Vertex);
-	UINT offset = 0;
-	context->IASetVertexBuffers(0, 1, vertexBuffer.GetAddressOf(), &stride, &offset);
-
-	UINT indices[24] = 
+	std::vector<UINT> indices =
 	{
 		0, 1, 2, // Triangle 0
 		0, 3, 2, // Triangle 1
@@ -285,26 +263,14 @@ void Renderer::CreateBuffers()
 		0, 7, 8, // Triangle 6
 		0, 8, 1 // Triangle 7
 	};
+	
+	
 
-	D3D11_BUFFER_DESC indexBufferDescription = {};
-	D3D11_SUBRESOURCE_DATA indexSubresourceData = {};
-
-	indexBufferDescription.Usage = D3D11_USAGE_IMMUTABLE;
-	indexBufferDescription.ByteWidth = sizeof(UINT) * 24;
-	indexBufferDescription.BindFlags = D3D11_BIND_INDEX_BUFFER;
-
-	indexSubresourceData.pSysMem = indices;
-
-	MessageAndThrowIfFailed(
-		device->CreateBuffer(
-			&indexBufferDescription,
-			&indexSubresourceData,
-			indexBuffer.ReleaseAndGetAddressOf()
-		),
-		L"Failed to create index buffer!"
-	);
-
-	context->IASetIndexBuffer(indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+	vertexBuffer = std::make_unique<VertexBuffer>(device, vertexShader, vertices);
+	indexBuffer = std::make_unique<IndexBuffer>(device, indices);
+	context->IASetInputLayout(vertexBuffer->GetInputLayout().Get());
+	context->IASetVertexBuffers(0, 1, vertexBuffer->GetData().GetAddressOf(), &(vertexBuffer->STRIDE), &(vertexBuffer->GetOffset()));
+	context->IASetIndexBuffer(indexBuffer->GetData().Get(), DXGI_FORMAT_R32_UINT, 0);
 }
 
 void Renderer::Clear()
