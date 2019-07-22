@@ -5,6 +5,7 @@
 #include <map>
 #include <string>
 #include <ppltasks.h>
+#include "GeometryDataStructs.h"
 
 namespace OBJ
 {

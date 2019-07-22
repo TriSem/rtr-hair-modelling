@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <string>
+#include "GeometryDataStructs.h"
 
 namespace OBJ
 {
@@ -35,7 +36,7 @@ namespace OBJ
 		std::vector<uint32_t> textureCoordinateIndices;
 	};
 
-	struct Mesh
+	struct ModelData
 	{
 		std::vector<Face> faces;
 		std::vector<Vertex> vertices;
@@ -46,46 +47,23 @@ namespace OBJ
 	class Object
 	{
 	public:
+
+		Object();
+		Object(std::string name);
+		Object(const Object& other);
+		Object(Object&& other) noexcept;
+		~Object();
+
+		Object& operator=(const Object& other);
+		Object& operator=(Object&& other) noexcept;
+
+		Rendering::Mesh& ExtractMesh();
+		std::string GetName();
+
+	private:
+
 		std::string name;
-		Mesh mesh;
-
-		Object() :
-			name("default")
-		{
-		}
-
-		Object(std::string name) :
-			name(name)
-		{
-		}
-
-		Object(const Object& other) : name(other.name), mesh(other.mesh)
-		{
-		}
-
-		Object(Object&& other) noexcept :
-			name(std::move(other.name)),
-			mesh(std::move(other.mesh))
-		{
-		}
-
-		~Object()
-		{
-		}
-
-		Object& operator=(const Object& other)
-		{
-			name = other.name;
-			mesh = other.mesh;
-			return *this;
-		}
-
-		Object& operator=(Object&& other) noexcept
-		{
-			name = std::move(other.name);
-			mesh = std::move(other.mesh);
-			return *this;
-		}
+		ModelData modelData;
 	};
 
 	enum class PrimitiveMode

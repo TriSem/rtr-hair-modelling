@@ -37,7 +37,6 @@ private:
 	void BindViewsToPipeline();
 	void SetViewport();
 	void CreateShaders();
-	void CreateBuffers();
 
 	void Clear();
 
@@ -62,8 +61,5 @@ private:
 
 	std::shared_ptr<VertexShader> vertexShader;
 	std::shared_ptr<PixelShader> pixelShader;
-
-	std::unique_ptr<VertexBuffer> vertexBuffer;
-	std::unique_ptr<IndexBuffer> indexBuffer;
 };
 

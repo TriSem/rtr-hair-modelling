@@ -87,7 +87,7 @@ namespace OBJ
 		if (values.size() == 4)
 			vertex.w = std::stof(values.at(3));
 
-		objects.back().mesh.vertices.push_back(vertex);
+		objects.back().modelData.vertices.push_back(vertex);
 	}
 
 	void ObjReader::ReadNormal(const string& data)
@@ -98,7 +98,7 @@ namespace OBJ
 		normal.y = std::stof(values.at(1));
 		normal.z = std::stof(values.at(2));
 
-		objects.back().mesh.normals.push_back(normal);
+		objects.back().modelData.normals.push_back(normal);
 	}
 
 	void ObjReader::ReadTextureCoordinate(const string& data)
@@ -108,7 +108,7 @@ namespace OBJ
 		textureCoordinate.u = std::stof(values.at(0));
 		textureCoordinate.v = std::stof(values.at(1));
 
-		objects.back().mesh.textureCoordinates.push_back(textureCoordinate);
+		objects.back().modelData.textureCoordinates.push_back(textureCoordinate);
 	}
 
 	void ObjReader::ReadFace(const string& data)
@@ -135,7 +135,7 @@ namespace OBJ
 			}
 		}
 
-		objects.back().mesh.faces.push_back(face);
+		objects.back().modelData.faces.push_back(face);
 
 	}
 

@@ -67,7 +67,6 @@ void Renderer::InitializeAPI()
 	);
 
 	CreateShaders();
-	CreateBuffers();
 }
 
 void Renderer::CreateDevice()
@@ -236,41 +235,6 @@ void Renderer::CreateShaders()
 	// TODO: Define paths for all different build configurations.
 	vertexShader = std::make_unique<VertexShader>(device, L"./x64/Debug/VertexShader.cso");
 	pixelShader = std::make_unique<PixelShader>(device, L"./x64/Debug/PixelShader.cso");
-}
-
-void Renderer::CreateBuffers()
-{
-	std::vector<Vertex> vertices =
-	{
-		{ XMFLOAT3(-0.5f, -0.5f, -0.5f) },
-		{ XMFLOAT3(-0.5f, +0.5f, -0.5f) },
-		{ XMFLOAT3(+0.5f, +0.5f, -0.5f) },
-		{ XMFLOAT3(+0.5f, -0.5f, -0.5f) },
-		{ XMFLOAT3(-0.5f, -0.5f, +0.5f) },
-		{ XMFLOAT3(-0.5f, +0.5f, +0.5f) },
-		{ XMFLOAT3(+0.5f, +0.5f, +0.5f) },
-		{ XMFLOAT3(+0.5f, -0.5f, +0.5f) }
-	};
-
-	std::vector<UINT> indices =
-	{
-		0, 1, 2, // Triangle 0
-		0, 3, 2, // Triangle 1
-		0, 3, 4, // Triangle 2
-		0, 4, 5, // Triangle 3
-		0, 5, 6, // Triangle 4
-		0, 6, 7, // Triangle 5
-		0, 7, 8, // Triangle 6
-		0, 8, 1 // Triangle 7
-	};
-	
-	
-
-	vertexBuffer = std::make_unique<VertexBuffer>(device, vertexShader, vertices);
-	indexBuffer = std::make_unique<IndexBuffer>(device, indices);
-	context->IASetInputLayout(vertexBuffer->GetInputLayout().Get());
-	context->IASetVertexBuffers(0, 1, vertexBuffer->GetData().GetAddressOf(), &(vertexBuffer->STRIDE), &(vertexBuffer->GetOffset()));
-	context->IASetIndexBuffer(indexBuffer->GetData().Get(), DXGI_FORMAT_R32_UINT, 0);
 }
 
 void Renderer::Clear()
