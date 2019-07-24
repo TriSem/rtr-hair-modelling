@@ -13,12 +13,15 @@ namespace Rendering
 		Scene();
 
 		void Update();
-		void AddSceneObject(const SceneObject& object);
-		void DeleteSceneObject();
+		void AddSceneObject(SceneObject& object);
+		void DeleteSceneObject(int index);
+
+		std::vector<SceneObject>& GetSceneObjects();
 
 		Camera& GetCamera();
 
 	private:
+
 		std::vector<SceneObject> sceneObjects;
 		Camera camera;
 		Light light;

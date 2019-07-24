@@ -57,7 +57,7 @@ namespace OBJ
 		Object& operator=(const Object& other);
 		Object& operator=(Object&& other) noexcept;
 
-		Rendering::Mesh& ExtractMesh();
+		Rendering::Mesh ExtractMesh();
 		std::string GetName();
 
 		ModelData modelData;

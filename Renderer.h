@@ -17,8 +17,11 @@ namespace Rendering
 		Renderer(HWND windowHandle, int width, int height);
 		~Renderer();
 
-		void Render(const Scene &scene);
+		void Render(Scene &scene);
 		void SetMultisampleCount(UINT count);
+
+		const ComPtr<ID3D11Device> GetDevice() const;
+		const std::shared_ptr<VertexShader> GetVertexShader() const;
 
 		enum class RenderMode
 		{

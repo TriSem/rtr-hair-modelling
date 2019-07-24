@@ -1,7 +1,9 @@
 #include "Application.h"
 #include "ObjReader.h"
+#include "SceneObject.h"
 
 using Rendering::Renderer;
+using Rendering::Scene;
 
 Application::Application(HINSTANCE instanceHandle, int nCmdShow, std::wstring appTitle) :
 	instanceHandle(instanceHandle),
@@ -19,8 +21,13 @@ Application::~Application()
 void Application::Run()
 {
 	Init();
-
 	MSG message = {};
+
+	OBJ::ObjReader reader;
+	reader.LoadFile("C:/Users/Tristan/3D Objects/blenderMonkey.obj");
+	Rendering::Mesh mesh = reader.GetObjects().at(0).ExtractMesh();
+	Rendering::SceneObject model = Rendering::SceneObject(renderer->GetDevice(), mesh, renderer->GetVertexShader());
+	mainScene->AddSceneObject(model);
 
 	while (true)
 	{
@@ -56,6 +63,8 @@ void Application::Init()
 		mainWindow.Width(), 
 		mainWindow.Height()
 	);
+
+	mainScene = std::make_shared<Scene>();
 
 	ShowWindow(mainWindow.WindowHandle(), nCmdShow);
 }

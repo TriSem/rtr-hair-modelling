@@ -31,21 +31,27 @@ namespace Rendering
 	{
 	}
 
-	void Renderer::Render(const Scene& scene)
+	void Renderer::Render(Scene& scene)
 	{
 		Clear();
-
 		context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
 		context->RSSetState(rasterizerState.Get());
-		context->VSSetShader(vertexShader->GetShader().Get(), nullptr, 0);
-		context->PSSetShader(pixelShader->GetShader().Get(), nullptr, 0);
 
-	
+		vector<SceneObject>& objects = scene.GetSceneObjects();
 
-		context->DrawIndexed(24, 0, 0);
+		for (auto it = objects.begin(); it != objects.end(); it++)
+		{
+			std::shared_ptr<VertexBuffer> vertexBuffer = it->GetVertexBuffer();
+			std::shared_ptr<IndexBuffer> indexBuffer = it->GetIndexBuffer(); 
+			context->IASetInputLayout(vertexBuffer->GetInputLayout().Get());
+			context->IASetVertexBuffers(0, 1, vertexBuffer->GetData().GetAddressOf(), &vertexBuffer->STRIDE, &vertexBuffer->GetOffset());
+			context->IASetIndexBuffer(indexBuffer->GetData().Get(), DXGI_FORMAT_R32_UINT, 0);
+			context->VSSetShader(vertexShader->GetShader().Get(), nullptr, 0);
+			context->PSSetShader(pixelShader->GetShader().Get(), nullptr, 0);
+			context->DrawIndexed(indexBuffer->GetIndexCount(), 0, 0);
+		}
 
-		swapChain->Present(1, 0);
+		swapChain->Present(0, 0);
 	}
 
 	void Renderer::InitializeAPI()
@@ -60,8 +66,8 @@ namespace Rendering
 
 		D3D11_RASTERIZER_DESC rasterizerDescription = {};
 
-		rasterizerDescription.FillMode = D3D11_FILL_SOLID;
-		rasterizerDescription.CullMode = D3D11_CULL_NONE;
+		rasterizerDescription.FillMode = D3D11_FILL_WIREFRAME;
+		rasterizerDescription.CullMode = D3D11_CULL_BACK;
 		MessageAndThrowIfFailed(
 			device->CreateRasterizerState(&rasterizerDescription, rasterizerState.ReleaseAndGetAddressOf()),
 			L"Failed to create rasterizer state."
@@ -240,7 +246,7 @@ namespace Rendering
 
 	void Renderer::Clear()
 	{
-		Color clearColor = DirectX::Colors::CornflowerBlue.v;
+		Color clearColor = DirectX::Colors::Magenta.v;
 		context->ClearRenderTargetView(backBufferView.Get(), clearColor);
 		context->ClearDepthStencilView(depthStencilView.Get(),
 			D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
@@ -252,5 +258,15 @@ namespace Rendering
 			multisampleCount = count;
 		else
 			multisampleCount = 1;
+	}
+
+	const ComPtr<ID3D11Device> Renderer::GetDevice() const
+	{
+		return device;
+	}
+
+	const std::shared_ptr<VertexShader> Renderer::GetVertexShader() const
+	{
+		return vertexShader;
 	}
 }

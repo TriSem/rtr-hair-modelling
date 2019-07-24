@@ -26,7 +26,7 @@ private:
 	std::wstring appTitle;
 
 	std::unique_ptr<Rendering::Renderer> renderer;
-	std::unique_ptr<Rendering::Scene> mainScene;
+	std::shared_ptr<Rendering::Scene> mainScene;
 
 	void Init();
 	void Input();
