@@ -46,7 +46,6 @@ namespace Rendering
 	private:
 		std::vector<DirectedEdgeVertex> vertices;
 		std::vector<DirectedEdge> edges;
-		uint32_t faceCount;
 
 		void CreateFromMesh(Mesh basicMesh);
 

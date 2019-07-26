@@ -36,8 +36,6 @@ namespace Rendering
 	*/
 	void DirectedEdgeMesh::CreateFromMesh(Mesh basicMesh)
 	{
-		faceCount = basicMesh.indices.size() / 3;
-
 		for (auto it = basicMesh.vertices.begin(); it != basicMesh.vertices.end(); it++)
 		{
 			vertices.push_back(DirectedEdgeVertex(*it));
