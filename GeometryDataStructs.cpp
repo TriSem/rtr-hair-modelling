@@ -1,5 +1,8 @@
 #include "GeometryDataStructs.h"
 
+using std::priority_queue;
+using std::shared_ptr;
+
 namespace Rendering
 {
 	DirectedEdgeMesh::DirectedEdgeMesh(Mesh basicMesh)
@@ -61,14 +64,14 @@ namespace Rendering
 		for (int i = 0; i < edges.size(); i++)
 		{
 			DirectedEdge& edge = edges.at(i);
-			uint32_t nextVertex = edges.at(NextHalfEdgeInFace(i)).baseVertexIndex;
+			uint32_t nextVertex = edges.at(NextEdge(i)).baseVertexIndex;
 
 			if (edge.oppositeEdgeIndex == UINT32_MAX)
 			{
 				for (uint32_t j = 0; j < edges.size(); j++)
 				{
 					DirectedEdge& opposite = edges.at(j);
-					uint32_t oppositeNextVertex = edges.at(NextHalfEdgeInFace(j)).baseVertexIndex;
+					uint32_t oppositeNextVertex = edges.at(NextEdge(j)).baseVertexIndex;
 					if ((opposite.baseVertexIndex) == nextVertex && edge.baseVertexIndex == oppositeNextVertex)
 					{
 						edge.oppositeEdgeIndex = j;
@@ -89,24 +92,123 @@ namespace Rendering
 		LinkEdges();
 	}
 
-	int32_t DirectedEdgeMesh::HalfedgeByContainingFace(uint32_t faceId, uint8_t indexInFace) const
+	uint32_t DirectedEdgeMesh::FaceCount()
+	{
+		return edges.size() / 3;
+	}
+
+	shared_ptr<DirectedEdgeMesh> DirectedEdgeMesh::Decimate(uint32_t targetFaceCount)
+	{
+		shared_ptr<DirectedEdgeMesh> newMesh = std::make_shared<DirectedEdgeMesh>(this);
+
+		// The mesh will always contain at least one triangle.
+		if (newMesh->vertices.size() < 4)
+			return newMesh;
+
+		for (uint32_t i = 0; i < edges.size(); i++)
+		{
+			DirectedEdge edge = edges.at(i);
+			uint32_t v1 = edge.baseVertexIndex;
+			uint32_t nextEdge = NextEdge(i);
+			uint32_t v2 = edges.at(nextEdge).baseVertexIndex;
+
+			std::vector<uint32_t> oneRing1 = GetOneRing(v1);
+			std::vector<uint32_t> oneRing2 = GetOneRing(v2);
+
+			// Two boundary vertices must be connected by a boundary halfedge
+			if
+			(
+				IsBoundaryVertex(v1) &&
+				IsBoundaryVertex(v2) &&
+				edge.oppositeEdgeIndex != UINT32_MAX
+			)
+			{
+				continue;
+			}
+
+			std::vector<uint32_t> intersection;
+			std::sort(oneRing1.begin(), oneRing1.end());
+			std::sort(oneRing2.begin(), oneRing2.end());
+			std::set_intersection(oneRing1.begin(), oneRing1.end(), oneRing2.begin(), oneRing2.end(), intersection);
+
+			// Prevent vertices with valence lower than three.
+			if (intersection.size() > 2)
+				continue;
+		}
+
+		return newMesh;
+	}
+
+	bool DirectedEdgeMesh::IsBoundaryVertex(uint32_t vertex)
+	{
+		uint32_t startEdge = vertices.at(vertex).directedEdgeIndex;
+		uint32_t currentEdge = startEdge;
+		uint32_t opposite = edges.at(PreviousEdge(startEdge)).oppositeEdgeIndex;
+
+		while (opposite != startEdge)
+		{
+			if (opposite == UINT32_MAX)
+				return true;
+
+			opposite = edges.at(PreviousEdge(currentEdge)).oppositeEdgeIndex;
+		}
+
+		return false;
+	}
+
+	std::vector<uint32_t> DirectedEdgeMesh::GetOneRing(uint32_t vertex)
+	{
+		std::vector<uint32_t> oneRing;
+
+		uint32_t startEdge = vertices.at(vertex).directedEdgeIndex;
+		uint32_t currentEdge = startEdge;
+		oneRing.push_back(edges.at(NextEdge(currentEdge)).baseVertexIndex);
+
+		uint32_t opposite = edges.at(PreviousEdge(currentEdge)).oppositeEdgeIndex;
+
+		while (opposite != startEdge && opposite != UINT32_MAX)
+		{
+			oneRing.push_back(edges.at(NextEdge(currentEdge)).baseVertexIndex);
+			opposite = edges.at(PreviousEdge(currentEdge)).oppositeEdgeIndex;
+		}
+
+		if (opposite == UINT32_MAX)
+		{
+			opposite = edges.at(startEdge).oppositeEdgeIndex;
+
+			while (opposite != startEdge && opposite != UINT32_MAX)
+			{
+				oneRing.push_back(edges.at(PreviousEdge(currentEdge)).baseVertexIndex);
+				opposite = edges.at(NextEdge(currentEdge)).oppositeEdgeIndex;
+			}
+		}
+
+		return oneRing;
+	}
+
+	uint32_t DirectedEdgeMesh::Halfedge(uint32_t faceId, uint8_t indexInFace) const
 	{
 		return 3 * faceId + indexInFace;
 	}
 
-	int32_t DirectedEdgeMesh::FaceByContainedEdge(uint32_t edgeId) const
+	uint32_t DirectedEdgeMesh::Face(uint32_t edgeId) const
 	{
 		return edgeId / 3;
 	}
 
-	int8_t DirectedEdgeMesh::HalfedgeIndexWithinFace(uint32_t edgeId) const
+	uint8_t DirectedEdgeMesh::HalfedgeIndexWithinFace(uint32_t edgeId) const
 	{
 		return edgeId % 3;
 	}
 
-	int32_t DirectedEdgeMesh::NextHalfEdgeInFace(uint32_t edgeId) const
+	uint32_t DirectedEdgeMesh::NextEdge(uint32_t edgeId) const
 	{
 		return (edgeId + 1) % 3;
+	}
+
+	uint32_t DirectedEdgeMesh::PreviousEdge(uint32_t edgeId) const
+	{
+		return (edgeId + 2) % 3;
 	}
 
 

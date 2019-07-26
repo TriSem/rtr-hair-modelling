@@ -2,6 +2,8 @@
 
 #include <DirectXMath.h>
 #include <vector>
+#include <memory>
+#include <queue>
 
 using DirectX::XMFLOAT2;
 using DirectX::XMFLOAT3;
@@ -54,16 +56,18 @@ namespace Rendering
 		/** Returns the index of a halfedge in the specified face.
 			IndexInFace is supposed to be used with one of the values
 			0, 1 or 2. */
-		int32_t HalfedgeByContainingFace(uint32_t faceId, uint8_t indexInFace) const;
+		uint32_t Halfedge(uint32_t faceId, uint8_t indexInFace) const;
 
 		/** Returns the index of the face containing the specified edge. */
-		int32_t FaceByContainedEdge(uint32_t edgeId) const;
+		uint32_t Face(uint32_t edgeId) const;
 
 		/** Returns whether the specified edge is the first, second or third
 			directed edge within its face. */
-		int8_t HalfedgeIndexWithinFace(uint32_t edgeId) const;
+		uint8_t HalfedgeIndexWithinFace(uint32_t edgeId) const;
 
-		int32_t NextHalfEdgeInFace(uint32_t edgeId) const;
+		uint32_t NextEdge(uint32_t edgeId) const;
+
+		uint32_t PreviousEdge(uint32_t edgeId) const;
 
 	public:
 
@@ -73,5 +77,17 @@ namespace Rendering
 
 		// Reset all edges before linking them to their opposite edge.
 		void RelinkEdges();
+
+		uint32_t FaceCount();
+
+		std::shared_ptr<DirectedEdgeMesh> Decimate(uint32_t targetFaceCount);
+
+		bool IsBoundaryVertex(uint32_t vertex);
+
+		/** 
+			Returns a list of vertices that make up the one-ring neighborhood
+			for a given vertex.
+		*/
+		std::vector<uint32_t> GetOneRing(uint32_t vertex);
 	};
 }
