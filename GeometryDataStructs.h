@@ -68,6 +68,16 @@ namespace Rendering
 
 		uint32_t PreviousEdge(uint32_t edgeId) const;
 
+		class CompairError
+		{
+			bool operator()(pair<double, uint32_t> value1, pair<double, uint32_t> value2)
+			{
+				return value1.first > value2.first;
+			}
+		};
+
+		double ErrorCost(uint32_t v1, uint32_t v2);
+
 	public:
 
 		DirectedEdgeMesh(Mesh basicMesh);
@@ -89,4 +99,6 @@ namespace Rendering
 		*/
 		std::vector<uint32_t> GetOneRing(uint32_t vertex);
 	};
+
+	
 }

@@ -1,10 +1,17 @@
 #include "GeometryDataStructs.h"
+#include <utility>
 
 using std::priority_queue;
 using std::shared_ptr;
+using std::pair;
+using std::vector;
 
 namespace Rendering
 {
+	double DirectedEdgeMesh::ErrorCost(uint32_t v1, uint32_t v2)
+	{
+		return 0.0;
+	}
 	DirectedEdgeMesh::DirectedEdgeMesh(Mesh basicMesh)
 	{
 		CreateFromMesh(basicMesh);
@@ -103,35 +110,54 @@ namespace Rendering
 		if (newMesh->vertices.size() < 4)
 			return newMesh;
 
-		for (uint32_t i = 0; i < edges.size(); i++)
+		while (newMesh->FaceCount() > targetFaceCount)
 		{
-			DirectedEdge edge = edges.at(i);
-			uint32_t v1 = edge.baseVertexIndex;
-			uint32_t nextEdge = NextEdge(i);
-			uint32_t v2 = edges.at(nextEdge).baseVertexIndex;
+			priority_queue<pair<double, uint32_t>, vector<pair<double, uint32_t>>> queue;
 
-			std::vector<uint32_t> oneRing1 = GetOneRing(v1);
-			std::vector<uint32_t> oneRing2 = GetOneRing(v2);
-
-			// Two boundary vertices must be connected by a boundary halfedge
-			if
-			(
-				IsBoundaryVertex(v1) &&
-				IsBoundaryVertex(v2) &&
-				edge.oppositeEdgeIndex != UINT32_MAX
-			)
+			for (uint32_t i = 0; i < newMesh->edges.size(); i++)
 			{
-				continue;
+				DirectedEdge edge = newMesh->edges.at(i);
+				uint32_t v1 = edge.baseVertexIndex;
+				uint32_t nextEdge = newMesh->NextEdge(i);
+				uint32_t v2 = newMesh->edges.at(nextEdge).baseVertexIndex;
+
+				std::vector<uint32_t> oneRing1 = newMesh->GetOneRing(v1);
+				std::vector<uint32_t> oneRing2 = newMesh->GetOneRing(v2);
+
+				// Two boundary vertices must be connected by a boundary halfedge
+				if
+				(
+					newMesh->IsBoundaryVertex(v1) &&
+					newMesh->IsBoundaryVertex(v2) &&
+					edge.oppositeEdgeIndex != UINT32_MAX
+				)
+				{
+					continue;
+				}
+
+				std::vector<uint32_t> intersection;
+				std::sort(oneRing1.begin(), oneRing1.end());
+				std::sort(oneRing2.begin(), oneRing2.end());
+				std::set_intersection(oneRing1.begin(), oneRing1.end(), oneRing2.begin(), oneRing2.end(), intersection);
+
+				// Prevent vertices with valence lower than three.
+				if (intersection.size() > 2)
+					continue;
+
+				queue.push(pair<double, uint32_t>(ErrorCost(v1, v2), i));
 			}
 
-			std::vector<uint32_t> intersection;
-			std::sort(oneRing1.begin(), oneRing1.end());
-			std::sort(oneRing2.begin(), oneRing2.end());
-			std::set_intersection(oneRing1.begin(), oneRing1.end(), oneRing2.begin(), oneRing2.end(), intersection);
+			uint32_t removedEdge = queue.top().second;
+			uint32_t v1 = newMesh->edges.at(newMesh->NextEdge(removedEdge)).baseVertexIndex;
+			uint32_t v2 = newMesh->edges.at(removedEdge).baseVertexIndex;
 
-			// Prevent vertices with valence lower than three.
-			if (intersection.size() > 2)
-				continue;
+			for (auto it = newMesh->edges.begin(); it < newMesh->edges.end(); it++)
+			{
+				if (it->baseVertexIndex == v1)
+					it->baseVertexIndex = v2;
+			}
+
+			// TODO: remove vertices/edges properly
 		}
 
 		return newMesh;
