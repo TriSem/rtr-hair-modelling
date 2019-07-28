@@ -78,6 +78,8 @@ namespace Rendering
 
 		double ErrorCost(uint32_t v1, uint32_t v2);
 
+		Vector3 GetFaceNormal(uint32_t faceIndex);
+
 	public:
 
 		DirectedEdgeMesh(Mesh basicMesh);
@@ -98,6 +100,8 @@ namespace Rendering
 			for a given vertex.
 		*/
 		std::vector<uint32_t> GetOneRing(uint32_t vertex);
+
+		std::vector<uint32_t> GetOneRingFaces(uint32_t vertex);
 	};
 
 	

@@ -1,6 +1,9 @@
 #include "GeometryDataStructs.h"
 #include <utility>
+#include "Graphics.h"
 
+using DirectX::SimpleMath::Vector3;
+using DirectX::SimpleMath::Plane;
 using std::priority_queue;
 using std::shared_ptr;
 using std::pair;
@@ -8,10 +11,52 @@ using std::vector;
 
 namespace Rendering
 {
-	double DirectedEdgeMesh::ErrorCost(uint32_t v1, uint32_t v2)
+	/* Attempt at implementing Hausdorff-Distance. */
+	float DirectedEdgeMesh::ErrorCost(uint32_t v1, uint32_t v2)
 	{
-		return 0.0;
+		Vector3 position1 = vertices.at(v1).vertex.position;
+		Vector3 position2 = vertices.at(v2).vertex.position;
+
+		float distance = Vector3::Distance(position1, position2);
+
+		vector<uint32_t> oneRing1 = GetOneRingFaces(v1);
+		vector<uint32_t> oneRing2 = GetOneRingFaces(v2);
+
+		std::vector<uint32_t> intersection;
+		std::sort(oneRing1.begin(), oneRing1.end());
+		std::sort(oneRing2.begin(), oneRing2.end());
+		std::set_intersection(oneRing1.begin(), oneRing1.end(), oneRing2.begin(), oneRing2.end(), intersection);
+
+		vector<float> costCandidates;
+
+		for (auto face = oneRing1.begin(); face < oneRing1.end(); face++)
+		{
+			Vector3 normal1 = GetFaceNormal(*face);
+			Vector3 normal2 = GetFaceNormal(intersection.at(0));
+
+			float minCandidate1 = 1.0f - normal1.Dot(normal2) * 0.5f;
+
+			normal2 = GetFaceNormal(intersection.at(1));
+			float minCandidate2 = 1.0f - normal1.Dot(normal2) * 0.5f;
+
+			float min = minCandidate1 < minCandidate2 ? minCandidate1 : minCandidate2;
+			costCandidates.push_back(min);
+		}
+
+		std::sort(costCandidates.begin(), costCandidates.end());
+		float max = costCandidates.back();
+		return max * distance;
 	}
+
+	Vector3 DirectedEdgeMesh::GetFaceNormal(uint32_t faceIndex)
+	{
+		Vector3 point1 = vertices.at(edges.at(Halfedge(faceIndex, 0)).baseVertexIndex).vertex.position;
+		Vector3 point2 = vertices.at(edges.at(Halfedge(faceIndex, 1)).baseVertexIndex).vertex.position;
+		Vector3 point3 = vertices.at(edges.at(Halfedge(faceIndex, 2)).baseVertexIndex).vertex.position;
+		Plane plane = Plane(point1, point2, point3);
+		return plane.Normal();
+	}
+
 	DirectedEdgeMesh::DirectedEdgeMesh(Mesh basicMesh)
 	{
 		CreateFromMesh(basicMesh);
@@ -112,7 +157,7 @@ namespace Rendering
 
 		while (newMesh->FaceCount() > targetFaceCount)
 		{
-			priority_queue<pair<double, uint32_t>, vector<pair<double, uint32_t>>> queue;
+			priority_queue<pair<float, uint32_t>, vector<pair<float, uint32_t>>> queue;
 
 			for (uint32_t i = 0; i < newMesh->edges.size(); i++)
 			{
@@ -144,17 +189,17 @@ namespace Rendering
 				if (intersection.size() > 2)
 					continue;
 
-				queue.push(pair<double, uint32_t>(ErrorCost(v1, v2), i));
+				queue.push(pair<float, uint32_t>(newMesh->ErrorCost(v1, v2), i));
 			}
 
-			uint32_t removedEdge = queue.top().second;
-			uint32_t v1 = newMesh->edges.at(newMesh->NextEdge(removedEdge)).baseVertexIndex;
-			uint32_t v2 = newMesh->edges.at(removedEdge).baseVertexIndex;
+			uint32_t collapsedEdge = queue.top().second;
+			uint32_t collapsedVertex = newMesh->edges.at(newMesh->NextEdge(collapsedEdge)).baseVertexIndex;
+			uint32_t targetVertex = newMesh->edges.at(collapsedEdge).baseVertexIndex;
 
 			for (auto it = newMesh->edges.begin(); it < newMesh->edges.end(); it++)
 			{
-				if (it->baseVertexIndex == v1)
-					it->baseVertexIndex = v2;
+				if (it->baseVertexIndex == collapsedVertex)
+					it->baseVertexIndex = targetVertex;
 			}
 
 			// TODO: remove vertices/edges properly
@@ -203,6 +248,36 @@ namespace Rendering
 			while (opposite != startEdge && opposite != UINT32_MAX)
 			{
 				oneRing.push_back(edges.at(PreviousEdge(currentEdge)).baseVertexIndex);
+				opposite = edges.at(NextEdge(currentEdge)).oppositeEdgeIndex;
+			}
+		}
+
+		return oneRing;
+	}
+
+	std::vector<uint32_t> DirectedEdgeMesh::GetOneRingFaces(uint32_t vertex)
+	{
+		std::vector<uint32_t> oneRing;
+
+		uint32_t startEdge = vertices.at(vertex).directedEdgeIndex;
+		uint32_t currentEdge = startEdge;
+		oneRing.push_back(Face(currentEdge));
+
+		uint32_t opposite = edges.at(PreviousEdge(currentEdge)).oppositeEdgeIndex;
+
+		while (opposite != startEdge && opposite != UINT32_MAX)
+		{
+			oneRing.push_back(Face(currentEdge));
+			opposite = edges.at(PreviousEdge(currentEdge)).oppositeEdgeIndex;
+		}
+
+		if (opposite == UINT32_MAX)
+		{
+			opposite = edges.at(startEdge).oppositeEdgeIndex;
+
+			while (opposite != startEdge && opposite != UINT32_MAX)
+			{
+				oneRing.push_back(Face(currentEdge));
 				opposite = edges.at(NextEdge(currentEdge)).oppositeEdgeIndex;
 			}
 		}
