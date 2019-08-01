@@ -1,6 +1,7 @@
 #pragma once
 
 #include <DirectXMath.h>
+#include "Graphics.h"
 #include <vector>
 #include <memory>
 #include <queue>
@@ -21,6 +22,21 @@ namespace Rendering
 	{
 		std::vector<Vertex> vertices;
 		std::vector<uint32_t> indices;
+
+		Mesh() {}
+
+		Mesh(const Mesh& other)
+		{
+			this->vertices = other.vertices;
+			this->indices = other.indices;
+		}
+
+		Mesh& operator=(const Mesh& other)
+		{
+			this->vertices = other.vertices;
+			this->indices = other.indices;
+			return *this;
+		}
 	};
 
 	struct DirectedEdge
@@ -68,29 +84,37 @@ namespace Rendering
 
 		uint32_t PreviousEdge(uint32_t edgeId) const;
 
-		class CompairError
+		class ErrorComparison
 		{
-			bool operator()(pair<double, uint32_t> value1, pair<double, uint32_t> value2)
+			bool operator()(std::pair<float, uint32_t> value1, std::pair<float, uint32_t> value2)
 			{
 				return value1.first > value2.first;
 			}
 		};
 
-		double ErrorCost(uint32_t v1, uint32_t v2);
+		float ErrorCost(uint32_t v1, uint32_t v2);
 
-		Vector3 GetFaceNormal(uint32_t faceIndex);
+		DirectX::SimpleMath::Vector3 GetFaceNormal(uint32_t faceIndex);
+
+		/** Assigns new edges to all the vertices. */
+		void RelinkVertices();
 
 	public:
 
 		DirectedEdgeMesh(Mesh basicMesh);
+		DirectedEdgeMesh(const DirectedEdgeMesh& other);
 
-		Mesh& ExtractBasicMesh();
+		Mesh ExtractBasicMesh();
 
 		// Reset all edges before linking them to their opposite edge.
 		void RelinkEdges();
 
 		uint32_t FaceCount();
 
+		/** 
+			Returns a new mesh with that has been reduced to the specified number of spaces. 
+			Uses a greedy decimation scheme.
+		*/
 		std::shared_ptr<DirectedEdgeMesh> Decimate(uint32_t targetFaceCount);
 
 		bool IsBoundaryVertex(uint32_t vertex);
@@ -103,6 +127,4 @@ namespace Rendering
 
 		std::vector<uint32_t> GetOneRingFaces(uint32_t vertex);
 	};
-
-	
 }

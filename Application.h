@@ -6,6 +6,9 @@
 #include "Window.h"
 #include "DirectXTK/Inc/Mouse.h"
 #include "DirectXTK/Inc/Keyboard.h"
+#include "ObjReader.h"
+#include "SceneObject.h"
+#include "GeometryDataStructs.h"
 
 using DirectX::Mouse;
 using DirectX::Keyboard;

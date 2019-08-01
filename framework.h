@@ -14,6 +14,7 @@
 #include <memory>
 #include <tchar.h>
 
+#include <vector>
 #include <string>
 #include "ErrorHandling.h"
 #include <wrl.h>

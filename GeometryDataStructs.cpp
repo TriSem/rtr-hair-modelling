@@ -11,7 +11,6 @@ using std::vector;
 
 namespace Rendering
 {
-	/* Attempt at implementing Hausdorff-Distance. */
 	float DirectedEdgeMesh::ErrorCost(uint32_t v1, uint32_t v2)
 	{
 		Vector3 position1 = vertices.at(v1).vertex.position;
@@ -25,7 +24,7 @@ namespace Rendering
 		std::vector<uint32_t> intersection;
 		std::sort(oneRing1.begin(), oneRing1.end());
 		std::sort(oneRing2.begin(), oneRing2.end());
-		std::set_intersection(oneRing1.begin(), oneRing1.end(), oneRing2.begin(), oneRing2.end(), intersection);
+		std::set_intersection(oneRing1.begin(), oneRing1.end(), oneRing2.begin(), oneRing2.end(), std::back_inserter(intersection));
 
 		vector<float> costCandidates;
 
@@ -57,12 +56,26 @@ namespace Rendering
 		return plane.Normal();
 	}
 
+	void DirectedEdgeMesh::RelinkVertices()
+	{
+		for (uint32_t i = 0; i < edges.size(); i++)
+		{
+			vertices.at(edges.at(i).baseVertexIndex).directedEdgeIndex = i;
+		}
+	}
+
 	DirectedEdgeMesh::DirectedEdgeMesh(Mesh basicMesh)
 	{
 		CreateFromMesh(basicMesh);
 	}
 
-	Mesh& DirectedEdgeMesh::ExtractBasicMesh()
+	DirectedEdgeMesh::DirectedEdgeMesh(const DirectedEdgeMesh& other)
+	{
+		this->vertices = other.vertices;
+		this->edges = other.edges;
+	}
+
+	Mesh DirectedEdgeMesh::ExtractBasicMesh()
 	{
 		Mesh mesh;
 
@@ -97,13 +110,9 @@ namespace Rendering
 		for (auto it = basicMesh.indices.begin(); it != basicMesh.indices.end(); it++)
 		{
 			edges.push_back(DirectedEdge(*it));
-
-			DirectedEdgeVertex& vertex = vertices.at(*it);
-
-			if (vertex.directedEdgeIndex == UINT32_MAX)
-				vertex.directedEdgeIndex = edges.size() - 1;
 		}
 
+		RelinkVertices();
 		LinkEdges();
 	}
 
@@ -149,7 +158,7 @@ namespace Rendering
 
 	shared_ptr<DirectedEdgeMesh> DirectedEdgeMesh::Decimate(uint32_t targetFaceCount)
 	{
-		shared_ptr<DirectedEdgeMesh> newMesh = std::make_shared<DirectedEdgeMesh>(this);
+		shared_ptr<DirectedEdgeMesh> newMesh = std::make_shared<DirectedEdgeMesh>(*this);
 
 		// The mesh will always contain at least one triangle.
 		if (newMesh->vertices.size() < 4)
@@ -159,11 +168,11 @@ namespace Rendering
 		{
 			priority_queue<pair<float, uint32_t>, vector<pair<float, uint32_t>>> queue;
 
-			for (uint32_t i = 0; i < newMesh->edges.size(); i++)
+			for (uint32_t edgeIndex = 0; edgeIndex < newMesh->edges.size(); edgeIndex++)
 			{
-				DirectedEdge edge = newMesh->edges.at(i);
+				DirectedEdge edge = newMesh->edges.at(edgeIndex);
 				uint32_t v1 = edge.baseVertexIndex;
-				uint32_t nextEdge = newMesh->NextEdge(i);
+				uint32_t nextEdge = newMesh->NextEdge(edgeIndex);
 				uint32_t v2 = newMesh->edges.at(nextEdge).baseVertexIndex;
 
 				std::vector<uint32_t> oneRing1 = newMesh->GetOneRing(v1);
@@ -183,18 +192,38 @@ namespace Rendering
 				std::vector<uint32_t> intersection;
 				std::sort(oneRing1.begin(), oneRing1.end());
 				std::sort(oneRing2.begin(), oneRing2.end());
-				std::set_intersection(oneRing1.begin(), oneRing1.end(), oneRing2.begin(), oneRing2.end(), intersection);
+				std::set_intersection(oneRing1.begin(), oneRing1.end(), oneRing2.begin(), oneRing2.end(), std::back_inserter(intersection));
 
 				// Prevent vertices with valence lower than three.
 				if (intersection.size() > 2)
 					continue;
 
-				queue.push(pair<float, uint32_t>(newMesh->ErrorCost(v1, v2), i));
+				queue.push(pair<float, uint32_t>(newMesh->ErrorCost(v1, v2), edgeIndex));
 			}
 
 			uint32_t collapsedEdge = queue.top().second;
-			uint32_t collapsedVertex = newMesh->edges.at(newMesh->NextEdge(collapsedEdge)).baseVertexIndex;
-			uint32_t targetVertex = newMesh->edges.at(collapsedEdge).baseVertexIndex;
+			uint32_t collapsedVertex = newMesh->edges.at(collapsedEdge).baseVertexIndex;
+			uint32_t targetVertex = newMesh->edges.at(newMesh->NextEdge(collapsedEdge)).baseVertexIndex;
+
+			vector<uint32_t> deletedEdges;
+			deletedEdges.push_back(collapsedEdge);
+			deletedEdges.push_back(newMesh->NextEdge(collapsedEdge));
+			deletedEdges.push_back(newMesh->PreviousEdge(collapsedEdge));
+
+			uint32_t oppositeIndex = newMesh->edges.at(collapsedEdge).oppositeEdgeIndex;
+			if (oppositeIndex != UINT32_MAX)
+			{
+				deletedEdges.push_back(oppositeIndex);
+				deletedEdges.push_back(newMesh->NextEdge(oppositeIndex));
+				deletedEdges.push_back(newMesh->PreviousEdge(oppositeIndex));
+			}
+
+			std::sort(deletedEdges.begin(), deletedEdges.end());
+
+			for (int i = deletedEdges.size() - 1; i >= 0; i--)
+			{
+				newMesh->edges.erase(newMesh->edges.begin() + i);
+			}
 
 			for (auto it = newMesh->edges.begin(); it < newMesh->edges.end(); it++)
 			{
@@ -202,7 +231,8 @@ namespace Rendering
 					it->baseVertexIndex = targetVertex;
 			}
 
-			// TODO: remove vertices/edges properly
+			newMesh->RelinkVertices();
+			newMesh->RelinkEdges();
 		}
 
 		return newMesh;

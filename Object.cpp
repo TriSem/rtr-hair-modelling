@@ -65,7 +65,7 @@ namespace OBJ
 			for (int j = 0; j < 3; j++)
 			{
 				Rendering::Vertex& vertex = mesh.vertices.at(face.vertexIndices.at(j) - 1);
-				
+
 				if (j < face.normalIndices.size())
 				{
 					uint32_t normalIndex = face.normalIndices.at(j) - 1;
@@ -82,7 +82,7 @@ namespace OBJ
 					vertex.textureCoordinate = vertexTexCoord;
 				}
 
-				mesh.indices.push_back(face.vertexIndices.at(j));
+				mesh.indices.push_back(face.vertexIndices.at(j) - 1);
 			}
 		}
 

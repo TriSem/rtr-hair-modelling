@@ -1,9 +1,10 @@
 #include "Application.h"
-#include "ObjReader.h"
-#include "SceneObject.h"
 
 using Rendering::Renderer;
 using Rendering::Scene;
+using Rendering::DirectedEdgeMesh;
+using Rendering::Mesh;
+using Rendering::SceneObject;
 
 Application::Application(HINSTANCE instanceHandle, int nCmdShow, std::wstring appTitle) :
 	instanceHandle(instanceHandle),
@@ -25,8 +26,10 @@ void Application::Run()
 
 	OBJ::ObjReader reader;
 	reader.LoadFile("C:/Users/Tristan/3D Objects/blenderMonkey.obj");
-	Rendering::Mesh mesh = reader.GetObjects().at(0).ExtractMesh();
-	Rendering::SceneObject model = Rendering::SceneObject(renderer->GetDevice(), mesh, renderer->GetVertexShader());
+	Mesh mesh = Mesh(reader.GetObjects().at(0).ExtractMesh());
+	std::shared_ptr<DirectedEdgeMesh> decimatedMesh = std::make_shared<DirectedEdgeMesh>(mesh);
+	mesh = decimatedMesh->Decimate(960)->ExtractBasicMesh();
+	Rendering::SceneObject model = SceneObject(renderer->GetDevice(), mesh, renderer->GetVertexShader());
 	mainScene->AddSceneObject(model);
 
 	while (true)
