@@ -77,11 +77,17 @@ namespace Rendering
 				for (uint32_t j = 0; j < edges.size(); j++)
 				{
 					DirectedEdge& opposite = edges.at(j);
+
+					if (opposite.baseVertexIndex != nextVertex)
+						continue;
+
 					uint32_t oppositeNextVertex = edges.at(NextEdge(j)).baseVertexIndex;
-					if ((opposite.baseVertexIndex) == nextVertex && edge.baseVertexIndex == oppositeNextVertex)
+
+					if (edge.baseVertexIndex == oppositeNextVertex)
 					{
 						edge.oppositeEdgeIndex = j;
 						opposite.oppositeEdgeIndex = i;
+						break;
 					}
 				}
 			}
@@ -105,20 +111,38 @@ namespace Rendering
 
 	void DirectedEdgeMesh::Decimate(uint32_t targetFaceCount)
 	{
-
 		// The mesh will always contain at least one triangle.
 		if (vertices.size() < 4)
 			return;
+
+		uint32_t candidatesPerDecimation = 8;
+		std::random_device seed;
+		std::mt19937 generator(seed());
 
 		while (FaceCount() > targetFaceCount)
 		{
 			priority_queue<pair<float, uint32_t>, vector<pair<float, uint32_t>>, std::greater<pair<float, uint32_t>>> queue;
 
-			for (uint32_t edgeIndex = 0; edgeIndex < edges.size(); edgeIndex++)
+			std::uniform_int_distribution<uint32_t> distribution(0, edges.size() - 1);
+			vector<uint32_t> randomCandidates;
+			randomCandidates.reserve(candidatesPerDecimation);
+
+			for (int i = 0; i < candidatesPerDecimation; i++)
 			{
-				DirectedEdge edge = edges.at(edgeIndex);
+				uint32_t randomNumber = distribution(generator);
+				while (std::find(randomCandidates.begin(), randomCandidates.end(), randomNumber) != randomCandidates.end())
+				{
+					randomNumber = distribution(generator);
+				}
+
+				randomCandidates.push_back(randomNumber);
+			}
+
+			for (auto it = randomCandidates.begin(); it != randomCandidates.end(); it++)
+			{
+				DirectedEdge edge = edges.at(*it);
 				uint32_t v1 = edge.baseVertexIndex;
-				uint32_t nextEdge = NextEdge(edgeIndex);
+				uint32_t nextEdge = NextEdge(*it);
 				uint32_t v2 = edges.at(nextEdge).baseVertexIndex;
 
 				std::vector<uint32_t> oneRing1 = GetOneRing(v1);
@@ -139,7 +163,7 @@ namespace Rendering
 				if (intersection.size() > 2)
 					continue;
 
-				queue.push(pair<float, uint32_t>(ErrorCost(v1, v2), edgeIndex));
+				queue.push(pair<float, uint32_t>(ErrorCost(v1, v2), *it));
 			}
 
 			uint32_t collapsedEdge = queue.top().second;
@@ -162,6 +186,7 @@ namespace Rendering
 			std::sort(deletedEdges.begin(), deletedEdges.end());
 
 			vector<DirectedEdge> newEdges;
+			newEdges.reserve(edges.size());
 
 			for (int i = 0; i < edges.size(); i++)
 			{

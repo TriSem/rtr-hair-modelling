@@ -2,8 +2,7 @@
 
 #include <DirectXMath.h>
 #include "Graphics.h"
-#include <vector>
-#include <memory>
+#include "framework.h"
 #include <queue>
 
 using DirectX::XMFLOAT2;
