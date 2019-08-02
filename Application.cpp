@@ -25,11 +25,14 @@ void Application::Run()
 	MSG message = {};
 
 	OBJ::ObjReader reader;
-	reader.LoadFile("C:/Users/Tristan/3D Objects/blenderMonkey.obj");
+	reader.LoadFile("C:/Users/Tristan/3D Objects/uvsphere.obj");
 	Mesh mesh = Mesh(reader.GetObjects().at(0).ExtractMesh());
-	std::shared_ptr<DirectedEdgeMesh> decimatedMesh = std::make_shared<DirectedEdgeMesh>(mesh);
-	mesh = decimatedMesh->Decimate(960)->ExtractBasicMesh();
-	Rendering::SceneObject model = SceneObject(renderer->GetDevice(), mesh, renderer->GetVertexShader());
+	std::unique_ptr<DirectedEdgeMesh> decimatedMesh = std::make_unique<DirectedEdgeMesh>(mesh);
+	UINT a = decimatedMesh->FaceCount();
+	decimatedMesh->Decimate(100);
+	UINT b = decimatedMesh->FaceCount();
+	mesh = decimatedMesh->ExtractBasicMesh();
+	SceneObject model = SceneObject(renderer->GetDevice(), mesh, renderer->GetVertexShader());
 	mainScene->AddSceneObject(model);
 
 	while (true)

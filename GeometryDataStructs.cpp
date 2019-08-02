@@ -11,59 +11,6 @@ using std::vector;
 
 namespace Rendering
 {
-	float DirectedEdgeMesh::ErrorCost(uint32_t v1, uint32_t v2)
-	{
-		Vector3 position1 = vertices.at(v1).vertex.position;
-		Vector3 position2 = vertices.at(v2).vertex.position;
-
-		float distance = Vector3::Distance(position1, position2);
-
-		vector<uint32_t> oneRing1 = GetOneRingFaces(v1);
-		vector<uint32_t> oneRing2 = GetOneRingFaces(v2);
-
-		std::vector<uint32_t> intersection;
-		std::sort(oneRing1.begin(), oneRing1.end());
-		std::sort(oneRing2.begin(), oneRing2.end());
-		std::set_intersection(oneRing1.begin(), oneRing1.end(), oneRing2.begin(), oneRing2.end(), std::back_inserter(intersection));
-
-		vector<float> costCandidates;
-
-		for (auto face = oneRing1.begin(); face < oneRing1.end(); face++)
-		{
-			Vector3 normal1 = GetFaceNormal(*face);
-			Vector3 normal2 = GetFaceNormal(intersection.at(0));
-
-			float minCandidate1 = 1.0f - normal1.Dot(normal2) * 0.5f;
-
-			normal2 = GetFaceNormal(intersection.at(1));
-			float minCandidate2 = 1.0f - normal1.Dot(normal2) * 0.5f;
-
-			float min = minCandidate1 < minCandidate2 ? minCandidate1 : minCandidate2;
-			costCandidates.push_back(min);
-		}
-
-		std::sort(costCandidates.begin(), costCandidates.end());
-		float max = costCandidates.back();
-		return max * distance;
-	}
-
-	Vector3 DirectedEdgeMesh::GetFaceNormal(uint32_t faceIndex)
-	{
-		Vector3 point1 = vertices.at(edges.at(Halfedge(faceIndex, 0)).baseVertexIndex).vertex.position;
-		Vector3 point2 = vertices.at(edges.at(Halfedge(faceIndex, 1)).baseVertexIndex).vertex.position;
-		Vector3 point3 = vertices.at(edges.at(Halfedge(faceIndex, 2)).baseVertexIndex).vertex.position;
-		Plane plane = Plane(point1, point2, point3);
-		return plane.Normal();
-	}
-
-	void DirectedEdgeMesh::RelinkVertices()
-	{
-		for (uint32_t i = 0; i < edges.size(); i++)
-		{
-			vertices.at(edges.at(i).baseVertexIndex).directedEdgeIndex = i;
-		}
-	}
-
 	DirectedEdgeMesh::DirectedEdgeMesh(Mesh basicMesh)
 	{
 		CreateFromMesh(basicMesh);
@@ -156,35 +103,29 @@ namespace Rendering
 		return edges.size() / 3;
 	}
 
-	shared_ptr<DirectedEdgeMesh> DirectedEdgeMesh::Decimate(uint32_t targetFaceCount)
+	void DirectedEdgeMesh::Decimate(uint32_t targetFaceCount)
 	{
-		shared_ptr<DirectedEdgeMesh> newMesh = std::make_shared<DirectedEdgeMesh>(*this);
 
 		// The mesh will always contain at least one triangle.
-		if (newMesh->vertices.size() < 4)
-			return newMesh;
+		if (vertices.size() < 4)
+			return;
 
-		while (newMesh->FaceCount() > targetFaceCount)
+		while (FaceCount() > targetFaceCount)
 		{
-			priority_queue<pair<float, uint32_t>, vector<pair<float, uint32_t>>> queue;
+			priority_queue<pair<float, uint32_t>, vector<pair<float, uint32_t>>, std::greater<pair<float, uint32_t>>> queue;
 
-			for (uint32_t edgeIndex = 0; edgeIndex < newMesh->edges.size(); edgeIndex++)
+			for (uint32_t edgeIndex = 0; edgeIndex < edges.size(); edgeIndex++)
 			{
-				DirectedEdge edge = newMesh->edges.at(edgeIndex);
+				DirectedEdge edge = edges.at(edgeIndex);
 				uint32_t v1 = edge.baseVertexIndex;
-				uint32_t nextEdge = newMesh->NextEdge(edgeIndex);
-				uint32_t v2 = newMesh->edges.at(nextEdge).baseVertexIndex;
+				uint32_t nextEdge = NextEdge(edgeIndex);
+				uint32_t v2 = edges.at(nextEdge).baseVertexIndex;
 
-				std::vector<uint32_t> oneRing1 = newMesh->GetOneRing(v1);
-				std::vector<uint32_t> oneRing2 = newMesh->GetOneRing(v2);
+				std::vector<uint32_t> oneRing1 = GetOneRing(v1);
+				std::vector<uint32_t> oneRing2 = GetOneRing(v2);
 
 				// Two boundary vertices must be connected by a boundary halfedge
-				if
-				(
-					newMesh->IsBoundaryVertex(v1) &&
-					newMesh->IsBoundaryVertex(v2) &&
-					edge.oppositeEdgeIndex != UINT32_MAX
-				)
+				if(IsBoundaryVertex(v1) && IsBoundaryVertex(v2) && edge.oppositeEdgeIndex != UINT32_MAX)
 				{
 					continue;
 				}
@@ -198,45 +139,116 @@ namespace Rendering
 				if (intersection.size() > 2)
 					continue;
 
-				queue.push(pair<float, uint32_t>(newMesh->ErrorCost(v1, v2), edgeIndex));
+				queue.push(pair<float, uint32_t>(ErrorCost(v1, v2), edgeIndex));
 			}
 
 			uint32_t collapsedEdge = queue.top().second;
-			uint32_t collapsedVertex = newMesh->edges.at(collapsedEdge).baseVertexIndex;
-			uint32_t targetVertex = newMesh->edges.at(newMesh->NextEdge(collapsedEdge)).baseVertexIndex;
+			uint32_t collapsedVertex = edges.at(collapsedEdge).baseVertexIndex;
+			uint32_t targetVertex = edges.at(NextEdge(collapsedEdge)).baseVertexIndex;
 
 			vector<uint32_t> deletedEdges;
 			deletedEdges.push_back(collapsedEdge);
-			deletedEdges.push_back(newMesh->NextEdge(collapsedEdge));
-			deletedEdges.push_back(newMesh->PreviousEdge(collapsedEdge));
+			deletedEdges.push_back(NextEdge(collapsedEdge));
+			deletedEdges.push_back(PreviousEdge(collapsedEdge));
 
-			uint32_t oppositeIndex = newMesh->edges.at(collapsedEdge).oppositeEdgeIndex;
+			uint32_t oppositeIndex = edges.at(collapsedEdge).oppositeEdgeIndex;
 			if (oppositeIndex != UINT32_MAX)
 			{
 				deletedEdges.push_back(oppositeIndex);
-				deletedEdges.push_back(newMesh->NextEdge(oppositeIndex));
-				deletedEdges.push_back(newMesh->PreviousEdge(oppositeIndex));
+				deletedEdges.push_back(NextEdge(oppositeIndex));
+				deletedEdges.push_back(PreviousEdge(oppositeIndex));
 			}
 
 			std::sort(deletedEdges.begin(), deletedEdges.end());
 
-			for (int i = deletedEdges.size() - 1; i >= 0; i--)
+			vector<DirectedEdge> newEdges;
+
+			for (int i = 0; i < edges.size(); i++)
 			{
-				newMesh->edges.erase(newMesh->edges.begin() + i);
+				if (std::find(deletedEdges.begin(), deletedEdges.end(), i) == deletedEdges.end())
+					newEdges.push_back(edges.at(i));
 			}
 
-			for (auto it = newMesh->edges.begin(); it < newMesh->edges.end(); it++)
+			edges = newEdges;
+
+			vertices.erase(vertices.begin() + collapsedVertex);
+
+			for (auto it = edges.begin(); it < edges.end(); it++)
 			{
 				if (it->baseVertexIndex == collapsedVertex)
 					it->baseVertexIndex = targetVertex;
+				if (it->baseVertexIndex >= collapsedVertex)
+					it->baseVertexIndex--;
 			}
 
-			newMesh->RelinkVertices();
-			newMesh->RelinkEdges();
+			RelinkVertices();
+			RelinkEdges();
+		}
+	}
+
+	float DirectedEdgeMesh::ErrorCost(uint32_t v1, uint32_t v2)
+	{
+		Vector3 position1 = vertices.at(v1).vertex.position;
+		Vector3 position2 = vertices.at(v2).vertex.position;
+
+		float distance = Vector3::Distance(position1, position2);
+
+		vector<uint32_t> oneRing1 = GetOneRingFaces(v1);
+		vector<uint32_t> oneRing2 = GetOneRingFaces(v2);
+
+		std::vector<uint32_t> intersection;
+		std::sort(oneRing1.begin(), oneRing1.end());
+		std::sort(oneRing2.begin(), oneRing2.end());
+		std::set_intersection(oneRing1.begin(), oneRing1.end(), oneRing2.begin(), oneRing2.end(), std::back_inserter(intersection));
+
+		if (intersection.size() < 1)
+		{
+			return 0.0f;
 		}
 
-		return newMesh;
+		vector<float> costCandidates;
+
+		for (auto face = oneRing1.begin(); face < oneRing1.end(); face++)
+		{
+			Vector3 normal1 = GetFaceNormal(*face);
+			Vector3 normal2 = GetFaceNormal(intersection.at(0));
+
+			float min = 1.0f - normal1.Dot(normal2) * 0.5f;
+
+			if (intersection.size() == 2)
+			{
+				normal2 = GetFaceNormal(intersection.at(1));
+				float minCandidate = 1.0f - normal1.Dot(normal2) * 0.5f;
+
+				if (minCandidate < min)
+					min = minCandidate;
+			}
+
+			costCandidates.push_back(min);
+		}
+
+		std::sort(costCandidates.begin(), costCandidates.end());
+		float max = costCandidates.back();
+		return max * distance;
 	}
+
+	Vector3 DirectedEdgeMesh::GetFaceNormal(uint32_t faceIndex)
+	{
+		Vector3 point1 = vertices.at(edges.at(Halfedge(faceIndex, 0)).baseVertexIndex).vertex.position;
+		Vector3 point2 = vertices.at(edges.at(Halfedge(faceIndex, 1)).baseVertexIndex).vertex.position;
+		Vector3 point3 = vertices.at(edges.at(Halfedge(faceIndex, 2)).baseVertexIndex).vertex.position;
+		Plane plane = Plane(point1, point2, point3);
+		return plane.Normal();
+	}
+
+	void DirectedEdgeMesh::RelinkVertices()
+	{
+		for (uint32_t i = 0; i < edges.size(); i++)
+		{
+			vertices.at(edges.at(i).baseVertexIndex).directedEdgeIndex = i;
+		}
+	}
+
 
 	bool DirectedEdgeMesh::IsBoundaryVertex(uint32_t vertex)
 	{
@@ -249,6 +261,7 @@ namespace Rendering
 			if (opposite == UINT32_MAX)
 				return true;
 
+			currentEdge = opposite;
 			opposite = edges.at(PreviousEdge(currentEdge)).oppositeEdgeIndex;
 		}
 
@@ -267,6 +280,7 @@ namespace Rendering
 
 		while (opposite != startEdge && opposite != UINT32_MAX)
 		{
+			currentEdge = opposite;
 			oneRing.push_back(edges.at(NextEdge(currentEdge)).baseVertexIndex);
 			opposite = edges.at(PreviousEdge(currentEdge)).oppositeEdgeIndex;
 		}
@@ -277,6 +291,7 @@ namespace Rendering
 
 			while (opposite != startEdge && opposite != UINT32_MAX)
 			{
+				currentEdge = opposite;
 				oneRing.push_back(edges.at(PreviousEdge(currentEdge)).baseVertexIndex);
 				opposite = edges.at(NextEdge(currentEdge)).oppositeEdgeIndex;
 			}
@@ -297,6 +312,7 @@ namespace Rendering
 
 		while (opposite != startEdge && opposite != UINT32_MAX)
 		{
+			currentEdge = opposite;
 			oneRing.push_back(Face(currentEdge));
 			opposite = edges.at(PreviousEdge(currentEdge)).oppositeEdgeIndex;
 		}
@@ -307,6 +323,7 @@ namespace Rendering
 
 			while (opposite != startEdge && opposite != UINT32_MAX)
 			{
+				currentEdge = opposite;
 				oneRing.push_back(Face(currentEdge));
 				opposite = edges.at(NextEdge(currentEdge)).oppositeEdgeIndex;
 			}
@@ -332,12 +349,12 @@ namespace Rendering
 
 	uint32_t DirectedEdgeMesh::NextEdge(uint32_t edgeId) const
 	{
-		return (edgeId + 1) % 3;
+		return Halfedge(Face(edgeId), (edgeId + 1) % 3);
 	}
 
 	uint32_t DirectedEdgeMesh::PreviousEdge(uint32_t edgeId) const
 	{
-		return (edgeId + 2) % 3;
+		return Halfedge(Face(edgeId), (edgeId + 2) % 3);
 	}
 
 

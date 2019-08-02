@@ -115,7 +115,7 @@ namespace Rendering
 			Returns a new mesh with that has been reduced to the specified number of spaces. 
 			Uses a greedy decimation scheme.
 		*/
-		std::shared_ptr<DirectedEdgeMesh> Decimate(uint32_t targetFaceCount);
+		void Decimate(uint32_t targetFaceCount);
 
 		bool IsBoundaryVertex(uint32_t vertex);
 
