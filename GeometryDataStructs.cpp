@@ -63,32 +63,67 @@ namespace Rendering
 		LinkEdges();
 	}
 
+	///* Search through the edges and try to find another edge
+	//	that is connecting the same vertices in the opposite direction. */
+	//void DirectedEdgeMesh::LinkEdges()
+	//{
+	//	for (int i = 0; i < edges.size(); i++)
+	//	{
+	//		DirectedEdge& edge = edges.at(i);
+
+	//		if (edge.oppositeEdgeIndex == UINT32_MAX)
+	//		{
+	//			uint32_t nextVertex = edges.at(NextEdge(i)).baseVertexIndex;
+
+	//			for (uint32_t j = i+1; j < edges.size(); j++)
+	//			{
+	//				DirectedEdge& opposite = edges.at(j);
+
+	//				if (opposite.baseVertexIndex != nextVertex)
+	//					continue;
+
+	//				uint32_t oppositeNextVertex = edges.at(NextEdge(j)).baseVertexIndex;
+
+	//				if (edge.baseVertexIndex == oppositeNextVertex)
+	//				{
+	//					edge.oppositeEdgeIndex = j;
+	//					opposite.oppositeEdgeIndex = i;
+	//					break;
+	//				}
+	//			}
+	//		}
+	//	}
+	//}
+
 	/* Search through the edges and try to find another edge
 		that is connecting the same vertices in the opposite direction. */
 	void DirectedEdgeMesh::LinkEdges()
 	{
+		std::map<pair<uint32_t, uint32_t>, uint32_t> edgeMap;
+		for (uint32_t i = 0; i < edges.size(); i++)
+		{
+			uint32_t v1 = edges.at(i).baseVertexIndex;
+			uint32_t v2 = edges.at(NextEdge(i)).baseVertexIndex;
+			std::pair<uint32_t, uint32_t> edge(v1, v2);
+			edgeMap.insert(std::pair<std::pair<uint32_t, uint32_t>, uint32_t>(edge, i));
+		}
+
 		for (int i = 0; i < edges.size(); i++)
 		{
-			DirectedEdge& edge = edges.at(i);
-			uint32_t nextVertex = edges.at(NextEdge(i)).baseVertexIndex;
+			DirectedEdge& e = edges.at(i);
 
-			if (edge.oppositeEdgeIndex == UINT32_MAX)
+			if (e.oppositeEdgeIndex == UINT_MAX)
 			{
-				for (uint32_t j = i + 1; j < edges.size(); j++)
+				uint32_t v1 = e.baseVertexIndex;
+				uint32_t v2 = edges.at(NextEdge(i)).baseVertexIndex;
+
+				auto searchTarget = std::pair<uint32_t, uint32_t>(v2, v1);
+				auto it = edgeMap.find(searchTarget);
+
+				if (it != edgeMap.end())
 				{
-					DirectedEdge& opposite = edges.at(j);
-
-					if (opposite.baseVertexIndex != nextVertex)
-						continue;
-
-					uint32_t oppositeNextVertex = edges.at(NextEdge(j)).baseVertexIndex;
-
-					if (edge.baseVertexIndex == oppositeNextVertex)
-					{
-						edge.oppositeEdgeIndex = j;
-						opposite.oppositeEdgeIndex = i;
-						break;
-					}
+					e.oppositeEdgeIndex = it->second;
+					edges.at(it->second).oppositeEdgeIndex = i;
 				}
 			}
 		}
@@ -102,11 +137,6 @@ namespace Rendering
 		}
 
 		LinkEdges();
-	}
-
-	uint32_t DirectedEdgeMesh::FaceCount()
-	{
-		return edges.size() / 3;
 	}
 
 	void DirectedEdgeMesh::Decimate(uint32_t targetFaceCount)
@@ -380,6 +410,11 @@ namespace Rendering
 	uint32_t DirectedEdgeMesh::PreviousEdge(uint32_t edgeId) const
 	{
 		return Halfedge(Face(edgeId), (edgeId + 2) % 3);
+	}
+
+	uint32_t DirectedEdgeMesh::FaceCount()
+	{
+		return edges.size() / 3;
 	}
 
 

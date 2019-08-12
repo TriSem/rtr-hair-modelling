@@ -4,6 +4,7 @@
 #include "Graphics.h"
 #include "framework.h"
 #include <queue>
+#include <map>
 
 using DirectX::XMFLOAT2;
 using DirectX::XMFLOAT3;
@@ -61,6 +62,7 @@ namespace Rendering
 	private:
 		std::vector<DirectedEdgeVertex> vertices;
 		std::vector<DirectedEdge> edges;
+		std::map<pair<uint32_t, uint32_t>, uint32_t> edgeMap;
 
 		void CreateFromMesh(Mesh basicMesh);
 
