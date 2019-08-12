@@ -136,7 +136,6 @@ namespace OBJ
 		}
 
 		objects.back().modelData.faces.push_back(face);
-
 	}
 
 	void ObjReader::ReadObjectName(const string& name)

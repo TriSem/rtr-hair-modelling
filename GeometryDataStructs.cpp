@@ -74,7 +74,7 @@ namespace Rendering
 
 			if (edge.oppositeEdgeIndex == UINT32_MAX)
 			{
-				for (uint32_t j = 0; j < edges.size(); j++)
+				for (uint32_t j = i + 1; j < edges.size(); j++)
 				{
 					DirectedEdge& opposite = edges.at(j);
 
