@@ -59,6 +59,7 @@ namespace Rendering
 			edges.push_back(DirectedEdge(*it));
 		}
 
+		EstablishEdgeMap();
 		RelinkVertices();
 		LinkEdges();
 	}
@@ -99,15 +100,6 @@ namespace Rendering
 		that is connecting the same vertices in the opposite direction. */
 	void DirectedEdgeMesh::LinkEdges()
 	{
-		std::map<pair<uint32_t, uint32_t>, uint32_t> edgeMap;
-		for (uint32_t i = 0; i < edges.size(); i++)
-		{
-			uint32_t v1 = edges.at(i).baseVertexIndex;
-			uint32_t v2 = edges.at(NextEdge(i)).baseVertexIndex;
-			std::pair<uint32_t, uint32_t> edge(v1, v2);
-			edgeMap.insert(std::pair<std::pair<uint32_t, uint32_t>, uint32_t>(edge, i));
-		}
-
 		for (int i = 0; i < edges.size(); i++)
 		{
 			DirectedEdge& e = edges.at(i);
@@ -153,7 +145,7 @@ namespace Rendering
 		{
 			priority_queue<pair<float, uint32_t>, vector<pair<float, uint32_t>>, std::greater<pair<float, uint32_t>>> queue;
 
-			std::uniform_int_distribution<uint32_t> distribution(0, edges.size() - 1);
+			std::uniform_int_distribution<uint32_t> distribution(0, edgeMap.size() - 1);
 			vector<uint32_t> randomCandidates;
 			randomCandidates.reserve(candidatesPerDecimation);
 
@@ -170,16 +162,19 @@ namespace Rendering
 
 			for (auto it = randomCandidates.begin(); it != randomCandidates.end(); it++)
 			{
-				DirectedEdge edge = edges.at(*it);
-				uint32_t v1 = edge.baseVertexIndex;
-				uint32_t nextEdge = NextEdge(*it);
-				uint32_t v2 = edges.at(nextEdge).baseVertexIndex;
+				auto randomIt = edgeMap.begin();
+				std::advance(randomIt, *it % edgeMap.size());
+				VertexPair edge = randomIt->first;
+				uint32_t v1 = edge.first;
+				uint32_t v2 = edge.second;
 
 				std::vector<uint32_t> oneRing1 = GetOneRing(v1);
 				std::vector<uint32_t> oneRing2 = GetOneRing(v2);
 
+				auto opposite = edgeMap.find(edge);
+
 				// Two boundary vertices must be connected by a boundary halfedge
-				if(IsBoundaryVertex(v1) && IsBoundaryVertex(v2) && edge.oppositeEdgeIndex != UINT32_MAX)
+				if (IsBoundaryVertex(v1) && IsBoundaryVertex(v2) && edges.at(opposite->second).oppositeEdgeIndex != UINT32_MAX)
 				{
 					continue;
 				}
@@ -196,48 +191,149 @@ namespace Rendering
 				queue.push(pair<float, uint32_t>(ErrorCost(v1, v2), *it));
 			}
 
-			uint32_t collapsedEdge = queue.top().second;
-			uint32_t collapsedVertex = edges.at(collapsedEdge).baseVertexIndex;
-			uint32_t targetVertex = edges.at(NextEdge(collapsedEdge)).baseVertexIndex;
+			CollapseEdge(queue.top().second);
+		}
 
-			vector<uint32_t> deletedEdges;
-			deletedEdges.push_back(collapsedEdge);
-			deletedEdges.push_back(NextEdge(collapsedEdge));
-			deletedEdges.push_back(PreviousEdge(collapsedEdge));
+		CollectGarbage();
+		EstablishEdgeMap();
+		RelinkVertices();
+		RelinkEdges();
+	}
 
-			uint32_t oppositeIndex = edges.at(collapsedEdge).oppositeEdgeIndex;
-			if (oppositeIndex != UINT32_MAX)
+	/** 
+		Performs a halfedge collapse on the specified edge. The vertex
+		at its foot will be merged into the vertex at its tip.
+	*/
+	void DirectedEdgeMesh::CollapseEdge(uint32_t collapsedEdge)
+	{
+		uint32_t collapsedOpposite = edges.at(collapsedEdge).oppositeEdgeIndex;
+		uint32_t collapsedVertex = edges.at(collapsedEdge).baseVertexIndex;
+		uint32_t targetVertex = edges.at(NextEdge(collapsedEdge)).baseVertexIndex;
+
+		vertices.at(collapsedVertex).deleted = true;
+
+		vector<uint32_t> oneRing = GetOneRing(collapsedVertex);
+
+		std::set<VertexPair> removedPairs;
+
+		removedPairs.insert(VertexPair(collapsedVertex, targetVertex));
+		edges.at(collapsedEdge).deleted = true;
+		edges.at(PreviousEdge(collapsedEdge)).deleted = true;
+		edges.at(NextEdge(collapsedEdge)).deleted = true;
+
+		if (collapsedOpposite != UINT_MAX)
+		{
+			removedPairs.insert(VertexPair(targetVertex, collapsedVertex));
+			edges.at(collapsedOpposite).deleted = true;
+			edges.at(PreviousEdge(collapsedOpposite)).deleted = true;
+			edges.at(NextEdge(collapsedOpposite)).deleted = true;
+		}
+
+		uint32_t wingVertex1 = edges.at(PreviousEdge(collapsedEdge)).baseVertexIndex;
+
+		// w - wing vertex, c - collapsed vertex, t - target Vertex.
+		VertexPair wc = VertexPair(wingVertex1, edges.at(collapsedEdge).baseVertexIndex);
+		VertexPair cw = VertexPair(wc.second, wc.first);
+		VertexPair tw = VertexPair(edges.at(NextEdge(collapsedEdge)).baseVertexIndex, wingVertex1);
+		VertexPair wt = VertexPair(tw.second, tw.first);
+
+		GetEdge(wt).oppositeEdgeIndex = GetEdge(wc).oppositeEdgeIndex;
+		edgeMap.at(tw) = edgeMap.at(cw);
+		GetEdge(tw).baseVertexIndex = targetVertex;
+		removedPairs.insert(wc);
+		removedPairs.insert(tw);
+
+		uint32_t wingVertex2 = UINT_MAX;
+
+		if (collapsedOpposite != UINT_MAX)
+		{
+			wingVertex2 = edges.at(PreviousEdge(collapsedOpposite)).baseVertexIndex;
+
+			wc = VertexPair(wingVertex2, edges.at(NextEdge(collapsedOpposite)).baseVertexIndex);
+			cw = VertexPair(wc.second, wc.first);
+			tw = VertexPair(edges.at(collapsedOpposite).baseVertexIndex, wingVertex2);
+			wt = VertexPair(tw.second, tw.first);
+
+			GetEdge(tw).oppositeEdgeIndex = GetEdge(cw).oppositeEdgeIndex;
+			edgeMap.at(wt) = edgeMap.at(wc);
+			GetEdge(wt).oppositeEdgeIndex = edges.at(NextEdge(edgeMap.at(wc))).baseVertexIndex;
+			removedPairs.insert(cw);
+			removedPairs.insert(wt);
+		}
+
+		for (uint32_t vertex : oneRing)
+		{
+			if (vertex == targetVertex || vertex == wingVertex1 || vertex == wingVertex2)
+				continue;
+
+			VertexPair replaced = VertexPair(collapsedVertex, vertex);
+			uint32_t index = edgeMap.at(replaced);
+			edgeMap.insert(std::pair<VertexPair, uint32_t>(VertexPair(targetVertex, vertex), index));
+			removedPairs.insert(replaced);
+
+			if (GetEdge(replaced).oppositeEdgeIndex != UINT_MAX)
 			{
-				deletedEdges.push_back(oppositeIndex);
-				deletedEdges.push_back(NextEdge(oppositeIndex));
-				deletedEdges.push_back(PreviousEdge(oppositeIndex));
+				replaced = VertexPair(vertex, collapsedVertex);
+				edgeMap.insert(std::pair<VertexPair, uint32_t>(VertexPair(vertex, targetVertex), edgeMap.at(replaced)));
+				removedPairs.insert(replaced);
+			}
+		}
+
+		for (VertexPair pair : removedPairs)
+		{
+			int numberErased = edgeMap.erase(pair);
+			if (numberErased < 1)
+				DebugBreak();
+		}
+	}
+
+	void DirectedEdgeMesh::CollectGarbage()
+	{
+		vector<DirectedEdgeVertex> newVertices;
+		std::list<uint32_t> deletedVertices;
+		for (uint32_t i = 0; i < vertices.size(); i++)
+		{
+			DirectedEdgeVertex vertex = vertices.at(i);
+			if (!vertex.deleted)
+			{
+				vertex.deleted = false;
+				newVertices.push_back(vertex);
+			}
+			else
+			{
+				deletedVertices.push_back(i);
+			}
+		}
+		vertices = newVertices;
+
+		vector<DirectedEdge> newEdges;
+		for (DirectedEdge edge : edges)
+		{
+			if (edge.deleted)
+				continue;
+
+			uint32_t baseVertexDelta = 0;
+			auto it = deletedVertices.begin();
+			while (it != deletedVertices.end() && edge.baseVertexIndex >= *it)
+			{
+				baseVertexDelta++;
 			}
 
-			std::sort(deletedEdges.begin(), deletedEdges.end());
+			edge.baseVertexIndex -= baseVertexDelta;
+			newEdges.push_back(baseVertexDelta);
+		}
+		
+		edges = newEdges;
+	}
 
-			vector<DirectedEdge> newEdges;
-			newEdges.reserve(edges.size());
-
-			for (int i = 0; i < edges.size(); i++)
-			{
-				if (std::find(deletedEdges.begin(), deletedEdges.end(), i) == deletedEdges.end())
-					newEdges.push_back(edges.at(i));
-			}
-
-			edges = newEdges;
-
-			vertices.erase(vertices.begin() + collapsedVertex);
-
-			for (auto it = edges.begin(); it < edges.end(); it++)
-			{
-				if (it->baseVertexIndex == collapsedVertex)
-					it->baseVertexIndex = targetVertex;
-				if (it->baseVertexIndex >= collapsedVertex)
-					it->baseVertexIndex--;
-			}
-
-			RelinkVertices();
-			RelinkEdges();
+	void DirectedEdgeMesh::EstablishEdgeMap()
+	{
+		for (uint32_t i = 0; i < edges.size(); i++)
+		{
+			uint32_t v1 = edges.at(i).baseVertexIndex;
+			uint32_t v2 = edges.at(NextEdge(i)).baseVertexIndex;
+			std::pair<uint32_t, uint32_t> edge(v1, v2);
+			edgeMap.insert(std::pair<VertexPair, uint32_t>(edge, i));
 		}
 	}
 
@@ -303,7 +399,6 @@ namespace Rendering
 			vertices.at(edges.at(i).baseVertexIndex).directedEdgeIndex = i;
 		}
 	}
-
 
 	bool DirectedEdgeMesh::IsBoundaryVertex(uint32_t vertex)
 	{
@@ -412,6 +507,11 @@ namespace Rendering
 		return Halfedge(Face(edgeId), (edgeId + 2) % 3);
 	}
 
+	DirectedEdge& DirectedEdgeMesh::GetEdge(VertexPair pair)
+	{
+		return edges.at(edgeMap.at(pair));
+	}
+
 	uint32_t DirectedEdgeMesh::FaceCount()
 	{
 		return edges.size() / 3;
@@ -420,14 +520,16 @@ namespace Rendering
 
 	DirectedEdge::DirectedEdge(uint32_t vertexIndex) :
 		oppositeEdgeIndex(UINT32_MAX),
-		baseVertexIndex(vertexIndex)
+		baseVertexIndex(vertexIndex),
+		deleted(false)
 	{
 	}
 
 
 	DirectedEdgeVertex::DirectedEdgeVertex(Vertex vertex) :
 		vertex(vertex),
-		directedEdgeIndex(UINT32_MAX)
+		directedEdgeIndex(UINT32_MAX),
+		deleted(false)
 	{
 	}
 }

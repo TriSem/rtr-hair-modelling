@@ -5,6 +5,8 @@
 #include "framework.h"
 #include <queue>
 #include <map>
+#include <set>
+#include <list>
 
 using DirectX::XMFLOAT2;
 using DirectX::XMFLOAT3;
@@ -43,6 +45,7 @@ namespace Rendering
 	{
 		uint32_t oppositeEdgeIndex;
 		uint32_t baseVertexIndex;
+		uint32_t deleted;
 
 		DirectedEdge(uint32_t vertexIndex);
 	};
@@ -51,6 +54,7 @@ namespace Rendering
 	{
 		Vertex vertex;
 		uint32_t directedEdgeIndex;
+		bool deleted;
 
 		DirectedEdgeVertex(Vertex vertex);
 	};
@@ -59,10 +63,12 @@ namespace Rendering
 		each face with three directed edges (halfedges). */
 	class DirectedEdgeMesh
 	{
+		using VertexPair = std::pair<uint32_t, uint32_t>;
+
 	private:
 		std::vector<DirectedEdgeVertex> vertices;
 		std::vector<DirectedEdge> edges;
-		std::map<pair<uint32_t, uint32_t>, uint32_t> edgeMap;
+		std::map<VertexPair, uint32_t> edgeMap;
 
 		void CreateFromMesh(Mesh basicMesh);
 
@@ -85,6 +91,8 @@ namespace Rendering
 
 		uint32_t PreviousEdge(uint32_t edgeId) const;
 
+		DirectedEdge& GetEdge(VertexPair pair);
+
 		class ErrorComparison
 		{
 			bool operator()(std::pair<float, uint32_t> value1, std::pair<float, uint32_t> value2)
@@ -99,6 +107,12 @@ namespace Rendering
 
 		/** Assigns new edges to all the vertices. */
 		void RelinkVertices();
+
+		void CollapseEdge(uint32_t collapsedEdge);
+
+		void CollectGarbage();
+
+		void EstablishEdgeMap();
 
 	public:
 
