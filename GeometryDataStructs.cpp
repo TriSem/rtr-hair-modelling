@@ -240,7 +240,10 @@ namespace Rendering
 		GetEdge(tw).baseVertexIndex = targetVertex;
 		GetEdge(tw).oppositeEdgeIndex = edgeMap.at(wt);
 		GetEdge(wt).oppositeEdgeIndex = edgeMap.at(tw);
+		if (GetEdge(wt).deleted)
+			DebugBreak();
 		vertices.at(wingVertex1).directedEdgeIndex = edgeMap.at(wt);
+		vertices.at(targetVertex).directedEdgeIndex = edgeMap.at(tw);
 		removedPairs.insert(wc);
 		removedPairs.insert(cw);
 
@@ -262,6 +265,8 @@ namespace Rendering
 			GetEdge(tw).baseVertexIndex = targetVertex;
 			GetEdge(wt).oppositeEdgeIndex = edgeMap.at(tw);
 			GetEdge(tw).oppositeEdgeIndex = edgeMap.at(wt);
+			if (GetEdge(wt).deleted)
+				DebugBreak();
 			vertices.at(wingVertex2).directedEdgeIndex = edgeMap.at(wt);
 			removedPairs.insert(cw);
 			removedPairs.insert(wc);
@@ -283,6 +288,7 @@ namespace Rendering
 				replaced = VertexPair(vertex, collapsedVertex);
 				index = edgeMap.at(replaced);
 				edgeMap.insert(std::pair<VertexPair, uint32_t>(VertexPair(vertex, targetVertex), index));
+				vertices.at(vertex).directedEdgeIndex = index;
 				removedPairs.insert(replaced);
 			}
 		}

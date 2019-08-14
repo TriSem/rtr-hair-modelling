@@ -45,7 +45,7 @@ namespace Rendering
 	{
 		uint32_t oppositeEdgeIndex;
 		uint32_t baseVertexIndex;
-		uint32_t deleted;
+		bool deleted;
 
 		DirectedEdge(uint32_t vertexIndex);
 	};
