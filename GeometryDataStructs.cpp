@@ -218,27 +218,25 @@ namespace Rendering
 
 		removedPairs.insert(VertexPair(collapsedVertex, targetVertex));
 		edges.at(collapsedEdge).deleted = true;
-		edges.at(PreviousEdge(collapsedEdge)).deleted = true;
-		edges.at(NextEdge(collapsedEdge)).deleted = true;
 
 		if (collapsedOpposite != UINT_MAX)
 		{
 			removedPairs.insert(VertexPair(targetVertex, collapsedVertex));
 			edges.at(collapsedOpposite).deleted = true;
-			edges.at(PreviousEdge(collapsedOpposite)).deleted = true;
-			edges.at(NextEdge(collapsedOpposite)).deleted = true;
 		}
 
+		
 		uint32_t wingVertex1 = edges.at(PreviousEdge(collapsedEdge)).baseVertexIndex;
 
-		// w - wing vertex, c - collapsed vertex, t - target Vertex.
-		VertexPair wc = VertexPair(wingVertex1, edges.at(collapsedEdge).baseVertexIndex);
-		VertexPair cw = VertexPair(wc.second, wc.first);
-		VertexPair tw = VertexPair(edges.at(NextEdge(collapsedEdge)).baseVertexIndex, wingVertex1);
-		VertexPair wt = VertexPair(tw.second, tw.first);
+		VertexPair wc = VertexPair(wingVertex1, collapsedVertex);
+		VertexPair cw = VertexPair(collapsedVertex, wingVertex1);
+		VertexPair tw = VertexPair(targetVertex, wingVertex1);
+		VertexPair wt = VertexPair(wingVertex1, targetVertex);
 
-		edgeMap.at(tw) = edgeMap.at(cw);
-		vertices.at(targetVertex).directedEdgeIndex = edgeMap.at(tw);
+		GetEdge(tw).deleted = true;
+		GetEdge(wc).deleted = true;
+
+		edgeMap.at(tw) = edgeMap.at(cw);//
 		GetEdge(tw).baseVertexIndex = targetVertex;
 		GetEdge(tw).oppositeEdgeIndex = edgeMap.at(wt);
 		GetEdge(wt).oppositeEdgeIndex = edgeMap.at(tw);
@@ -246,34 +244,27 @@ namespace Rendering
 		removedPairs.insert(wc);
 		removedPairs.insert(cw);
 
-		// delete after debugging
-		if (vertices.at(GetEdge(tw).baseVertexIndex).deleted || vertices.at(GetEdge(wt).baseVertexIndex).deleted)
-			DebugBreak();
-
 		uint32_t wingVertex2 = UINT_MAX;
 
 		if (collapsedOpposite != UINT_MAX)
 		{
 			wingVertex2 = edges.at(PreviousEdge(collapsedOpposite)).baseVertexIndex;
 
-			wc = VertexPair(wingVertex2, edges.at(NextEdge(collapsedOpposite)).baseVertexIndex);
-			cw = VertexPair(wc.second, wc.first);
-			tw = VertexPair(edges.at(collapsedOpposite).baseVertexIndex, wingVertex2);
-			wt = VertexPair(tw.second, tw.first);
+			wc = VertexPair(wingVertex2, collapsedVertex);
+			cw = VertexPair(collapsedVertex, wingVertex2);
+			tw = VertexPair(targetVertex, wingVertex2);
+			wt = VertexPair(wingVertex2, targetVertex);
+
+			GetEdge(wt).deleted = true;
+			GetEdge(cw).deleted = true;
 
 			edgeMap.at(wt) = edgeMap.at(wc);
-			GetEdge(wt).baseVertexIndex = wingVertex2;
+			GetEdge(tw).baseVertexIndex = targetVertex;
 			GetEdge(wt).oppositeEdgeIndex = edgeMap.at(tw);
 			GetEdge(tw).oppositeEdgeIndex = edgeMap.at(wt);
 			vertices.at(wingVertex2).directedEdgeIndex = edgeMap.at(wt);
 			removedPairs.insert(cw);
 			removedPairs.insert(wc);
-
-			// delete after debugging
-			bool twDel = vertices.at(GetEdge(tw).baseVertexIndex).deleted;
-			bool wtDel = vertices.at(GetEdge(wt).baseVertexIndex).deleted;
-			if (twDel || wtDel)
-				DebugBreak();
 		}
 
 		for (uint32_t vertex : oneRing)
@@ -290,7 +281,8 @@ namespace Rendering
 			if (GetEdge(replaced).oppositeEdgeIndex != UINT_MAX)
 			{
 				replaced = VertexPair(vertex, collapsedVertex);
-				edgeMap.insert(std::pair<VertexPair, uint32_t>(VertexPair(vertex, targetVertex), edgeMap.at(replaced)));
+				index = edgeMap.at(replaced);
+				edgeMap.insert(std::pair<VertexPair, uint32_t>(VertexPair(vertex, targetVertex), index));
 				removedPairs.insert(replaced);
 			}
 		}
@@ -298,9 +290,6 @@ namespace Rendering
 		for (VertexPair pair : removedPairs)
 		{
 			int numberErased = edgeMap.erase(pair);
-			// delete after debugging
-			if (numberErased < 1)
-				DebugBreak();
 		}
 	}
 
@@ -442,8 +431,7 @@ namespace Rendering
 		uint32_t startEdge = vertices.at(vertex).directedEdgeIndex;
 		uint32_t currentEdge = startEdge;
 
-		// delete after debugging
-		if (edges.at(NextEdge(currentEdge)).deleted)
+		if (edges.at(currentEdge).deleted)
 			DebugBreak();
 		oneRing.push_back(edges.at(NextEdge(currentEdge)).baseVertexIndex);
 
@@ -530,11 +518,6 @@ namespace Rendering
 
 	DirectedEdge& DirectedEdgeMesh::GetEdge(VertexPair pair)
 	{
-		auto pointer = edgeMap.find(pair);
-		if (pointer == edgeMap.end())
-		{
-			DebugBreak();
-		}
 		return edges.at(edgeMap.at(pair));
 	}
 
