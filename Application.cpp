@@ -25,11 +25,11 @@ void Application::Run()
 	MSG message = {};
 
 	OBJ::ObjReader reader;
-	reader.LoadFile("C:/Users/Tristan/3D Objects/uvsphere.obj");
+	reader.LoadFile("C:/Users/Tristan/3D Objects/bunny.obj");
 	Mesh mesh = Mesh(reader.GetObjects().at(0).ExtractMesh());
 	std::unique_ptr<DirectedEdgeMesh> decimatedMesh = std::make_unique<DirectedEdgeMesh>(mesh);
 	UINT a = decimatedMesh->FaceCount();
-	decimatedMesh->Decimate(500);
+	decimatedMesh->Decimate(20000);
 	UINT b = decimatedMesh->FaceCount();
 	mesh = decimatedMesh->ExtractBasicMesh();
 	SceneObject model = SceneObject(renderer->GetDevice(), mesh, renderer->GetVertexShader());
