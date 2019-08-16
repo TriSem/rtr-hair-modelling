@@ -25,7 +25,7 @@ void Application::Run()
 	MSG message = {};
 
 	OBJ::ObjReader reader;
-	reader.LoadFile("C:/Users/Tristan/3D Objects/bunny.obj");
+	reader.LoadFile("C:/Users/Tristan/3D Objects/uvsphere.obj");
 	Mesh mesh = Mesh(reader.GetObjects().at(0).ExtractMesh());
 	std::unique_ptr<DirectedEdgeMesh> decimatedMesh = std::make_unique<DirectedEdgeMesh>(mesh);
 	UINT a = decimatedMesh->FaceCount();
@@ -35,7 +35,7 @@ void Application::Run()
 	SceneObject model = SceneObject(renderer->GetDevice(), mesh, renderer->GetVertexShader());
 	mainScene->AddSceneObject(model);
 
-	while (true)
+	while (message.message != WM_QUIT)
 	{
 		if (PeekMessage(&message, nullptr, 0, 0, PM_REMOVE))
 		{

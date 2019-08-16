@@ -71,6 +71,11 @@ LRESULT CALLBACK Window::ProcessMessage(HWND windowHandle, UINT message, WPARAM 
 {
 	switch (message)
 	{
+		case WM_CLOSE:
+		{
+			DestroyWindow(windowHandle);
+			return 0;
+		}
 		case WM_DESTROY:
 		{
 			PostQuitMessage(0);
