@@ -14,8 +14,11 @@ namespace Rendering
 
 		ComPtr<ID3D11Buffer> GetData();
 
+		uint32_t GetIndexCount();
+
 	private:
 
+		uint32_t indexCount;
 		ComPtr<ID3D11Buffer> indexBuffer;
 		ComPtr<ID3D11Device> device;
 	};

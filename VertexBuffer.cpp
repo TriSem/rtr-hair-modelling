@@ -14,7 +14,7 @@ namespace Rendering
 
 		D3D11_BUFFER_DESC bufferDescription = {};
 
-		bufferDescription.ByteWidth = sizeof(Vertex) * vertices.size();
+		bufferDescription.ByteWidth = UINT(sizeof(Vertex) * vertices.size());
 		bufferDescription.Usage = D3D11_USAGE_DEFAULT;
 		bufferDescription.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 
@@ -50,7 +50,6 @@ namespace Rendering
 	{
 		return vertexBuffer;
 	}
-
 
 	void VertexBuffer::CreateInputLayout()
 	{

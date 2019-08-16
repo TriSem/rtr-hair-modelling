@@ -1,7 +1,10 @@
 #include "Application.h"
-#include "ObjReader.h"
 
 using Rendering::Renderer;
+using Rendering::Scene;
+using Rendering::DirectedEdgeMesh;
+using Rendering::Mesh;
+using Rendering::SceneObject;
 
 Application::Application(HINSTANCE instanceHandle, int nCmdShow, std::wstring appTitle) :
 	instanceHandle(instanceHandle),
@@ -19,8 +22,18 @@ Application::~Application()
 void Application::Run()
 {
 	Init();
-
 	MSG message = {};
+
+	OBJ::ObjReader reader;
+	reader.LoadFile("C:/Users/Tristan/3D Objects/bunny.obj");
+	Mesh mesh = Mesh(reader.GetObjects().at(0).ExtractMesh());
+	std::unique_ptr<DirectedEdgeMesh> decimatedMesh = std::make_unique<DirectedEdgeMesh>(mesh);
+	UINT a = decimatedMesh->FaceCount();
+	decimatedMesh->Decimate(500);
+	UINT b = decimatedMesh->FaceCount();
+	mesh = decimatedMesh->ExtractBasicMesh();
+	SceneObject model = SceneObject(renderer->GetDevice(), mesh, renderer->GetVertexShader());
+	mainScene->AddSceneObject(model);
 
 	while (true)
 	{
@@ -56,6 +69,8 @@ void Application::Init()
 		mainWindow.Width(), 
 		mainWindow.Height()
 	);
+
+	mainScene = std::make_shared<Scene>();
 
 	ShowWindow(mainWindow.WindowHandle(), nCmdShow);
 }

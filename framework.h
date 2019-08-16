@@ -14,6 +14,9 @@
 #include <memory>
 #include <tchar.h>
 
+#include <vector>
 #include <string>
+#include <time.h>
+#include <random>
 #include "ErrorHandling.h"
 #include <wrl.h>

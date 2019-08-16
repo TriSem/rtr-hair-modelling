@@ -3,13 +3,14 @@
 namespace Rendering
 {
 	IndexBuffer::IndexBuffer(ComPtr<ID3D11Device> device, const std::vector<UINT>& indices) :
-		device(device)
+		device(device),
+		indexCount((UINT)indices.size())
 	{
 		D3D11_BUFFER_DESC indexBufferDescription = {};
 		D3D11_SUBRESOURCE_DATA indexSubresourceData = {};
 
 		indexBufferDescription.Usage = D3D11_USAGE_IMMUTABLE;
-		indexBufferDescription.ByteWidth = sizeof(UINT) * indices.size();
+		indexBufferDescription.ByteWidth = sizeof(UINT) * (UINT)indices.size();
 		indexBufferDescription.BindFlags = D3D11_BIND_INDEX_BUFFER;
 
 		indexSubresourceData.pSysMem = indices.data();
@@ -27,5 +28,9 @@ namespace Rendering
 	ComPtr<ID3D11Buffer> IndexBuffer::GetData()
 	{
 		return indexBuffer;
+	}
+	uint32_t IndexBuffer::GetIndexCount()
+	{
+		return indexCount;
 	}
 }

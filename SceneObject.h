@@ -20,13 +20,13 @@ namespace Rendering
 
 		const Transform& GetTransform() const;
 
-		ComPtr<ID3D11Buffer> GetVertexBufferData();
-		ComPtr<ID3D11Buffer> GetIndexBufferData();
+		std::shared_ptr<VertexBuffer> GetVertexBuffer();
+		std::shared_ptr<IndexBuffer> GetIndexBuffer();
 
 	private:
 
-		std::unique_ptr<VertexBuffer> vertexBuffer;
-		std::unique_ptr<IndexBuffer> indexBuffer;
+		std::shared_ptr<VertexBuffer> vertexBuffer;
+		std::shared_ptr<IndexBuffer> indexBuffer;
 
 		std::shared_ptr<VertexShader> vertexShader;
 	

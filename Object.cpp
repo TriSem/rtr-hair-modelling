@@ -42,9 +42,9 @@ namespace OBJ
 
 	/* Attempts to put the OBJ model data into 
 		more GPU friendly mesh format. */
-	Rendering::Mesh& Object::ExtractMesh()
+	Rendering::Mesh Object::ExtractMesh()
 	{
-		Rendering::Mesh mesh;
+		Rendering::Mesh mesh = {};
 
 		std::vector<Vertex>& vertices = modelData.vertices;
 		std::vector<Normal>& normals = modelData.normals;
@@ -64,19 +64,25 @@ namespace OBJ
 
 			for (int j = 0; j < 3; j++)
 			{
-				uint32_t normalIndex = face.normalIndices.at(j);
-				Normal normal = normals.at(normalIndex);
-				XMFLOAT3 vertexNormal = XMFLOAT3(normal.x, normal.y, normal.z);
+				Rendering::Vertex& vertex = mesh.vertices.at(face.vertexIndices.at(j) - 1);
 
-				uint32_t textureIndex = face.textureCoordinateIndices.at(j);
-				TextureCoordinate textureCoordinate = textureCoordinates.at(textureIndex);
-				XMFLOAT2 vertexTexCoord = XMFLOAT2(textureCoordinate.u, textureCoordinate.v);
+				if (j < face.normalIndices.size())
+				{
+					uint32_t normalIndex = face.normalIndices.at(j) - 1;
+					Normal normal = normals.at(normalIndex);
+					XMFLOAT3 vertexNormal = XMFLOAT3(normal.x, normal.y, normal.z);
+					vertex.normal = vertexNormal;
+				}
 
-				Rendering::Vertex& vertex = mesh.vertices.at(face.vertexIndices.at(j));
-				vertex.normal = vertexNormal;
-				vertex.textureCoordinate = vertexTexCoord;
+				if (j < face.textureCoordinateIndices.size())
+				{
+					uint32_t textureIndex = face.textureCoordinateIndices.at(j) - 1;
+					TextureCoordinate textureCoordinate = textureCoordinates.at(textureIndex);
+					XMFLOAT2 vertexTexCoord = XMFLOAT2(textureCoordinate.u, textureCoordinate.v);
+					vertex.textureCoordinate = vertexTexCoord;
+				}
 
-				mesh.indices.push_back(face.vertexIndices.at(j));
+				mesh.indices.push_back(face.vertexIndices.at(j) - 1);
 			}
 		}
 

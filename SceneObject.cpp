@@ -6,8 +6,8 @@ namespace Rendering
 		mesh(mesh),
 		vertexShader(vertexShader)
 	{
-		vertexBuffer = std::make_unique<VertexBuffer>(device, this->vertexShader, mesh.vertices);
-		indexBuffer = std::make_unique<IndexBuffer>(device, mesh.indices);
+		vertexBuffer = std::make_shared<VertexBuffer>(device, this->vertexShader, mesh.vertices);
+		indexBuffer = std::make_shared<IndexBuffer>(device, mesh.indices);
 	}
 
 	void SceneObject::Update()
@@ -19,13 +19,13 @@ namespace Rendering
 		return transform;
 	}
 
-	ComPtr<ID3D11Buffer> SceneObject::GetVertexBufferData()
+	std::shared_ptr<VertexBuffer> SceneObject::GetVertexBuffer()
 	{
-		return vertexBuffer->GetData();
+		return vertexBuffer;
 	}
 
-	ComPtr<ID3D11Buffer> SceneObject::GetIndexBufferData()
+	std::shared_ptr<IndexBuffer> SceneObject::GetIndexBuffer()
 	{
-		return indexBuffer->GetData();
+		return indexBuffer;
 	}
 }

@@ -17,13 +17,19 @@ namespace Rendering
 		}*/
 	}
 
-	void Scene::AddSceneObject(const SceneObject& object)
+	void Scene::AddSceneObject(SceneObject& object)
 	{
-	
+		sceneObjects.push_back(object);
 	}
 
-	void Scene::DeleteSceneObject()
+	void Scene::DeleteSceneObject(int index)
 	{
+		sceneObjects.erase(sceneObjects.begin() + index);
+	}
+
+	std::vector<SceneObject>& Scene::GetSceneObjects()
+	{
+		return sceneObjects;
 	}
 
 	Camera& Scene::GetCamera()
