@@ -11,6 +11,12 @@ using Microsoft::WRL::ComPtr;
 
 namespace Rendering
 {
+	enum class RenderMode
+	{
+		SOLID,
+		WIREFRAME
+	};
+
 	class Renderer
 	{
 	public:
@@ -20,14 +26,10 @@ namespace Rendering
 		void Render(Scene &scene);
 		void SetMultisampleCount(UINT count);
 
+		void SetRenderMode(RenderMode renderMode);
+
 		const ComPtr<ID3D11Device> GetDevice() const;
 		const std::shared_ptr<VertexShader> GetVertexShader() const;
-
-		enum class RenderMode
-		{
-			SOLID,
-			WIREFRAME
-		};
 
 	private:
 
@@ -41,6 +43,7 @@ namespace Rendering
 		void CreateDepthStencilView();
 		void BindViewsToPipeline();
 		void SetViewport();
+		void CreateRasterizerStates();
 		void CreateShaders();
 
 		void Clear();
@@ -62,7 +65,8 @@ namespace Rendering
 		ComPtr<ID3D11Texture2D> depthStencilBuffer;
 		ComPtr<ID3D11RenderTargetView> backBufferView;
 		ComPtr<ID3D11DepthStencilView> depthStencilView;
-		ComPtr<ID3D11RasterizerState> rasterizerState;
+		ComPtr<ID3D11RasterizerState> rasterizerStateSolid;
+		ComPtr<ID3D11RasterizerState> rasterizerStateWireframe;
 
 		std::shared_ptr<VertexShader> vertexShader;
 		std::shared_ptr<PixelShader> pixelShader;

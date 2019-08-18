@@ -35,7 +35,6 @@ namespace Rendering
 	{
 		Clear();
 		context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-		context->RSSetState(rasterizerState.Get());
 
 		vector<SceneObject>& objects = scene.GetSceneObjects();
 
@@ -63,15 +62,7 @@ namespace Rendering
 		CreateDepthStencilView();
 		BindViewsToPipeline();
 		SetViewport();
-
-		D3D11_RASTERIZER_DESC rasterizerDescription = {};
-
-		rasterizerDescription.FillMode = D3D11_FILL_WIREFRAME;
-		rasterizerDescription.CullMode = D3D11_CULL_BACK;
-		MessageAndThrowIfFailed(
-			device->CreateRasterizerState(&rasterizerDescription, rasterizerState.ReleaseAndGetAddressOf()),
-			L"Failed to create rasterizer state."
-		);
+		CreateRasterizerStates();
 
 		CreateShaders();
 	}
@@ -237,6 +228,29 @@ namespace Rendering
 		context->RSSetViewports(1, &viewport);
 	}
 
+	void Renderer::CreateRasterizerStates()
+	{
+		D3D11_RASTERIZER_DESC rasterizerDescription = {};
+
+		rasterizerDescription.FillMode = D3D11_FILL_WIREFRAME;
+		rasterizerDescription.CullMode = D3D11_CULL_BACK;
+		MessageAndThrowIfFailed(
+			device->CreateRasterizerState(&rasterizerDescription, rasterizerStateWireframe.ReleaseAndGetAddressOf()),
+			L"Failed to create rasterizer state: WIREFRAME."
+		);
+
+		rasterizerDescription.FillMode = D3D11_FILL_SOLID;
+		MessageAndThrowIfFailed(
+			device->CreateRasterizerState(&rasterizerDescription, rasterizerStateSolid.ReleaseAndGetAddressOf()),
+			L"Failed to create rasterizer state: SOLID."
+		);
+
+		if(renderMode == RenderMode::SOLID)
+			context->RSSetState(rasterizerStateSolid.Get());
+		else
+			context->RSSetState(rasterizerStateWireframe.Get());
+	}
+
 	void Renderer::CreateShaders()
 	{
 		std::wstring shaderPath;
@@ -275,6 +289,20 @@ namespace Rendering
 			multisampleCount = count;
 		else
 			multisampleCount = 1;
+	}
+
+	void Renderer::SetRenderMode(RenderMode renderMode)
+	{
+		if (this->renderMode == renderMode)
+			return;
+		else
+		{
+			this->renderMode = renderMode;
+			if (renderMode == RenderMode::SOLID)
+				context->RSSetState(rasterizerStateSolid.Get());
+			else
+				context->RSSetState(rasterizerStateWireframe.Get());
+		}
 	}
 
 	const ComPtr<ID3D11Device> Renderer::GetDevice() const

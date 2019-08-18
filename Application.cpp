@@ -24,6 +24,7 @@ void Application::Run()
 	Init();
 	MSG message = {};
 
+	renderer->SetRenderMode(Rendering::RenderMode::WIREFRAME);
 	OBJ::ObjReader reader;
 	reader.LoadFile("C:/Users/Tristan/3D Objects/uvsphere.obj");
 	Mesh mesh = Mesh(reader.GetObjects().at(0).ExtractMesh());
