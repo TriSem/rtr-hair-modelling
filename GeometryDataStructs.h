@@ -72,6 +72,8 @@ namespace Rendering
 
 		void CreateFromMesh(Mesh basicMesh);
 
+		void RecalculateNormals();
+
 		// Links every edge with their opposite edge, provided one exists.
 		void LinkEdges();
 
@@ -91,6 +93,7 @@ namespace Rendering
 
 		uint32_t PreviousEdge(uint32_t edgeId) const;
 
+		/** Returns a reference to the edge object identified by the two vertices. */
 		DirectedEdge& GetEdge(VertexPair pair);
 
 		class ErrorComparison
@@ -110,6 +113,8 @@ namespace Rendering
 
 		void CollapseEdge(uint32_t collapsedEdge);
 
+		/** Safely remove all edges and vertices that are marked deleted from
+			their respective lists.*/
 		void CollectGarbage();
 
 		void EstablishEdgeMap();
