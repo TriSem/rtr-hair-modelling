@@ -80,7 +80,7 @@ namespace Rendering
 	{
 		UINT flags = 0;
 
-	#if defined(DEBUG) || defined(_DEBUG)
+	#if defined(_DEBUG)
 		flags |= D3D11_CREATE_DEVICE_DEBUG;
 	#endif	
 
