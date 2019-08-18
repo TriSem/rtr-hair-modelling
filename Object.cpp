@@ -58,11 +58,11 @@ namespace OBJ
 			mesh.vertices.push_back(vertex);
 		}
 
-		for (int i = 0; i < faces.size(); i++)
+		for (uint32_t i = 0; i < faces.size(); i++)
 		{
 			Face& face = faces.at(i);
 
-			for (int j = 0; j < 3; j++)
+			for (uint32_t j = 0; j < 3; j++)
 			{
 				Rendering::Vertex& vertex = mesh.vertices.at(face.vertexIndices.at(j) - 1);
 
