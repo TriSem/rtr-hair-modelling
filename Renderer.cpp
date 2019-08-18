@@ -239,9 +239,26 @@ namespace Rendering
 
 	void Renderer::CreateShaders()
 	{
-		// TODO: Define paths for all different build configurations.
-		vertexShader = std::make_unique<VertexShader>(device, L"./x64/Debug/VertexShader.cso");
-		pixelShader = std::make_unique<PixelShader>(device, L"./x64/Debug/PixelShader.cso");
+		std::wstring shaderPath;
+
+#ifdef _DEBUG
+#ifdef _WIN64
+		shaderPath = L"./x64/Debug/";
+#else
+		shaderPath = L"./Win32/Debug/";
+#endif
+#else
+#ifdef _WIN64
+		shaderPath = L"./x64/Release/";
+#else
+		shaderPath = L"./Win32/Debug/";
+#endif
+#endif
+
+		std::wstring vertexShaderLocation = shaderPath + L"VertexShader.cso";
+		std::wstring pixelShaderLocation = shaderPath + L"PixelShader.cso";
+		vertexShader = std::make_unique<VertexShader>(device, vertexShaderLocation);
+		pixelShader = std::make_unique<PixelShader>(device, pixelShaderLocation);
 	}
 
 	void Renderer::Clear()

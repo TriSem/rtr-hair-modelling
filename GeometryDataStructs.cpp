@@ -68,7 +68,7 @@ namespace Rendering
 		that is connecting the same vertices in the opposite direction. */
 	void DirectedEdgeMesh::LinkEdges()
 	{
-		for (int i = 0; i < edges.size(); i++)
+		for (uint32_t i = 0; i < edges.size(); i++)
 		{
 			DirectedEdge& e = edges.at(i);
 
@@ -113,13 +113,13 @@ namespace Rendering
 		{
 			priority_queue<pair<float, uint32_t>, vector<pair<float, uint32_t>>, std::greater<pair<float, uint32_t>>> queue;
 			if (candidatesPerDecimation > edgeMap.size())
-				candidatesPerDecimation = edgeMap.size();
+				candidatesPerDecimation = (uint32_t)(edgeMap.size());
 
-			std::uniform_int_distribution<uint32_t> distribution(0, edges.size() - 1);
+			std::uniform_int_distribution<uint32_t> distribution(0, (uint32_t)edges.size() - 1);
 			vector<uint32_t> randomCandidates;
 			randomCandidates.reserve(candidatesPerDecimation);
 
-			for (int i = 0; i < candidatesPerDecimation; i++)
+			for (uint32_t i = 0; i < candidatesPerDecimation; i++)
 			{
 				uint32_t randomNumber = distribution(generator);
 				while (std::find(randomCandidates.begin(), randomCandidates.end(), randomNumber) != randomCandidates.end() || edges.at(randomNumber).deleted)
@@ -256,7 +256,7 @@ namespace Rendering
 
 		for (VertexPair pair : removedPairs)
 		{
-			int numberErased = edgeMap.erase(pair);
+			edgeMap.erase(pair);
 		}
 	}
 
@@ -490,7 +490,7 @@ namespace Rendering
 
 	uint32_t DirectedEdgeMesh::FaceCount()
 	{
-		return edgeMap.size() / 3;
+		return (uint32_t)edgeMap.size() / 3;
 	}
 
 
