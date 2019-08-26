@@ -1,7 +1,7 @@
 #include "VertexBuffer.h"
 #include "DirectXTK/Inc/VertexTypes.h"
 
-using DirectX::VertexPositionNormalTexture;
+using DirectX::VertexPositionNormal;
 
 namespace Rendering
 {
@@ -55,8 +55,8 @@ namespace Rendering
 	{
 		MessageAndThrowIfFailed(
 			device->CreateInputLayout(
-				VertexPositionNormalTexture::InputElements,
-				VertexPositionNormalTexture::InputElementCount,
+				VertexPositionNormal::InputElements,
+				VertexPositionNormal::InputElementCount,
 				vertexShader->GetCompiledCode()->GetBufferPointer(),
 				vertexShader->GetCompiledCode()->GetBufferSize(),
 				inputLayout.ReleaseAndGetAddressOf()

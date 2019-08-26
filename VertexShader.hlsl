@@ -1,5 +1,24 @@
-float4 main(float3 pos : SV_POSITION ) : SV_POSITION
+cbuffer mvpMatrix
 {
-    pos *= 0.5f;
-	return float4(pos, 1.0f);
+    float4x4 mvp;
+};
+
+struct VSInput
+{
+    float3 position : SV_POSITION;
+    float3 normal : NORMAL;
+};
+
+struct VSOutput
+{
+    float4 position : SV_POSITION;
+    float3 normal : NORMAL;
+};
+
+VSOutput main(VSInput vertex)
+{
+    VSOutput output;
+    output.position = mul(mvp, float4(vertex.position, 1));
+    output.normal = mul(mvp, vertex.normal);
+    return output;
 }

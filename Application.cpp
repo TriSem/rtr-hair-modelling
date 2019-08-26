@@ -24,16 +24,17 @@ void Application::Run()
 	Init();
 	MSG message = {};
 
-	renderer->SetRenderMode(Rendering::RenderMode::WIREFRAME);
 	OBJ::ObjReader reader;
-	reader.LoadFile("C:/Users/Tristan/3D Objects/uvsphere.obj");
+	reader.LoadFile("C:/Users/Tristan/3D Objects/bunny.obj");
 	Mesh mesh = Mesh(reader.GetObjects().at(0).ExtractMesh());
 	std::unique_ptr<DirectedEdgeMesh> decimatedMesh = std::make_unique<DirectedEdgeMesh>(mesh);
-	UINT a = decimatedMesh->FaceCount();
+	/*UINT a = decimatedMesh->FaceCount();
 	decimatedMesh->Decimate(500);
-	UINT b = decimatedMesh->FaceCount();
+	UINT b = decimatedMesh->FaceCount();*/
 	mesh = decimatedMesh->ExtractBasicMesh();
 	SceneObject model = SceneObject(renderer->GetDevice(), mesh, renderer->GetVertexShader());
+	model.GetTransform().SetScale(0.5f);
+	model.GetTransform().SetPosition(Vector3(0.0f, -1.0f, 0.0f));
 	mainScene->AddSceneObject(model);
 
 	while (message.message != WM_QUIT)
@@ -70,6 +71,8 @@ void Application::Init()
 		mainWindow.Width(), 
 		mainWindow.Height()
 	);
+
+	renderer->SetRenderMode(Rendering::RenderMode::WIREFRAME);
 
 	mainScene = std::make_shared<Scene>();
 

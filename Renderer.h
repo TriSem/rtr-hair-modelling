@@ -17,6 +17,11 @@ namespace Rendering
 		WIREFRAME
 	};
 
+	struct ConstantBufferVS
+	{
+		Matrix mvp;
+	};
+
 	class Renderer
 	{
 	public:
@@ -67,6 +72,7 @@ namespace Rendering
 		ComPtr<ID3D11DepthStencilView> depthStencilView;
 		ComPtr<ID3D11RasterizerState> rasterizerStateSolid;
 		ComPtr<ID3D11RasterizerState> rasterizerStateWireframe;
+		ComPtr<ID3D11Buffer> constantBuffer;
 
 		std::shared_ptr<VertexShader> vertexShader;
 		std::shared_ptr<PixelShader> pixelShader;

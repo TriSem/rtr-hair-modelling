@@ -40,12 +40,22 @@ namespace Rendering
 
 		for (auto it = objects.begin(); it != objects.end(); it++)
 		{
+			ConstantBufferVS constantBufferVS;
+			Camera& camera = scene.GetCamera();
+			constantBufferVS.mvp = it->GetTransform().TransformationMatrix() * camera.ViewMatrix() * camera.ProjectionMatrix();
+
+			D3D11_MAPPED_SUBRESOURCE resource;
+			context->Map(constantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
+			CopyMemory(resource.pData, &constantBufferVS, sizeof(ConstantBufferVS));
+			context->Unmap(constantBuffer.Get(), 0);
+
 			std::shared_ptr<VertexBuffer> vertexBuffer = it->GetVertexBuffer();
 			std::shared_ptr<IndexBuffer> indexBuffer = it->GetIndexBuffer(); 
 			context->IASetInputLayout(vertexBuffer->GetInputLayout().Get());
 			context->IASetVertexBuffers(0, 1, vertexBuffer->GetData().GetAddressOf(), &vertexBuffer->STRIDE, &vertexBuffer->GetOffset());
 			context->IASetIndexBuffer(indexBuffer->GetData().Get(), DXGI_FORMAT_R32_UINT, 0);
 			context->VSSetShader(vertexShader->GetShader().Get(), nullptr, 0);
+			context->VSSetConstantBuffers(0, 1, constantBuffer.GetAddressOf());
 			context->PSSetShader(pixelShader->GetShader().Get(), nullptr, 0);
 			context->DrawIndexed(indexBuffer->GetIndexCount(), 0, 0);
 		}
@@ -63,8 +73,18 @@ namespace Rendering
 		BindViewsToPipeline();
 		SetViewport();
 		CreateRasterizerStates();
-
 		CreateShaders();
+
+		D3D11_BUFFER_DESC description = {};
+		description.Usage = D3D11_USAGE_DYNAMIC;
+		description.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+		description.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+		description.ByteWidth = static_cast<uint32_t>(sizeof(ConstantBufferVS) + (16 - (sizeof(ConstantBufferVS) % 16)));
+
+		MessageAndThrowIfFailed(
+			device->CreateBuffer(&description, 0, constantBuffer.GetAddressOf()),
+			L"Failed to create constant buffer."
+		);
 	}
 
 	void Renderer::CreateDevice()
@@ -277,7 +297,7 @@ namespace Rendering
 
 	void Renderer::Clear()
 	{
-		Color clearColor = DirectX::Colors::Magenta.v;
+		Color clearColor = DirectX::Colors::CornflowerBlue.v;
 		context->ClearRenderTargetView(backBufferView.Get(), clearColor);
 		context->ClearDepthStencilView(depthStencilView.Get(),
 			D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);

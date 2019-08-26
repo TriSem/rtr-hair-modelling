@@ -4,7 +4,7 @@ namespace Rendering
 {
 	Camera::Camera() :
 		projectionMode(ProjectionMode::PERSPECTIVE),
-		position(Vector3(0, 0, 0)),
+		position(Vector3(0, 0, -2)),
 		up(Vector3(0, 1, 0)),
 		viewingDirection(Vector3(0, 0, 1)),
 		fieldOfView(70),
@@ -17,7 +17,7 @@ namespace Rendering
 
 	Camera::Camera(ProjectionMode projectionMode) :
 		projectionMode(projectionMode),
-		position(Vector3(0, 0, 0)),
+		position(Vector3(0, 0, -2)),
 		up(Vector3(0, 1, 0)),
 		viewingDirection(Vector3(0, 0, 1)),
 		fieldOfView(70),
@@ -70,30 +70,28 @@ namespace Rendering
 		viewingRectangle.y = height;
 	}
 
-	Vector3 Camera::GetUp() const
+	Vector3 Camera::Up() const
 	{
 		return up;
 	}
 
-	Vector3 Camera::GetViewingDirection() const
+	Vector3 Camera::ViewingDirection() const
 	{
 		return viewingDirection;
 	}
 
-	Vector3 Camera::GetPosition() const
+	Vector3 Camera::Position() const
 	{
 		return position;
 	}
 
-	float Camera::GetFieldOfView() const
+	float Camera::FieldOfView() const
 	{
 		return fieldOfView;
 	}
 
-	Matrix Camera::GetProjection()
+	Matrix Camera::ProjectionMatrix()
 	{
-		Matrix view = Matrix::CreateLookAt(position, viewingDirection, up);
-
 		Matrix projection;
 
 		if (projectionMode == ProjectionMode::PERSPECTIVE)
@@ -101,7 +99,11 @@ namespace Rendering
 		else
 			projection = Matrix::CreateOrthographic(viewingRectangle.x, viewingRectangle.y, nearPlane, farPlane);
 
-		return projection * view * Matrix::Identity;
+		return projection;
+	}
+	Matrix Camera::ViewMatrix()
+	{
+		return Matrix::CreateLookAt(position, viewingDirection, up);
 	}
 }
 

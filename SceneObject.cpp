@@ -14,7 +14,7 @@ namespace Rendering
 	{
 	}
 
-	const Transform& SceneObject::GetTransform() const
+	Transform& SceneObject::GetTransform()
 	{
 		return transform;
 	}

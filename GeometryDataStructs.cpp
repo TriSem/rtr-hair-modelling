@@ -74,15 +74,15 @@ namespace Rendering
 
 		for (int i = 0; i < edges.size(); i++)
 		{
-			Vertex currentVertex = vertices.at(edges.at(i).baseVertexIndex).vertex;
-			Vector3 point1 = currentVertex.position;
+			DirectedEdgeVertex& currentVertex = vertices.at(edges.at(i).baseVertexIndex);
+			Vector3 point1 = currentVertex.vertex.position;
 			Vector3 point2 = vertices.at(edges.at(NextEdge(i)).baseVertexIndex).vertex.position;
 			Vector3 point3 = vertices.at(edges.at(PreviousEdge(i)).baseVertexIndex).vertex.position;
 
 			Vector3 edgeVector1 = point2 - point1;
 			Vector3 edgeVector2 = point3 - point1;
 
-			currentVertex.normal = currentVertex.normal + edgeVector1.Cross(edgeVector2);
+			currentVertex.vertex.normal = currentVertex.vertex.normal + edgeVector1.Cross(edgeVector2);
 		}
 
 		for (DirectedEdgeVertex vertex : vertices)

@@ -29,12 +29,13 @@ namespace Rendering
 		void SetViewingRectangle(float width, float height);
 
 
-		Vector3 GetUp() const;
-		Vector3 GetViewingDirection() const;
-		Vector3 GetPosition() const;
-		float GetFieldOfView() const;
+		Vector3 Up() const;
+		Vector3 ViewingDirection() const;
+		Vector3 Position() const;
+		float FieldOfView() const;
 
-		Matrix GetProjection();
+		Matrix ProjectionMatrix();
+		Matrix ViewMatrix();
 
 	private:
 

@@ -18,7 +18,7 @@ namespace Rendering
 
 		virtual void Update();
 
-		const Transform& GetTransform() const;
+		Transform& GetTransform();
 
 		std::shared_ptr<VertexBuffer> GetVertexBuffer();
 		std::shared_ptr<IndexBuffer> GetIndexBuffer();
