@@ -20,6 +20,7 @@ namespace Rendering
 	struct ConstantBufferVS
 	{
 		Matrix mvp;
+		Matrix modelMatrix;
 	};
 
 	class Renderer

@@ -43,6 +43,7 @@ namespace Rendering
 			ConstantBufferVS constantBufferVS;
 			Camera& camera = scene.GetCamera();
 			constantBufferVS.mvp = it->GetTransform().TransformationMatrix() * camera.ViewMatrix() * camera.ProjectionMatrix();
+			constantBufferVS.modelMatrix = it->GetTransform().TransformationMatrix();
 
 			D3D11_MAPPED_SUBRESOURCE resource;
 			context->Map(constantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);

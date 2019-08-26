@@ -1,6 +1,7 @@
 cbuffer mvpMatrix
 {
     float4x4 mvp;
+    float4x4 modelMatrix;
 };
 
 struct VSInput
@@ -18,7 +19,7 @@ struct VSOutput
 VSOutput main(VSInput vertex)
 {
     VSOutput output;
-    output.position = mul(mvp, float4(vertex.position, 1));
-    output.normal = vertex.normal;
+    output.position = mul(mvp, float4(vertex.position, 1.0f));
+    output.normal = normalize(mul(float4(vertex.normal, 0.0f), modelMatrix));
     return output;
 }
