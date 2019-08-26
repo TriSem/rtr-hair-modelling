@@ -67,7 +67,7 @@ namespace Rendering
 
 	void DirectedEdgeMesh::RecalculateNormals()
 	{
-		for (DirectedEdgeVertex vertex : vertices)
+		for (DirectedEdgeVertex& vertex : vertices)
 		{
 			vertex.vertex.normal = Vector3::Zero;
 		}
@@ -85,10 +85,11 @@ namespace Rendering
 			currentVertex.vertex.normal = currentVertex.vertex.normal + edgeVector1.Cross(edgeVector2);
 		}
 
-		for (DirectedEdgeVertex vertex : vertices)
+		for (DirectedEdgeVertex& vertex : vertices)
 		{
 			Vector3 normalSum = vertex.vertex.normal;
 			normalSum.Normalize();
+			vertex.vertex.normal = normalSum;
 		}
 	}
 

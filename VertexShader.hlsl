@@ -19,6 +19,6 @@ VSOutput main(VSInput vertex)
 {
     VSOutput output;
     output.position = mul(mvp, float4(vertex.position, 1));
-    output.normal = mul(mvp, vertex.normal);
+    output.normal = vertex.normal;
     return output;
 }

@@ -28,13 +28,10 @@ void Application::Run()
 	reader.LoadFile("C:/Users/Tristan/3D Objects/bunny.obj");
 	Mesh mesh = Mesh(reader.GetObjects().at(0).ExtractMesh());
 	std::unique_ptr<DirectedEdgeMesh> decimatedMesh = std::make_unique<DirectedEdgeMesh>(mesh);
-	/*UINT a = decimatedMesh->FaceCount();
-	decimatedMesh->Decimate(500);
-	UINT b = decimatedMesh->FaceCount();*/
+	//decimatedMesh->Decimate(500);
 	mesh = decimatedMesh->ExtractBasicMesh();
 	SceneObject model = SceneObject(renderer->GetDevice(), mesh, renderer->GetVertexShader());
-	model.GetTransform().SetScale(0.5f);
-	model.GetTransform().SetPosition(Vector3(0.0f, -1.0f, 0.0f));
+	model.GetTransform().SetScale(0.6f);
 	mainScene->AddSceneObject(model);
 
 	while (message.message != WM_QUIT)
@@ -72,7 +69,7 @@ void Application::Init()
 		mainWindow.Height()
 	);
 
-	renderer->SetRenderMode(Rendering::RenderMode::WIREFRAME);
+	//renderer->SetRenderMode(Rendering::RenderMode::WIREFRAME);
 
 	mainScene = std::make_shared<Scene>();
 
