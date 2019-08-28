@@ -25,10 +25,10 @@ void Application::Run()
 	MSG message = {};
 
 	OBJ::ObjReader reader;
-	reader.LoadFile("C:/Users/Tristan/3D Objects/uvsphere.obj");
+	reader.LoadFile("C:/Users/Tristan/3D Objects/bunny.obj");
 	Mesh mesh = Mesh(reader.GetObjects().at(0).ExtractMesh());
 	std::unique_ptr<DirectedEdgeMesh> decimatedMesh = std::make_unique<DirectedEdgeMesh>(mesh);
-	//decimatedMesh->Decimate(500);
+	decimatedMesh->Decimate(70000);
 	mesh = decimatedMesh->ExtractBasicMesh();
 	SceneObject model = SceneObject(renderer->GetDevice(), mesh, renderer->GetVertexShader());
 	model.GetTransform().SetScale(0.6f);
@@ -69,7 +69,7 @@ void Application::Init()
 		mainWindow.Height()
 	);
 
-	//renderer->SetRenderMode(Rendering::RenderMode::WIREFRAME);
+	renderer->SetRenderMode(Rendering::RenderMode::WIREFRAME);
 
 	mainScene = std::make_shared<Scene>();
 

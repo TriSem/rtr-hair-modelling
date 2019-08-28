@@ -7,6 +7,8 @@
 #include <map>
 #include <set>
 #include <list>
+#include <utility>
+#include "Search.h"
 
 using DirectX::XMFLOAT2;
 using DirectX::XMFLOAT3;

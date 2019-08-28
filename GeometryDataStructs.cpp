@@ -1,6 +1,4 @@
 #include "GeometryDataStructs.h"
-#include <utility>
-#include "Graphics.h"
 
 using DirectX::SimpleMath::Vector3;
 using DirectX::SimpleMath::Plane;
@@ -289,7 +287,7 @@ namespace Rendering
 	void DirectedEdgeMesh::CollectGarbage()
 	{
 		vector<DirectedEdgeVertex> newVertices;
-		vector<uint32_t> deletedVertices;
+		vector<size_t> deletedVertices;
 		for (uint32_t i = 0; i < vertices.size(); i++)
 		{
 			DirectedEdgeVertex vertex = vertices.at(i);
@@ -307,28 +305,30 @@ namespace Rendering
 		std::sort(deletedVertices.begin(), deletedVertices.end());
 
 		vector<DirectedEdge> newEdges;
-		for (DirectedEdge edge : edges)
+		vector<size_t> deletedEdges;
+		for (uint32_t i = 0; i < edges.size(); i++)
 		{
+			DirectedEdge& edge = edges.at(i);
 			if (edge.deleted)
-				continue;
-
-			uint32_t baseVertexDelta = 0;
-			auto it = deletedVertices.begin();
-			while (it != deletedVertices.end() && edge.baseVertexIndex >= *it)
 			{
-				baseVertexDelta++;
-				it++;
+				deletedEdges.push_back(i);
+				continue;
 			}
 
-			edge.baseVertexIndex -= baseVertexDelta;
+			edge.baseVertexIndex -= FindRank(deletedVertices, edge.baseVertexIndex);
 			newEdges.push_back(edge);
 		}
+
+		std::sort(deletedEdges.begin(), deletedEdges.end());
 		
 		edges = newEdges;
 
-		EstablishEdgeMap();
+		for (DirectedEdge& edge : edges)
+		{
+			edge.oppositeEdgeIndex -= FindRank(deletedEdges, edge.oppositeEdgeIndex);
+		}
+
 		RelinkVertices();
-		RelinkEdges();
 		RecalculateNormals();
 	}
 
