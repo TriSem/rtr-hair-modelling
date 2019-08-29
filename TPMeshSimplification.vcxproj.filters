@@ -40,31 +40,19 @@
     <Filter Include="Headerdateien\Rendering\Scene">
       <UniqueIdentifier>{94bc5970-6c5e-450f-9d64-d87039558c57}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Headerdateien\Framework">
+      <UniqueIdentifier>{2f9bc195-8885-4565-a190-c0a28ada3e4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Framework">
+      <UniqueIdentifier>{8b2021f2-efab-4548-9028-ca5f13c434e0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="framework.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="Window.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="ErrorHandling.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="Renderer.h">
       <Filter>Headerdateien\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="Graphics.h">
       <Filter>Headerdateien\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="Application.h">
-      <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="GeometryDataStructs.h">
       <Filter>Headerdateien\Rendering</Filter>
@@ -99,19 +87,34 @@
     <ClInclude Include="Light.h">
       <Filter>Headerdateien\Rendering\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="DecimationModel.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Search.h">
+      <Filter>Headerdateien\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Window.h">
+      <Filter>Headerdateien\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Headerdateien\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="framework.h">
+      <Filter>Headerdateien\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Headerdateien\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="ErrorHandling.h">
+      <Filter>Headerdateien\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Application.h">
+      <Filter>Headerdateien\Framework</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="Window.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="Renderer.cpp">
       <Filter>Quelldateien\Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="Application.cpp">
-      <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="ObjReader.cpp">
       <Filter>Quelldateien\Obj</Filter>
@@ -151,6 +154,18 @@
     </ClCompile>
     <ClCompile Include="Object.cpp">
       <Filter>Quelldateien\Obj</Filter>
+    </ClCompile>
+    <ClCompile Include="DecimationModel.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Window.cpp">
+      <Filter>Quelldateien\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Quelldateien\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Application.cpp">
+      <Filter>Quelldateien\Framework</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

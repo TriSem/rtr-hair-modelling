@@ -1,11 +1,14 @@
 #include "Application.h"
 #include <commdlg.h>
+#include "DecimationModel.h"
 
 using Rendering::Renderer;
 using Rendering::Scene;
 using Rendering::DirectedEdgeMesh;
 using Rendering::Mesh;
 using Rendering::SceneObject;
+
+Keyboard::KeyboardStateTracker Application::INPUT;
 
 Application::Application(HINSTANCE instanceHandle, int nCmdShow, std::wstring appTitle) :
 	instanceHandle(instanceHandle),
@@ -35,7 +38,7 @@ void Application::Run()
 		else
 		{
 			Input();
-			Update();
+			this->Update();
 			Render();
 		}
 	}
@@ -69,13 +72,14 @@ void Application::Init()
 
 void Application::Input()
 {
-	auto state = keyboard->GetState();
+	state = keyboard->GetState();
+	INPUT.Update(state);
 
-	if (state.Escape)
+	if (INPUT.pressed.Escape)
 	{
 		PostQuitMessage(0);
 	}
-	if (state.O)
+	if (INPUT.pressed.O)
 	{
 		OpenFile(windows.at(0).WindowHandle());
 	}
@@ -111,7 +115,7 @@ void Application::OpenFile(HWND windowHandle)
 		Mesh mesh = Mesh(reader->GetObjects().at(0).ExtractMesh());
 		std::unique_ptr<DirectedEdgeMesh> decimatedMesh = std::make_unique<DirectedEdgeMesh>(mesh);
 		mesh = decimatedMesh->ExtractBasicMesh();
-		SceneObject model = SceneObject(renderer->GetDevice(), mesh, renderer->GetVertexShader());
+		DecimationModel model = DecimationModel(renderer->GetDevice(), mesh, renderer->GetVertexShader());
 		mainScene->GetSceneObjects().clear();
 		mainScene->AddSceneObject(model);
 	}

@@ -10,7 +10,6 @@
 #include "SceneObject.h"
 #include "GeometryDataStructs.h"
 
-using DirectX::Mouse;
 using DirectX::Keyboard;
 
 class Application
@@ -20,6 +19,8 @@ public:
 
 	Application(HINSTANCE instanceHandle, int nCmdShow, std::wstring appTitle);
 	~Application();
+
+	static Keyboard::KeyboardStateTracker INPUT;
 
 private:
 
@@ -33,6 +34,7 @@ private:
 	std::shared_ptr<Rendering::Scene> mainScene;
 
 	std::unique_ptr<Keyboard> keyboard;
+	Keyboard::State state;
 
 	void Init();
 	void Input();

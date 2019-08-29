@@ -169,6 +169,7 @@
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="DecimationModel.h" />
     <ClInclude Include="ErrorHandling.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="GeometryDataStructs.h" />
@@ -191,6 +192,7 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="DecimationModel.cpp" />
     <ClCompile Include="GeometryDataStructs.cpp" />
     <ClCompile Include="IndexBuffer.cpp" />
     <ClCompile Include="Light.cpp" />

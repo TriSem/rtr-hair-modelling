@@ -11,10 +11,11 @@ namespace Rendering
 
 	void Scene::Update()
 	{
-		/*for (SceneObject object : sceneObjects)
+		if(!sceneObjects.empty())
+		for (SceneObject object : sceneObjects)
 		{
 			object.Update();
-		}*/
+		}
 	}
 
 	void Scene::AddSceneObject(SceneObject& object)
