@@ -101,7 +101,6 @@ void Application::OpenFile(HWND windowHandle)
 	openFile.hwndOwner = windowHandle;
 	openFile.hInstance = instanceHandle;
 	openFile.lpstrFile = fileName;
-	openFile.lpstrFile[0] = '\0';
 	openFile.nMaxFile = 100;
 
 	bool succeeded = GetOpenFileName(&openFile);
