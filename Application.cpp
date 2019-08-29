@@ -1,4 +1,5 @@
 #include "Application.h"
+#include <commdlg.h>
 
 using Rendering::Renderer;
 using Rendering::Scene;
@@ -23,16 +24,6 @@ void Application::Run()
 {
 	Init();
 	MSG message = {};
-
-	OBJ::ObjReader reader;
-	reader.LoadFile("C:/Users/Tristan/3D Objects/bunny.obj");
-	Mesh mesh = Mesh(reader.GetObjects().at(0).ExtractMesh());
-	std::unique_ptr<DirectedEdgeMesh> decimatedMesh = std::make_unique<DirectedEdgeMesh>(mesh);
-	decimatedMesh->Decimate(70000);
-	mesh = decimatedMesh->ExtractBasicMesh();
-	SceneObject model = SceneObject(renderer->GetDevice(), mesh, renderer->GetVertexShader());
-	model.GetTransform().SetScale(0.6f);
-	mainScene->AddSceneObject(model);
 
 	while (message.message != WM_QUIT)
 	{
@@ -69,15 +60,25 @@ void Application::Init()
 		mainWindow.Height()
 	);
 
-	renderer->SetRenderMode(Rendering::RenderMode::WIREFRAME);
-
+	reader = std::make_unique<OBJ::ObjReader>();
 	mainScene = std::make_shared<Scene>();
+	keyboard = std::make_unique<Keyboard>();
 
 	ShowWindow(mainWindow.WindowHandle(), nCmdShow);
 }
 
 void Application::Input()
 {
+	auto state = keyboard->GetState();
+
+	if (state.Escape)
+	{
+		PostQuitMessage(0);
+	}
+	if (state.O)
+	{
+		OpenFile(windows.at(0).WindowHandle());
+	}
 }
 
 void Application::Update()
@@ -88,4 +89,31 @@ void Application::Update()
 void Application::Render()
 {
 	renderer->Render(*mainScene);
+}
+
+void Application::OpenFile(HWND windowHandle)
+{
+	wchar_t fileName[100] = {};
+
+	OPENFILENAME openFile = {};
+	
+	openFile.lStructSize = sizeof(OPENFILENAME);
+	openFile.hwndOwner = windowHandle;
+	openFile.hInstance = instanceHandle;
+	openFile.lpstrFile = fileName;
+	openFile.lpstrFile[0] = '\0';
+	openFile.nMaxFile = 100;
+
+	bool succeeded = GetOpenFileName(&openFile);
+
+	if (succeeded)
+	{
+		reader->LoadFile(openFile.lpstrFile);
+		Mesh mesh = Mesh(reader->GetObjects().at(0).ExtractMesh());
+		std::unique_ptr<DirectedEdgeMesh> decimatedMesh = std::make_unique<DirectedEdgeMesh>(mesh);
+		mesh = decimatedMesh->ExtractBasicMesh();
+		SceneObject model = SceneObject(renderer->GetDevice(), mesh, renderer->GetVertexShader());
+		mainScene->GetSceneObjects().clear();
+		mainScene->AddSceneObject(model);
+	}
 }

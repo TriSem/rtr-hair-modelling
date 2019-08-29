@@ -3,6 +3,7 @@
 #include "ErrorHandling.h"
 
 using std::string;
+using std::wstring;
 using std::vector;
 
 
@@ -24,10 +25,10 @@ namespace OBJ
 		return objects;
 	}
 
-	bool ObjReader::LoadFile(const string& path)
+	bool ObjReader::LoadFile(const wstring& path)
 	{
-		string fileEnding = path.substr(path.length() - 4);
-		if (fileEnding != ".obj")
+		wstring fileEnding = path.substr(path.length() - 4);
+		if (fileEnding != L".obj")
 		{
 			OutputDebugString(L"Incorrect file type. File needs to be a wavefront obj file.");
 			return false;

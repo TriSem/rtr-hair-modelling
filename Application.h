@@ -28,13 +28,17 @@ private:
 	std::vector<Window> windows;
 	std::wstring appTitle;
 
+	std::unique_ptr<OBJ::ObjReader> reader;
 	std::unique_ptr<Rendering::Renderer> renderer;
 	std::shared_ptr<Rendering::Scene> mainScene;
+
+	std::unique_ptr<Keyboard> keyboard;
 
 	void Init();
 	void Input();
 	void Update();
 	void Render();
+	void OpenFile(HWND windowHandle);
 
 	int nCmdShow;
 

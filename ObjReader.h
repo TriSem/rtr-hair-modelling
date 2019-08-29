@@ -36,7 +36,7 @@ namespace OBJ
 
 		std::vector<Object> GetObjects() const;
 
-		bool LoadFile(const std::string& path);
+		bool LoadFile(const std::wstring& path);
 		void UnloadFile();
 	};
 }

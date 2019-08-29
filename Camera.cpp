@@ -10,7 +10,7 @@ namespace Rendering
 		fieldOfView(70),
 		nearPlane(0.1f),
 		farPlane(100.0f),
-		aspectRatio(4.0f / 3.0f),
+		aspectRatio(16.0f / 9.0f),
 		viewingRectangle(XMFLOAT2(10, 10))
 	{
 	}
@@ -23,7 +23,7 @@ namespace Rendering
 		fieldOfView(70),
 		nearPlane(0.1f),
 		farPlane(100.0f),
-		aspectRatio(4.0f / 3.0f),
+		aspectRatio(16.0f / 9.0f),
 		viewingRectangle(XMFLOAT2(10, 10))
 	{
 	}
