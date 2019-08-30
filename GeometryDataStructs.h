@@ -74,11 +74,6 @@ namespace Rendering
 
 		void CreateFromMesh(Mesh basicMesh);
 
-		void RecalculateNormals();
-
-		// Links every edge with their opposite edge, provided one exists.
-		void LinkEdges();
-
 		/** Returns the index of a halfedge in the specified face.
 			IndexInFace is supposed to be used with one of the values
 			0, 1 or 2. */
@@ -95,20 +90,22 @@ namespace Rendering
 
 		uint32_t PreviousEdge(uint32_t edgeId) const;
 
+		/**
+			Returns a list of vertices that make up the one-ring neighborhood
+			for a given vertex.
+		*/
+		std::vector<uint32_t> GetOneRing(uint32_t vertex);
+
+		/**
+			Returns a list of faces that make up the one-ring neighborhood
+			for a given vertex.
+		*/
+		std::vector<uint32_t> GetOneRingFaces(uint32_t vertex);
+
 		/** Returns a reference to the edge object identified by the two vertices. */
 		DirectedEdge& GetEdge(VertexPair pair);
 
-		class ErrorComparison
-		{
-			bool operator()(std::pair<float, uint32_t> value1, std::pair<float, uint32_t> value2)
-			{
-				return value1.first > value2.first;
-			}
-		};
-
 		float ErrorCost(uint32_t v1, uint32_t v2);
-
-		DirectX::SimpleMath::Vector3 GetFaceNormal(uint32_t faceIndex);
 
 		/** Assigns new edges to all the vertices. */
 		void RelinkVertices();
@@ -120,6 +117,20 @@ namespace Rendering
 		void CollectGarbage();
 
 		void EstablishEdgeMap();
+		void RecalculateNormals();
+
+		// Links every edge with their opposite edge, provided one exists.
+		void LinkEdges();
+
+		DirectX::SimpleMath::Vector3 GetFaceNormal(uint32_t faceIndex);
+
+		class ErrorComparison
+		{
+			bool operator()(std::pair<float, uint32_t> value1, std::pair<float, uint32_t> value2)
+			{
+				return value1.first > value2.first;
+			}
+		};
 
 	public:
 
@@ -137,13 +148,5 @@ namespace Rendering
 		void Decimate(uint32_t targetFaceCount);
 
 		bool IsBoundaryVertex(uint32_t vertex);
-
-		/** 
-			Returns a list of vertices that make up the one-ring neighborhood
-			for a given vertex.
-		*/
-		std::vector<uint32_t> GetOneRing(uint32_t vertex);
-
-		std::vector<uint32_t> GetOneRingFaces(uint32_t vertex);
 	};
 }

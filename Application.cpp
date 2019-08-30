@@ -39,7 +39,7 @@ void Application::Run()
 		else
 		{
 			Input();
-			this->Update();
+			Update();
 			Render();
 		}
 	}
