@@ -6,19 +6,20 @@ namespace Rendering
 		camera(Camera()),
 		light(Light())
 	{
-	
 	}
 
 	void Scene::Update()
 	{
-		if(!sceneObjects.empty())
-		for (SceneObject object : sceneObjects)
+		if (!sceneObjects.empty())
 		{
-			object.Update();
+			for (auto object : sceneObjects)
+			{
+				object->Update();
+			}
 		}
 	}
 
-	void Scene::AddSceneObject(SceneObject& object)
+	void Scene::AddSceneObject(std::shared_ptr<SceneObject> object)
 	{
 		sceneObjects.push_back(object);
 	}
@@ -28,7 +29,7 @@ namespace Rendering
 		sceneObjects.erase(sceneObjects.begin() + index);
 	}
 
-	std::vector<SceneObject>& Scene::GetSceneObjects()
+	std::vector<std::shared_ptr<SceneObject>>& Scene::GetSceneObjects()
 	{
 		return sceneObjects;
 	}

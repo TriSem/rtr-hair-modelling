@@ -22,6 +22,7 @@ namespace Rendering
 
 		std::shared_ptr<VertexBuffer> GetVertexBuffer();
 		std::shared_ptr<IndexBuffer> GetIndexBuffer();
+		Mesh& GetMesh();
 
 	private:
 
@@ -30,6 +31,7 @@ namespace Rendering
 
 		std::shared_ptr<VertexShader> vertexShader;
 	
+	protected:
 		Transform transform;
 		Mesh mesh;
 	};

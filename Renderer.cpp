@@ -1,7 +1,5 @@
 #include "Renderer.h"
-#include "DirectXTK/Inc/GeometricPrimitive.h"
-#include <DirectXMath.h>
-#include "GeometryDataStructs.h"
+
 
 using namespace DirectX::SimpleMath;
 using DirectX::GeometricPrimitive;
@@ -24,7 +22,7 @@ namespace Rendering
 		vertexShader(nullptr),
 		pixelShader(nullptr)
 	{
-		InitializeAPI();
+		Initialize();
 	}
 
 	Renderer::~Renderer()
@@ -36,22 +34,23 @@ namespace Rendering
 		Clear();
 		context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-		vector<SceneObject>& objects = scene.GetSceneObjects();
+		vector<std::shared_ptr<SceneObject>>& objects = scene.GetSceneObjects();
 
 		for (auto it = objects.begin(); it != objects.end(); it++)
 		{
 			ConstantBufferVS constantBufferVS;
 			Camera& camera = scene.GetCamera();
-			constantBufferVS.mvp = it->GetTransform().TransformationMatrix() * camera.ViewMatrix() * camera.ProjectionMatrix();
-			constantBufferVS.modelMatrix = it->GetTransform().TransformationMatrix();
+			std::shared_ptr<SceneObject> object = *it;
+			constantBufferVS.mvp = object->GetTransform().TransformationMatrix() * camera.ViewMatrix() * camera.ProjectionMatrix();
+			constantBufferVS.modelMatrix = object->GetTransform().TransformationMatrix();
 
 			D3D11_MAPPED_SUBRESOURCE resource;
 			context->Map(constantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
 			CopyMemory(resource.pData, &constantBufferVS, sizeof(ConstantBufferVS));
 			context->Unmap(constantBuffer.Get(), 0);
 
-			std::shared_ptr<VertexBuffer> vertexBuffer = it->GetVertexBuffer();
-			std::shared_ptr<IndexBuffer> indexBuffer = it->GetIndexBuffer(); 
+			std::shared_ptr<VertexBuffer> vertexBuffer = object->GetVertexBuffer();
+			std::shared_ptr<IndexBuffer> indexBuffer = object->GetIndexBuffer(); 
 			context->IASetInputLayout(vertexBuffer->GetInputLayout().Get());
 			context->IASetVertexBuffers(0, 1, vertexBuffer->GetData().GetAddressOf(), &vertexBuffer->STRIDE, &vertexBuffer->GetOffset());
 			context->IASetIndexBuffer(indexBuffer->GetData().Get(), DXGI_FORMAT_R32_UINT, 0);
@@ -64,7 +63,7 @@ namespace Rendering
 		swapChain->Present(0, 0);
 	}
 
-	void Renderer::InitializeAPI()
+	void Renderer::Initialize()
 	{
 		CreateDevice();
 		CheckMultisamplingSupport();
@@ -120,14 +119,6 @@ namespace Rendering
 			device->CheckMultisampleQualityLevels(DXGI_FORMAT_R8G8B8A8_UNORM, multisampleCount, &msaaQuality),
 			L"Failed to check multisample quality levels."
 		);
-	
-
-		// Look up docs for multisampling quality. This function is likely not implemented properly.
-		/*if (multisampleCount > msaaQuality)
-		{
-			MessageBox(0, L"Using lowered multisample count.", 0, 0);
-			SetMultisampleCount(msaaQuality - 1);
-		}*/
 	}
 
 	void Renderer::CreateSwapChain()

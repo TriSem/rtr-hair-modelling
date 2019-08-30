@@ -40,7 +40,8 @@ private:
 	void Input();
 	void Update();
 	void Render();
-	void OpenFile(HWND windowHandle);
+	void OpenFile();
+	void Decimate(float decimationPercentage);
 
 	int nCmdShow;
 

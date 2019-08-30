@@ -7,27 +7,27 @@ DecimationModel::DecimationModel(ComPtr<ID3D11Device> device, const Rendering::M
 
 void DecimationModel::Update()
 {
-	if (Application::INPUT.IsKeyPressed(Keyboard::S))
+	if (Application::INPUT.lastState.S)
 	{
 		MoveObject(0.0f, -0.0001f);
 	}
-	else if (Application::INPUT.IsKeyPressed(Keyboard::W))
+	else if (Application::INPUT.lastState.W)
 	{
 		MoveObject(0.0f, 0.0001f);
 	}
-	else if (Application::INPUT.IsKeyPressed(Keyboard::A))
+	else if (Application::INPUT.lastState.A)
 	{
 		MoveObject(0.0001f, 0.0f);
 	}
-	else if (Application::INPUT.IsKeyPressed(Keyboard::D))
+	else if (Application::INPUT.lastState.D)
 	{
 		MoveObject(-0.0001f, 0.0f);
 	}
-	if (Application::INPUT.IsKeyPressed(Keyboard::Q))
+	if (Application::INPUT.lastState.Q)
 	{
 		ChangeScale(0.0001f);
 	}
-	if (Application::INPUT.IsKeyPressed(Keyboard::E))
+	if (Application::INPUT.lastState.E)
 	{
 		ChangeScale(-0.0001f);
 	}
@@ -35,7 +35,6 @@ void DecimationModel::Update()
 
 void DecimationModel::MoveObject(float x, float y)
 {
-	Rendering::Transform& transform = GetTransform();
 	Vector3 position = transform.GetPosition();
 	position += Vector3(x, y, 0);
 	transform.SetPosition(position);
@@ -43,7 +42,6 @@ void DecimationModel::MoveObject(float x, float y)
 
 void DecimationModel::ChangeScale(float amount)
 {
-	Rendering::Transform& transform = GetTransform();
 	float scale = transform.GetScale();
 	scale += amount;
 

@@ -2,6 +2,7 @@
 
 #include "framework.h"
 #include "Graphics.h"
+#include "GeometryDataStructs.h"
 #include "Scene.h"
 #include "Shader.h"
 #include "VertexBuffer.h"
@@ -41,7 +42,7 @@ namespace Rendering
 
 		Scene scene;
 
-		void InitializeAPI();
+		void Initialize();
 		void CreateDevice();
 		void CheckMultisamplingSupport();
 		void CreateSwapChain();
@@ -51,7 +52,6 @@ namespace Rendering
 		void SetViewport();
 		void CreateRasterizerStates();
 		void CreateShaders();
-
 		void Clear();
 
 		UINT multisampleCount;

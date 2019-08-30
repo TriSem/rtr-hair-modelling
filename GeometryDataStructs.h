@@ -128,9 +128,6 @@ namespace Rendering
 
 		Mesh ExtractBasicMesh();
 
-		// Reset all edges before linking them to their opposite edge.
-		void RelinkEdges();
-
 		uint32_t FaceCount();
 
 		/** 

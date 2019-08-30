@@ -8,7 +8,7 @@ class DecimationModel :
 public:
 	
 	DecimationModel(ComPtr<ID3D11Device> device, const Rendering::Mesh& mesh, std::shared_ptr<Rendering::VertexShader> vertexShader);
-	virtual void Update() override;
+	void Update() override;
 
 private:
 

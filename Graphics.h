@@ -8,3 +8,5 @@
 #include "DirectXTK/Inc/SimpleMath.h"
 #include <DirectXColors.h>
 #include <d3dcompiler.h>
+#include "DirectXTK/Inc/GeometricPrimitive.h"
+#include <DirectXMath.h>

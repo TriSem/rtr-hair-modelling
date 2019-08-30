@@ -13,16 +13,17 @@ namespace Rendering
 		Scene();
 
 		void Update();
-		void AddSceneObject(SceneObject& object);
+		void AddSceneObject(std::shared_ptr<SceneObject> object);
 		void DeleteSceneObject(int index);
 
-		std::vector<SceneObject>& GetSceneObjects();
+		std::vector<std::shared_ptr<SceneObject>>& GetSceneObjects();
 
 		Camera& GetCamera();
 
 	private:
 
-		std::vector<SceneObject> sceneObjects;
+		int a = 0;
+		std::vector<std::shared_ptr<SceneObject>> sceneObjects;
 		Camera camera;
 		Light light;
 	};

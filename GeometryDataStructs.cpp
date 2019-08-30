@@ -116,27 +116,13 @@ namespace Rendering
 		}
 	}
 
-	void DirectedEdgeMesh::RelinkEdges()
-	{
-		for (auto it = edges.begin(); it != edges.end(); it++)
-		{
-			it->oppositeEdgeIndex = UINT32_MAX;
-		}
-
-		LinkEdges();
-	}
-
 	void DirectedEdgeMesh::Decimate(uint32_t targetFaceCount)
 	{
-		// The mesh will always contain at least one triangle.
-		if (vertices.size() < 4)
-			return;
-
 		uint32_t candidatesPerDecimation = 8;
 		std::random_device seed;
 		std::mt19937 generator(seed());
 
-		while (FaceCount() > targetFaceCount)
+		while (FaceCount() > targetFaceCount && FaceCount() > 6)
 		{
 			priority_queue<pair<float, uint32_t>, vector<pair<float, uint32_t>>, std::greater<pair<float, uint32_t>>> queue;
 			if (candidatesPerDecimation > edgeMap.size())
