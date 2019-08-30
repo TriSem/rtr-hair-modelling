@@ -22,7 +22,7 @@ namespace Rendering
 		Matrix rotatationMatrix = Matrix::CreateFromQuaternion(rotation);
 		Matrix scaleMatrix = Matrix::CreateScale(scale);
 
-		return translationMatrix * rotatationMatrix * scaleMatrix;
+		return rotatationMatrix * scaleMatrix * translationMatrix;
 	}
 
 	Vector3 Transform::GetPosition() const

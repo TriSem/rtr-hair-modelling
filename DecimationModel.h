@@ -12,7 +12,10 @@ public:
 
 private:
 
+	float delta;
+
 	void MoveObject(float x, float y);
 	void ChangeScale(float amount);
+	void Rotate(float x, float y);
 };
 

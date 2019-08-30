@@ -245,7 +245,7 @@ namespace Rendering
 		D3D11_RASTERIZER_DESC rasterizerDescription = {};
 
 		rasterizerDescription.FillMode = D3D11_FILL_WIREFRAME;
-		rasterizerDescription.CullMode = D3D11_CULL_BACK;
+		rasterizerDescription.CullMode = D3D11_CULL_NONE;
 		MessageAndThrowIfFailed(
 			device->CreateRasterizerState(&rasterizerDescription, rasterizerStateWireframe.ReleaseAndGetAddressOf()),
 			L"Failed to create rasterizer state: WIREFRAME."

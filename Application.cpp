@@ -68,7 +68,7 @@ void Application::Init()
 	mainScene = std::make_shared<Scene>();
 	keyboard = std::make_unique<Keyboard>();
 
-	//renderer->SetRenderMode(Rendering::RenderMode::WIREFRAME);
+	renderer->SetRenderMode(Rendering::RenderMode::WIREFRAME);
 
 	ShowWindow(mainWindow.WindowHandle(), nCmdShow);
 }
@@ -142,9 +142,11 @@ void Application::Decimate(float decimationPercentage)
 		return;
 
 	auto object = mainScene->GetSceneObjects().at(0);
+	Rendering::Transform transform = object->GetTransform();
 	auto decimatedMesh = std::make_unique<DirectedEdgeMesh>(object->GetMesh());
 	decimatedMesh->Decimate(decimatedMesh->FaceCount() * decimationPercentage);
 	Mesh mesh = decimatedMesh->ExtractBasicMesh();
 	auto model = std::make_shared<DecimationModel>(renderer->GetDevice(), mesh, renderer->GetVertexShader());
+	model->GetTransform() = transform;
 	mainScene->GetSceneObjects().at(0) = model;
 }
