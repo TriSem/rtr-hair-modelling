@@ -1,5 +1,5 @@
 #pragma once
-#include "Graphics.h"
+#include <Graphics.h>
 
 using DirectX::SimpleMath::Vector3;
 using DirectX::SimpleMath::Color;

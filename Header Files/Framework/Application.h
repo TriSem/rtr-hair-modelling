@@ -4,12 +4,9 @@
 #include "framework.h"
 #include <vector>
 #include "Window.h"
-#include "DirectXTK/Inc/Mouse.h"
-#include "DirectXTK/Inc/Keyboard.h"
-#include "ObjReader.h"
+#include <Mouse.h>
+#include <Keyboard.h>
 #include "SceneObject.h"
-#include "GeometryDataStructs.h"
-#include "DirectXTK/Inc/Mouse.h"
 
 using DirectX::Keyboard;
 using DirectX::Mouse;

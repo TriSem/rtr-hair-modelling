@@ -1,6 +1,5 @@
 #include "Application.h"
 #include <commdlg.h>
-#include "DecimationModel.h"
 
 using Rendering::Renderer;
 using Rendering::Scene;
