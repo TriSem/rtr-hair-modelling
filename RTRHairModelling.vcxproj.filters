@@ -28,12 +28,6 @@
     <Filter Include="Quelldateien\Rendering\Shaders">
       <UniqueIdentifier>{1545de75-f2d4-4c06-93db-02651dee4512}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Quelldateien\Obj">
-      <UniqueIdentifier>{6ffc7873-3199-466b-b4c9-ecd92f1a3770}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Headerdateien\Obj">
-      <UniqueIdentifier>{d36e49ad-dd74-4ca6-a625-58f3aa94c878}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Quelldateien\Rendering\Scene">
       <UniqueIdentifier>{6a72fa3e-2ed1-4808-a701-38985597c970}</UniqueIdentifier>
     </Filter>
@@ -53,15 +47,6 @@
     </ClInclude>
     <ClInclude Include="Graphics.h">
       <Filter>Headerdateien\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="GeometryDataStructs.h">
-      <Filter>Headerdateien\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="ObjData.h">
-      <Filter>Headerdateien\Obj</Filter>
-    </ClInclude>
-    <ClInclude Include="ObjReader.h">
-      <Filter>Headerdateien\Obj</Filter>
     </ClInclude>
     <ClInclude Include="Shader.h">
       <Filter>Headerdateien\Rendering\Shaders</Filter>
@@ -87,12 +72,6 @@
     <ClInclude Include="Light.h">
       <Filter>Headerdateien\Rendering\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="DecimationModel.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="Search.h">
-      <Filter>Headerdateien\Framework</Filter>
-    </ClInclude>
     <ClInclude Include="Window.h">
       <Filter>Headerdateien\Framework</Filter>
     </ClInclude>
@@ -116,9 +95,6 @@
     <ClCompile Include="Renderer.cpp">
       <Filter>Quelldateien\Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="ObjReader.cpp">
-      <Filter>Quelldateien\Obj</Filter>
-    </ClCompile>
     <ClCompile Include="VertexShader.cpp">
       <Filter>Quelldateien\Rendering\Shaders</Filter>
     </ClCompile>
@@ -127,9 +103,6 @@
     </ClCompile>
     <ClCompile Include="PixelShader.cpp">
       <Filter>Quelldateien\Rendering\Shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="GeometryDataStructs.cpp">
-      <Filter>Quelldateien\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="Transform.cpp">
       <Filter>Quelldateien\Rendering</Filter>
@@ -151,12 +124,6 @@
     </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>Quelldateien\Rendering\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Object.cpp">
-      <Filter>Quelldateien\Obj</Filter>
-    </ClCompile>
-    <ClCompile Include="DecimationModel.cpp">
-      <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Window.cpp">
       <Filter>Quelldateien\Framework</Filter>

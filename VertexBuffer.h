@@ -3,7 +3,6 @@
 #include "Graphics.h"
 #include "framework.h"
 #include "Shader.h"
-#include "GeometryDataStructs.h"
 
 using Microsoft::WRL::ComPtr;
 

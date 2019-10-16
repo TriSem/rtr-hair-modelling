@@ -1,7 +1,6 @@
 #pragma once
 #include "Graphics.h"
 #include "Transform.h"
-#include "GeometryDataStructs.h"
 #include <memory>
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"

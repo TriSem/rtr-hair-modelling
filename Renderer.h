@@ -2,7 +2,6 @@
 
 #include "framework.h"
 #include "Graphics.h"
-#include "GeometryDataStructs.h"
 #include "Scene.h"
 #include "Shader.h"
 #include "VertexBuffer.h"
