@@ -9,8 +9,10 @@
 #include "ObjReader.h"
 #include "SceneObject.h"
 #include "GeometryDataStructs.h"
+#include "DirectXTK/Inc/Mouse.h"
 
 using DirectX::Keyboard;
+using DirectX::Mouse;
 
 class Application
 {
@@ -29,19 +31,17 @@ private:
 	std::vector<Window> windows;
 	std::wstring appTitle;
 
-	std::unique_ptr<OBJ::ObjReader> reader;
 	std::unique_ptr<Rendering::Renderer> renderer;
 	std::shared_ptr<Rendering::Scene> mainScene;
 
 	std::unique_ptr<Keyboard> keyboard;
+	std::unique_ptr<Mouse> mouse;
 	Keyboard::State state;
 
 	void Init();
 	void Input();
 	void Update();
 	void Render();
-	void OpenFile();
-	void Decimate(float decimationPercentage);
 
 	int nCmdShow;
 
