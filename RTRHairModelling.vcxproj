@@ -73,7 +73,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)\DirectXTK\Inc;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)DirectXTK\Inc;$(SolutionDir)Header Files\Rendering;$(SolutionDir)Header Files\Framework;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)DirectXTK\Libs\x86\Debug;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
@@ -82,10 +82,11 @@
     <LinkIncremental>true</LinkIncremental>
     <LibraryPath>$(SolutionDir)DirectXTK\Libs\x64\Debug;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)\$(Platform)\$(Configuration)\</OutDir>
+    <IncludePath>$(SolutionDir)DirectXTK\Inc;$(SolutionDir)Header Files\Rendering;$(SolutionDir)Header Files\Framework;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)\DirectXTK\Inc;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)DirectXTK\Inc;$(SolutionDir)Header Files\Rendering;$(SolutionDir)Header Files\Framework;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)DirectXTK\Libs\x86\Release;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)\$(Platform)$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
@@ -94,6 +95,7 @@
     <LinkIncremental>false</LinkIncremental>
     <LibraryPath>$(SolutionDir)DirectXTK\Libs\x64\Release;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)\$(Platform)\$(Configuration)\</OutDir>
+    <IncludePath>$(SolutionDir)DirectXTK\Inc;$(SolutionDir)Header Files\Rendering;$(SolutionDir)Header Files\Framework;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -104,6 +106,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTK\Inc</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -120,6 +123,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTK\Inc</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -138,6 +142,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTK\Inc</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -158,6 +163,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTK\Inc</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -167,40 +173,6 @@
       <AdditionalDependencies>DirectXTK.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="Application.h" />
-    <ClInclude Include="Camera.h" />
-    <ClInclude Include="ErrorHandling.h" />
-    <ClInclude Include="framework.h" />
-    <ClInclude Include="Graphics.h" />
-    <ClInclude Include="IndexBuffer.h" />
-    <ClInclude Include="Light.h" />
-    <ClInclude Include="Renderer.h" />
-    <ClInclude Include="resource.h" />
-    <ClInclude Include="Scene.h" />
-    <ClInclude Include="SceneObject.h" />
-    <ClInclude Include="Shader.h" />
-    <ClInclude Include="targetver.h" />
-    <ClInclude Include="Transform.h" />
-    <ClInclude Include="VertexBuffer.h" />
-    <ClInclude Include="Window.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Application.cpp" />
-    <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="IndexBuffer.cpp" />
-    <ClCompile Include="Light.cpp" />
-    <ClCompile Include="Main.cpp" />
-    <ClCompile Include="PixelShader.cpp" />
-    <ClCompile Include="Renderer.cpp" />
-    <ClCompile Include="Scene.cpp" />
-    <ClCompile Include="SceneObject.cpp" />
-    <ClCompile Include="Shader.cpp" />
-    <ClCompile Include="Transform.cpp" />
-    <ClCompile Include="VertexBuffer.cpp" />
-    <ClCompile Include="VertexShader.cpp" />
-    <ClCompile Include="Window.cpp" />
-  </ItemGroup>
   <ItemGroup>
     <Image Include="RTRHairModelling.ico" />
     <Image Include="small.ico" />
@@ -221,6 +193,47 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="RTRHairModelling.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Header Files\Framework\Application.h" />
+    <ClInclude Include="Header Files\Framework\ErrorHandling.h" />
+    <ClInclude Include="Header Files\Framework\framework.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="Header Files\Framework\resource.h" />
+    <ClInclude Include="Header Files\Framework\targetver.h" />
+    <ClInclude Include="Header Files\Framework\Window.h" />
+    <ClInclude Include="Header Files\Rendering\Camera.h" />
+    <ClInclude Include="Header Files\Rendering\Graphics.h" />
+    <ClInclude Include="Header Files\Rendering\IndexBuffer.h" />
+    <ClInclude Include="Header Files\Rendering\Light.h" />
+    <ClInclude Include="Header Files\Rendering\Mesh.h" />
+    <ClInclude Include="Header Files\Rendering\Renderer.h" />
+    <ClInclude Include="Header Files\Rendering\Scene.h" />
+    <ClInclude Include="Header Files\Rendering\SceneObject.h" />
+    <ClInclude Include="Header Files\Rendering\Shader.h" />
+    <ClInclude Include="Header Files\Rendering\Transform.h" />
+    <ClInclude Include="Header Files\Rendering\Vertex.h" />
+    <ClInclude Include="Header Files\Rendering\VertexBuffer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source Files\Framework\Application.cpp" />
+    <ClCompile Include="Source Files\Framework\Main.cpp" />
+    <ClCompile Include="Source Files\Framework\Window.cpp" />
+    <ClCompile Include="Source Files\Rendering\Camera.cpp" />
+    <ClCompile Include="Source Files\Rendering\IndexBuffer.cpp" />
+    <ClCompile Include="Source Files\Rendering\Light.cpp" />
+    <ClCompile Include="Source Files\Rendering\PixelShader.cpp" />
+    <ClCompile Include="Source Files\Rendering\Renderer.cpp" />
+    <ClCompile Include="Source Files\Rendering\Scene.cpp" />
+    <ClCompile Include="Source Files\Rendering\SceneObject.cpp" />
+    <ClCompile Include="Source Files\Rendering\Shader.cpp" />
+    <ClCompile Include="Source Files\Rendering\Transform.cpp" />
+    <ClCompile Include="Source Files\Rendering\VertexBuffer.cpp" />
+    <ClCompile Include="Source Files\Rendering\VertexShader.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

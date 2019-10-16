@@ -1,6 +1,5 @@
 #include "Renderer.h"
 
-
 using namespace DirectX::SimpleMath;
 using DirectX::GeometricPrimitive;
 using DirectX::XM_PI;

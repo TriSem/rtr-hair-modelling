@@ -1,6 +1,6 @@
 #include "Window.h"
-#include "DirectXTK/Inc/Mouse.h"
-#include "DirectXTK/Inc/Keyboard.h"
+#include <Mouse.h>
+#include <Keyboard.h>
 
 Window::Window(HINSTANCE instanceHandle, std::wstring windowClassName, std::wstring title, int width, int height) :
 	instanceHandle(instanceHandle),

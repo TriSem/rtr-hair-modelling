@@ -1,9 +1,11 @@
 #pragma once
+
 #include "Graphics.h"
 #include "Transform.h"
 #include <memory>
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
+#include "Mesh.h"
 
 using namespace DirectX::SimpleMath;
 

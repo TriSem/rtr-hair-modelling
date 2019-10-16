@@ -3,6 +3,7 @@
 #include "Graphics.h"
 #include "framework.h"
 #include "Shader.h"
+#include "Vertex.h"
 
 using Microsoft::WRL::ComPtr;
 
