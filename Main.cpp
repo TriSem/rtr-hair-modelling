@@ -6,7 +6,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE instanceHandle,
 	_In_ LPWSTR    commandLine,
 	_In_ int       nCmdShow)
 {
-	auto app = std::make_unique<Application>(instanceHandle, nCmdShow, L"Mesh Simplification");
+	auto app = std::make_unique<Application>(instanceHandle, nCmdShow, L"Hair Modelling");
 	app->Run();
 	return 0;
  }
