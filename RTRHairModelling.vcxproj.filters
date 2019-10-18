@@ -28,6 +28,12 @@
     <Filter Include="Quelldateien\Framework">
       <UniqueIdentifier>{8b2021f2-efab-4548-9028-ca5f13c434e0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Headerdateien\FileReading">
+      <UniqueIdentifier>{a44e169b-e5d0-4c5b-8b78-580d3a0f8760}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\FileReading">
+      <UniqueIdentifier>{a6c0caac-2b79-4162-a74e-50b47523026a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -105,6 +111,9 @@
     <ClInclude Include="Header Files\Rendering\Vertex.h">
       <Filter>Headerdateien\Rendering</Filter>
     </ClInclude>
+    <ClInclude Include="Header Files\FileReading\RawReader.h">
+      <Filter>Headerdateien\FileReading</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source Files\Framework\Application.cpp">
@@ -148,6 +157,9 @@
     </ClCompile>
     <ClCompile Include="Source Files\Rendering\VertexShader.cpp">
       <Filter>Quelldateien\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Files\FileReading\RawReader.cpp">
+      <Filter>Quelldateien\FileReading</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

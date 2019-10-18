@@ -195,6 +195,7 @@
     <ResourceCompile Include="RTRHairModelling.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Header Files\FileReading\RawReader.h" />
     <ClInclude Include="Header Files\Framework\Application.h" />
     <ClInclude Include="Header Files\Framework\ErrorHandling.h" />
     <ClInclude Include="Header Files\Framework\framework.h">
@@ -220,6 +221,7 @@
     <ClInclude Include="Header Files\Rendering\VertexBuffer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source Files\FileReading\RawReader.cpp" />
     <ClCompile Include="Source Files\Framework\Application.cpp" />
     <ClCompile Include="Source Files\Framework\Main.cpp" />
     <ClCompile Include="Source Files\Framework\Window.cpp" />
