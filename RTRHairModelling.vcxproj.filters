@@ -111,7 +111,7 @@
     <ClInclude Include="Header Files\Rendering\Vertex.h">
       <Filter>Headerdateien\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="Header Files\FileReading\RawReader.h">
+    <ClInclude Include="Header Files\FileReading\RawFile.h">
       <Filter>Headerdateien\FileReading</Filter>
     </ClInclude>
   </ItemGroup>
@@ -158,7 +158,7 @@
     <ClCompile Include="Source Files\Rendering\VertexShader.cpp">
       <Filter>Quelldateien\Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="Source Files\FileReading\RawReader.cpp">
+    <ClCompile Include="Source Files\FileReading\RawFile.cpp">
       <Filter>Quelldateien\FileReading</Filter>
     </ClCompile>
   </ItemGroup>
