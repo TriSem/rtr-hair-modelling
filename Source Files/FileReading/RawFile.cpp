@@ -37,7 +37,7 @@ std::shared_ptr<std::array<byte> > RawFile::ReadBuffer()
 
 int RawFile::BytesToInt(byte integer[4])
 {
-	int value = 0.0f;
+	int value = 0;
 	memcpy(&value, &integer, sizeof(int));
 
 	return value;
