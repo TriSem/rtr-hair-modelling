@@ -3,12 +3,11 @@
 #include <fstream>
 #include <iterator>
 #include <array>
+#include <vector>
 #include "Vertex.h"
 
 class RawFile
 {
-	using byte = unsigned char;
-
 public:
 	RawFile();
 	RawFile(std::string path);
@@ -36,9 +35,8 @@ public:
 		return returnData;
 	}
 
-
 private:
 
 	std::string path;
-	std::shared_ptr<std::array<byte> > ReadBuffer();
+	std::vector<char> ReadBuffer();
 };

@@ -15,21 +15,22 @@ RawFile::~RawFile()
 {
 }
 
-std::shared_ptr<std::array<byte> > RawFile::ReadBuffer()
+std::vector<char> RawFile::ReadBuffer()
 {
 	std::ifstream stream(path, std::ios::in | std::ios::binary);
 
 	assert(stream.is_open());
 
-	byte numberOfWordsBinary[4];
-	stream.read(numberOfWordsBinary, 4);
+	char numberOfWordsBinary[4];
+	stream.read(&numberOfWordsBinary[0], 4);
 
-	unsigned int numberOfWords = (unsigned int)numberOfWordsBinary;
+	unsigned int numberOfWords = 0;
+	memcpy(&numberOfWords, numberOfWordsBinary, sizeof(unsigned int));
 	size_t numberOfBytes = numberOfWords * sizeof(float);
-	std::shared_ptr<std::array<byte, numberOfBytes> > buffer();
+	std::vector<char> buffer;
 
-	stream.seekg(4, ios::beg);
-	stream.read(buffer, numberOfBytes);
+	stream.seekg(4, std::ios::beg);
+	stream.read(&buffer[0], numberOfBytes);
 	stream.close();
 
 	return buffer;

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <SimpleMath.h>
+#include <Graphics.h>
 
 using DirectX::SimpleMath::Vector3;
 using DirectX::SimpleMath::Vector2;
