@@ -5,9 +5,12 @@
 #include <array>
 #include <vector>
 #include "Vertex.h"
+#include "Color.h"
 
 class RawFile
 {
+	using byte = unsigned char;
+
 public:
 	RawFile();
 	RawFile(std::string path);
@@ -16,7 +19,7 @@ public:
 	template <class DataType>
 	std::vector<DataType> InterpretAsBuffer()
 	{
-		std::array<byte> buffer = ReadBuffer();
+		std::vector<char> buffer = ReadBuffer();
 		std::vector<DataType> returnData;
 		size_t typeSize = sizeof(DataType);
 		for (int i = 0; i < buffer.size(); i += typeSize)
@@ -35,8 +38,10 @@ public:
 		return returnData;
 	}
 
+	std::vector<Color> InterpretAsTexture();
+
 private:
 
 	std::string path;
-	std::vector<char> ReadBuffer();
+	std::vector<byte> ReadBuffer();
 };
