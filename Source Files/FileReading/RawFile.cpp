@@ -28,25 +28,9 @@ std::shared_ptr<std::array<byte> > RawFile::ReadBuffer()
 	size_t numberOfBytes = numberOfWords * sizeof(float);
 	std::shared_ptr<std::array<byte, numberOfBytes> > buffer();
 
-	stream.seekg(1, ios::beg);
+	stream.seekg(4, ios::beg);
 	stream.read(buffer, numberOfBytes);
 	stream.close();
 
 	return buffer;
-}
-
-int RawFile::BytesToInt(byte integer[4])
-{
-	int value = 0;
-	memcpy(&value, &integer, sizeof(int));
-
-	return value;
-}
-
-float RawFile::BytesToFloat(byte floatingPoint[4])
-{
-	float value = 0.0f;
-	memcpy(&value, &floatingPoint, sizeof(float));
-
-	return value;
 }
