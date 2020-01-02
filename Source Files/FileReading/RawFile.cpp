@@ -1,11 +1,6 @@
 #include "RawFile.h"
 
 
-RawFile::RawFile() :
-	path("")
-{
-}
-
 RawFile::RawFile(std::string path) :
 	path(path)
 {
@@ -15,20 +10,21 @@ RawFile::~RawFile()
 {
 }
 
-std::vector<Color> RawFile::InterpretAsTexture()
+std::vector<Rendering::Color> RawFile::InterpretAsTexture()
 {
 	std::ifstream stream(path, std::ios::in | std::ios::binary);
 	assert(stream.is_open());
+	stream.unsetf(std::ios::skipws);
 
 	std::vector<byte> bytes;
 	bytes.insert(bytes.begin(), std::istream_iterator<byte>(stream), std::istream_iterator<byte>());
 
-	std::vector<Color> texture;
+	std::vector<Rendering::Color> texture;
 	texture.reserve(bytes.size());
 
-	for (uint32_t i = 0; i < bytes.size(); i += sizeof(Color))
+	for (uint32_t i = 0; i < bytes.size(); i += sizeof(Rendering::Color))
 	{
-		Color color = {};
+		Rendering::Color color = {};
 		color.red = bytes.at(i);
 		color.green = bytes.at(i + 1);
 		color.blue = bytes.at(i + 2);
@@ -42,6 +38,7 @@ std::vector<byte> RawFile::ReadBuffer()
 {
 	std::ifstream stream(path, std::ios::in | std::ios::binary);
 	assert(stream.is_open());
+	stream.unsetf(std::ios::skipws);
 
 	char numberOfWordsBinary[4];
 	stream.read(&numberOfWordsBinary[0], 4);
@@ -50,9 +47,10 @@ std::vector<byte> RawFile::ReadBuffer()
 	memcpy(&numberOfWords, numberOfWordsBinary, sizeof(unsigned int));
 	size_t numberOfBytes = numberOfWords * sizeof(float);
 	std::vector<byte> buffer;
+	buffer.reserve(numberOfBytes);
 
-	stream.seekg(4, std::ios::beg);
-	stream.read((char*) &buffer[0], numberOfBytes);
+	std::istream_iterator<byte> start(stream);
+	buffer.insert(buffer.begin(), start, std::istream_iterator<byte>());
 	stream.close();
 
 	return buffer;

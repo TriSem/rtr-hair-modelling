@@ -12,23 +12,22 @@ class RawFile
 	using byte = unsigned char;
 
 public:
-	RawFile();
 	RawFile(std::string path);
 	~RawFile();
 
 	template <class DataType>
 	std::vector<DataType> InterpretAsBuffer()
 	{
-		std::vector<char> buffer = ReadBuffer();
+		std::vector<byte> buffer = ReadBuffer();
 		std::vector<DataType> returnData;
 		size_t typeSize = sizeof(DataType);
 		for (int i = 0; i < buffer.size(); i += typeSize)
 		{
 			DataType value;
-			std::array<byte, typeSize> bytes;
+			std::vector<byte> bytes;
 			for (int j = 0; j < typeSize; j++)
 			{
-				bytes.at(j) = buffer.at(i + j);
+				bytes.push_back(buffer.at(i + j));
 			}
 
 			memcpy(&value, &bytes, sizeof(DataType));
@@ -38,7 +37,7 @@ public:
 		return returnData;
 	}
 
-	std::vector<Color> InterpretAsTexture();
+	std::vector<Rendering::Color> InterpretAsTexture();
 
 private:
 
