@@ -7,7 +7,7 @@
 #include <Mouse.h>
 #include <Keyboard.h>
 #include "SceneObject.h"
-#include "Mesh.h"
+#include "RawFile.h"
 
 using DirectX::Keyboard;
 using DirectX::Mouse;
