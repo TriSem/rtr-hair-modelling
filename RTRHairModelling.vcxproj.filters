@@ -34,6 +34,9 @@
     <Filter Include="Quelldateien\FileReading">
       <UniqueIdentifier>{a6c0caac-2b79-4162-a74e-50b47523026a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ModelData">
+      <UniqueIdentifier>{65043805-3648-4b2d-b368-0b4fb9bbe176}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -41,6 +44,9 @@
     </Image>
     <Image Include="RTRHairModelling.ico">
       <Filter>Ressourcendateien</Filter>
+    </Image>
+    <Image Include="ModelData\AngelinaFaceDiffuse.png">
+      <Filter>ModelData</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
@@ -161,5 +167,16 @@
     <ClCompile Include="Source Files\FileReading\RawFile.cpp">
       <Filter>Quelldateien\FileReading</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ModelData\AngelinaDiffuseTex2048.raw">
+      <Filter>ModelData</Filter>
+    </None>
+    <None Include="ModelData\AngelinaHeadIB.raw">
+      <Filter>ModelData</Filter>
+    </None>
+    <None Include="ModelData\AngelinaHeadVB.raw">
+      <Filter>ModelData</Filter>
+    </None>
   </ItemGroup>
 </Project>

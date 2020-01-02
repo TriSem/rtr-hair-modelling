@@ -174,6 +174,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <Image Include="ModelData\AngelinaFaceDiffuse.png" />
     <Image Include="RTRHairModelling.ico" />
     <Image Include="small.ico" />
   </ItemGroup>
@@ -236,6 +237,11 @@
     <ClCompile Include="Source Files\Rendering\Transform.cpp" />
     <ClCompile Include="Source Files\Rendering\VertexBuffer.cpp" />
     <ClCompile Include="Source Files\Rendering\VertexShader.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ModelData\AngelinaDiffuseTex2048.raw" />
+    <None Include="ModelData\AngelinaHeadIB.raw" />
+    <None Include="ModelData\AngelinaHeadVB.raw" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
