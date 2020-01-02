@@ -6,8 +6,11 @@ cbuffer mvpMatrix
 
 struct VSInput
 {
-    float3 position : SV_POSITION;
+    float3 position : POSITION;
+    float2 textureCoordinate : TEXCOORD;
     float3 normal : NORMAL;
+    float3 tangent : TANGENT;
+    float3 bitangent : TANGENT;
 };
 
 struct VSOutput
