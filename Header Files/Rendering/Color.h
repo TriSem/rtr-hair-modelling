@@ -1,8 +1,11 @@
 #pragma once
 
-struct Color
+namespace Rendering
 {
-	unsigned char red;
-	unsigned char green;
-	unsigned char blue;
-};
+	struct Color
+	{
+		unsigned char red;
+		unsigned char green;
+		unsigned char blue;
+	};
+}
