@@ -20,14 +20,14 @@ public:
 	{
 		std::vector<byte> buffer = ReadBuffer();
 		std::vector<DataType> returnData;
-		size_t typeSize = sizeof(DataType);
-		for (int i = 0; i < buffer.size(); i += typeSize)
+		const size_t typeSize = sizeof(DataType);
+		for (size_t i = 0; i < buffer.size(); i += typeSize)
 		{
 			DataType value;
-			std::vector<byte> bytes;
-			for (int j = 0; j < typeSize; j++)
+			unsigned char bytes[typeSize];
+			for (size_t j = 0; j < typeSize; j++)
 			{
-				bytes.push_back(buffer.at(i + j));
+				bytes[j] = buffer.at(i + j);
 			}
 
 			memcpy(&value, &bytes, sizeof(DataType));
