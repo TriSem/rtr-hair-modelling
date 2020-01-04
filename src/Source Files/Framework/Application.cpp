@@ -63,6 +63,8 @@ void Application::Init()
 		mainWindow.Height()
 	);
 
+	renderer->SetRenderMode(Rendering::RenderMode::WIREFRAME);
+
 	mainScene = std::make_shared<Scene>();
 	keyboard = std::make_unique<Keyboard>();
 	mouse = std::make_unique<Mouse>();
@@ -71,9 +73,12 @@ void Application::Init()
 	RawFile vertexFile("E:/Programming/DirectX11/RTRHairModelling/ModelData/AngelinaHeadVB.raw");
 	RawFile indexFile("E:/Programming/DirectX11/RTRHairModelling/ModelData/AngelinaHeadIB.raw");
 	headMesh.vertices = vertexFile.InterpretAsBuffer<Vertex>();
-	headMesh.indices = vertexFile.InterpretAsBuffer<uint32_t>();
+	headMesh.indices = indexFile.InterpretAsBuffer<uint32_t>();
 	std::shared_ptr<SceneObject> head = std::make_unique<SceneObject>(renderer->GetDevice(), headMesh, renderer->GetVertexShader());
 	mainScene->AddSceneObject(head);
+
+	head->GetTransform().SetScale(0.5f);
+	head->GetTransform().SetRotation(Vector3(0.0f, 0.0f, 0.0f));
 
 	ShowWindow(mainWindow.WindowHandle(), nCmdShow);
 }

@@ -4,7 +4,7 @@ namespace Rendering
 {
 	Camera::Camera() :
 		projectionMode(ProjectionMode::PERSPECTIVE),
-		position(Vector3(0, 0, -2)),
+		position(Vector3(0, 0, -5)),
 		up(Vector3(0, 1, 0)),
 		viewingDirection(Vector3(0, 0, 1)),
 		fieldOfView(70),
@@ -17,7 +17,7 @@ namespace Rendering
 
 	Camera::Camera(ProjectionMode projectionMode) :
 		projectionMode(projectionMode),
-		position(Vector3(0, 0, -2)),
+		position(Vector3(0, 0, -5)),
 		up(Vector3(0, 1, 0)),
 		viewingDirection(Vector3(0, 0, 1)),
 		fieldOfView(70),
@@ -101,6 +101,7 @@ namespace Rendering
 
 		return projection;
 	}
+
 	Matrix Camera::ViewMatrix()
 	{
 		return Matrix::CreateLookAt(position, viewingDirection, up);

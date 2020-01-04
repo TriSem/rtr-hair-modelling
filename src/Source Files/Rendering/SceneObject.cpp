@@ -28,6 +28,7 @@ namespace Rendering
 	{
 		return indexBuffer;
 	}
+
 	Mesh& SceneObject::GetMesh()
 	{
 		return mesh;
