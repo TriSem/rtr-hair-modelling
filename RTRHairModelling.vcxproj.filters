@@ -56,6 +56,9 @@
     <FxCompile Include="Shaders\VertexShader.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
+    <FxCompile Include="Shaders\BasicEffect.fx">
+      <Filter>Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="RTRHairModelling.rc">
@@ -63,110 +66,66 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Header Files\Framework\Application.h">
-      <Filter>Headerdateien\Framework</Filter>
-    </ClInclude>
-    <ClInclude Include="Header Files\Framework\ErrorHandling.h">
-      <Filter>Headerdateien\Framework</Filter>
-    </ClInclude>
-    <ClInclude Include="Header Files\Framework\framework.h">
-      <Filter>Headerdateien\Framework</Filter>
-    </ClInclude>
-    <ClInclude Include="Header Files\Framework\resource.h">
-      <Filter>Headerdateien\Framework</Filter>
-    </ClInclude>
-    <ClInclude Include="Header Files\Framework\targetver.h">
-      <Filter>Headerdateien\Framework</Filter>
-    </ClInclude>
-    <ClInclude Include="Header Files\Framework\Window.h">
-      <Filter>Headerdateien\Framework</Filter>
-    </ClInclude>
-    <ClInclude Include="Header Files\Rendering\Camera.h">
-      <Filter>Headerdateien\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="Header Files\Rendering\Graphics.h">
-      <Filter>Headerdateien\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="Header Files\Rendering\IndexBuffer.h">
-      <Filter>Headerdateien\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="Header Files\Rendering\Light.h">
-      <Filter>Headerdateien\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="Header Files\Rendering\Renderer.h">
-      <Filter>Headerdateien\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="Header Files\Rendering\Scene.h">
-      <Filter>Headerdateien\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="Header Files\Rendering\SceneObject.h">
-      <Filter>Headerdateien\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="Header Files\Rendering\Shader.h">
-      <Filter>Headerdateien\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="Header Files\Rendering\Transform.h">
-      <Filter>Headerdateien\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="Header Files\Rendering\VertexBuffer.h">
-      <Filter>Headerdateien\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="Header Files\Rendering\Mesh.h">
-      <Filter>Headerdateien\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="Header Files\Rendering\Vertex.h">
-      <Filter>Headerdateien\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="Header Files\FileReading\RawFile.h">
+    <ClInclude Include="src\Header Files\FileReading\RawFile.h">
       <Filter>Headerdateien\FileReading</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Source Files\Framework\Application.cpp">
-      <Filter>Quelldateien\Framework</Filter>
-    </ClCompile>
-    <ClCompile Include="Source Files\Framework\Main.cpp">
-      <Filter>Quelldateien\Framework</Filter>
-    </ClCompile>
-    <ClCompile Include="Source Files\Framework\Window.cpp">
-      <Filter>Quelldateien\Framework</Filter>
-    </ClCompile>
-    <ClCompile Include="Source Files\Rendering\Camera.cpp">
-      <Filter>Quelldateien\Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="Source Files\Rendering\IndexBuffer.cpp">
-      <Filter>Quelldateien\Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="Source Files\Rendering\Light.cpp">
-      <Filter>Quelldateien\Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="Source Files\Rendering\PixelShader.cpp">
-      <Filter>Quelldateien\Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="Source Files\Rendering\Renderer.cpp">
-      <Filter>Quelldateien\Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="Source Files\Rendering\Scene.cpp">
-      <Filter>Quelldateien\Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="Source Files\Rendering\SceneObject.cpp">
-      <Filter>Quelldateien\Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="Source Files\Rendering\Shader.cpp">
-      <Filter>Quelldateien\Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="Source Files\Rendering\Transform.cpp">
-      <Filter>Quelldateien\Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="Source Files\Rendering\VertexBuffer.cpp">
-      <Filter>Quelldateien\Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="Source Files\Rendering\VertexShader.cpp">
-      <Filter>Quelldateien\Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="Source Files\FileReading\RawFile.cpp">
-      <Filter>Quelldateien\FileReading</Filter>
-    </ClCompile>
+    <ClInclude Include="src\Header Files\Framework\Application.h">
+      <Filter>Headerdateien\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Header Files\Framework\ErrorHandling.h">
+      <Filter>Headerdateien\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Header Files\Framework\framework.h">
+      <Filter>Headerdateien\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Header Files\Framework\resource.h">
+      <Filter>Headerdateien\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Header Files\Framework\targetver.h">
+      <Filter>Headerdateien\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Header Files\Framework\Window.h">
+      <Filter>Headerdateien\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Header Files\Rendering\Camera.h">
+      <Filter>Headerdateien\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Header Files\Rendering\Color.h">
+      <Filter>Headerdateien\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Header Files\Rendering\Graphics.h">
+      <Filter>Headerdateien\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Header Files\Rendering\IndexBuffer.h">
+      <Filter>Headerdateien\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Header Files\Rendering\Light.h">
+      <Filter>Headerdateien\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Header Files\Rendering\Mesh.h">
+      <Filter>Headerdateien\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Header Files\Rendering\Renderer.h">
+      <Filter>Headerdateien\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Header Files\Rendering\Scene.h">
+      <Filter>Headerdateien\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Header Files\Rendering\SceneObject.h">
+      <Filter>Headerdateien\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Header Files\Rendering\Shader.h">
+      <Filter>Headerdateien\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Header Files\Rendering\Transform.h">
+      <Filter>Headerdateien\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Header Files\Rendering\Vertex.h">
+      <Filter>Headerdateien\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Header Files\Rendering\VertexBuffer.h">
+      <Filter>Headerdateien\Rendering</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ModelData\AngelinaDiffuseTex2048.raw">
@@ -178,5 +137,52 @@
     <None Include="ModelData\AngelinaHeadVB.raw">
       <Filter>ModelData</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Source Files\FileReading\RawFile.cpp">
+      <Filter>Quelldateien\FileReading</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Source Files\Framework\Application.cpp">
+      <Filter>Quelldateien\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Source Files\Framework\Main.cpp">
+      <Filter>Quelldateien\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Source Files\Framework\Window.cpp">
+      <Filter>Quelldateien\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Source Files\Rendering\Camera.cpp">
+      <Filter>Quelldateien\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Source Files\Rendering\IndexBuffer.cpp">
+      <Filter>Quelldateien\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Source Files\Rendering\Light.cpp">
+      <Filter>Quelldateien\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Source Files\Rendering\PixelShader.cpp">
+      <Filter>Quelldateien\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Source Files\Rendering\Renderer.cpp">
+      <Filter>Quelldateien\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Source Files\Rendering\Scene.cpp">
+      <Filter>Quelldateien\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Source Files\Rendering\SceneObject.cpp">
+      <Filter>Quelldateien\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Source Files\Rendering\Shader.cpp">
+      <Filter>Quelldateien\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Source Files\Rendering\Transform.cpp">
+      <Filter>Quelldateien\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Source Files\Rendering\VertexBuffer.cpp">
+      <Filter>Quelldateien\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Source Files\Rendering\VertexShader.cpp">
+      <Filter>Quelldateien\Rendering</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -73,6 +73,7 @@ namespace Rendering
 		SetViewport();
 		CreateRasterizerStates();
 		CreateShaders();
+		CreateTextures();
 
 		D3D11_BUFFER_DESC description = {};
 		description.Usage = D3D11_USAGE_DYNAMIC;
@@ -268,22 +269,57 @@ namespace Rendering
 
 #ifdef _DEBUG
 #ifdef _WIN64
-		shaderPath = L"./x64/Debug/";
+		shaderPath = L"./bin/x64/Debug/";
 #else
-		shaderPath = L"./Win32/Debug/";
+		shaderPath = L"./bin/Win32/Debug/";
 #endif
 #else
 #ifdef _WIN64
-		shaderPath = L"./x64/Release/";
+		shaderPath = L"./bin/x64/Release/";
 #else
-		shaderPath = L"./Win32/Debug/";
+		shaderPath = L"./bin/Win32/Debug/";
 #endif
 #endif
 
 		std::wstring vertexShaderLocation = shaderPath + L"VertexShader.cso";
 		std::wstring pixelShaderLocation = shaderPath + L"PixelShader.cso";
 		vertexShader = std::make_unique<VertexShader>(device, vertexShaderLocation);
-		pixelShader = std::make_unique<PixelShader>(device, pixelShaderLocation);
+		pixelShader = std::make_unique<PixelShader>(device, pixelShaderLocation); 
+
+		UINT shaderCompileFlags = 0;
+		UINT effectFlags = 0;
+#ifdef _DEBUG
+		shaderCompileFlags |= D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION;
+#endif
+
+		ComPtr<ID3DBlob> compilationErrors;
+		MessageAndThrowIfFailed(
+			D3DX11CompileEffectFromFile(
+				L"../../../Shaders/BasicEffect.fx",
+				nullptr,
+				nullptr,
+				shaderCompileFlags,
+				effectFlags,
+				device.Get(),
+				basicEffect.GetAddressOf(),
+				compilationErrors.GetAddressOf()),
+			L"Failed to compile effect!");
+	}
+
+	void Renderer::CreateTextures()
+	{
+		MessageAndThrowIfFailed(
+			D3DX11CreateShaderResourceViewFromFile(
+				device.Get(),
+				L"E:/Programming/DirectX11/RTRHairModelling/ModelData/AngelinaFaceDiffuse.png",
+				nullptr,
+				nullptr,
+				diffuseTextureResourceView.GetAddressOf(),
+				nullptr
+			),
+			L"Failed to create shader resource view.");
+
+
 	}
 
 	void Renderer::Clear()

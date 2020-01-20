@@ -7,6 +7,9 @@
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
 
+#include <d3dx11effect.h>
+#include <d3dxGlobal.h>
+
 using Microsoft::WRL::ComPtr;
 
 namespace Rendering
@@ -51,6 +54,7 @@ namespace Rendering
 		void SetViewport();
 		void CreateRasterizerStates();
 		void CreateShaders();
+		void CreateTextures();
 		void Clear();
 
 		UINT multisampleCount;
@@ -73,6 +77,8 @@ namespace Rendering
 		ComPtr<ID3D11RasterizerState> rasterizerStateSolid;
 		ComPtr<ID3D11RasterizerState> rasterizerStateWireframe;
 		ComPtr<ID3D11Buffer> constantBuffer;
+		ComPtr<ID3DX11Effect> basicEffect;
+		ComPtr<ID3D11ShaderResourceView> diffuseTextureResourceView;
 
 		std::shared_ptr<VertexShader> vertexShader;
 		std::shared_ptr<PixelShader> pixelShader;

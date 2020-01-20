@@ -111,7 +111,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>DirectXTK.lib;Effects11.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>DirectXTK.lib;Effects11d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -128,7 +128,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>DirectXTK.lib;Effects11.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>DirectXTK.lib;Effects11d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -179,6 +179,7 @@
     <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="Shaders\BasicEffect.fx" />
     <FxCompile Include="Shaders\PixelShader.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
@@ -196,52 +197,48 @@
     <ResourceCompile Include="RTRHairModelling.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Header Files\FileReading\RawFile.h" />
-    <ClInclude Include="Header Files\Framework\Application.h" />
-    <ClInclude Include="Header Files\Framework\ErrorHandling.h" />
-    <ClInclude Include="Header Files\Framework\framework.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="Header Files\Framework\resource.h" />
-    <ClInclude Include="Header Files\Framework\targetver.h" />
-    <ClInclude Include="Header Files\Framework\Window.h" />
-    <ClInclude Include="Header Files\Rendering\Camera.h" />
-    <ClInclude Include="Header Files\Rendering\Graphics.h" />
-    <ClInclude Include="Header Files\Rendering\IndexBuffer.h" />
-    <ClInclude Include="Header Files\Rendering\Light.h" />
-    <ClInclude Include="Header Files\Rendering\Mesh.h" />
-    <ClInclude Include="Header Files\Rendering\Renderer.h" />
-    <ClInclude Include="Header Files\Rendering\Scene.h" />
-    <ClInclude Include="Header Files\Rendering\SceneObject.h" />
-    <ClInclude Include="Header Files\Rendering\Shader.h" />
-    <ClInclude Include="Header Files\Rendering\Transform.h" />
-    <ClInclude Include="Header Files\Rendering\Vertex.h" />
-    <ClInclude Include="Header Files\Rendering\VertexBuffer.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Source Files\FileReading\RawFile.cpp" />
-    <ClCompile Include="Source Files\Framework\Application.cpp" />
-    <ClCompile Include="Source Files\Framework\Main.cpp" />
-    <ClCompile Include="Source Files\Framework\Window.cpp" />
-    <ClCompile Include="Source Files\Rendering\Camera.cpp" />
-    <ClCompile Include="Source Files\Rendering\IndexBuffer.cpp" />
-    <ClCompile Include="Source Files\Rendering\Light.cpp" />
-    <ClCompile Include="Source Files\Rendering\PixelShader.cpp" />
-    <ClCompile Include="Source Files\Rendering\Renderer.cpp" />
-    <ClCompile Include="Source Files\Rendering\Scene.cpp" />
-    <ClCompile Include="Source Files\Rendering\SceneObject.cpp" />
-    <ClCompile Include="Source Files\Rendering\Shader.cpp" />
-    <ClCompile Include="Source Files\Rendering\Transform.cpp" />
-    <ClCompile Include="Source Files\Rendering\VertexBuffer.cpp" />
-    <ClCompile Include="Source Files\Rendering\VertexShader.cpp" />
+    <ClInclude Include="src\Header Files\FileReading\RawFile.h" />
+    <ClInclude Include="src\Header Files\Framework\Application.h" />
+    <ClInclude Include="src\Header Files\Framework\ErrorHandling.h" />
+    <ClInclude Include="src\Header Files\Framework\framework.h" />
+    <ClInclude Include="src\Header Files\Framework\resource.h" />
+    <ClInclude Include="src\Header Files\Framework\targetver.h" />
+    <ClInclude Include="src\Header Files\Framework\Window.h" />
+    <ClInclude Include="src\Header Files\Rendering\Camera.h" />
+    <ClInclude Include="src\Header Files\Rendering\Color.h" />
+    <ClInclude Include="src\Header Files\Rendering\Graphics.h" />
+    <ClInclude Include="src\Header Files\Rendering\IndexBuffer.h" />
+    <ClInclude Include="src\Header Files\Rendering\Light.h" />
+    <ClInclude Include="src\Header Files\Rendering\Mesh.h" />
+    <ClInclude Include="src\Header Files\Rendering\Renderer.h" />
+    <ClInclude Include="src\Header Files\Rendering\Scene.h" />
+    <ClInclude Include="src\Header Files\Rendering\SceneObject.h" />
+    <ClInclude Include="src\Header Files\Rendering\Shader.h" />
+    <ClInclude Include="src\Header Files\Rendering\Transform.h" />
+    <ClInclude Include="src\Header Files\Rendering\Vertex.h" />
+    <ClInclude Include="src\Header Files\Rendering\VertexBuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ModelData\AngelinaDiffuseTex2048.raw" />
     <None Include="ModelData\AngelinaHeadIB.raw" />
     <None Include="ModelData\AngelinaHeadVB.raw" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Source Files\FileReading\RawFile.cpp" />
+    <ClCompile Include="src\Source Files\Framework\Application.cpp" />
+    <ClCompile Include="src\Source Files\Framework\Main.cpp" />
+    <ClCompile Include="src\Source Files\Framework\Window.cpp" />
+    <ClCompile Include="src\Source Files\Rendering\Camera.cpp" />
+    <ClCompile Include="src\Source Files\Rendering\IndexBuffer.cpp" />
+    <ClCompile Include="src\Source Files\Rendering\Light.cpp" />
+    <ClCompile Include="src\Source Files\Rendering\PixelShader.cpp" />
+    <ClCompile Include="src\Source Files\Rendering\Renderer.cpp" />
+    <ClCompile Include="src\Source Files\Rendering\Scene.cpp" />
+    <ClCompile Include="src\Source Files\Rendering\SceneObject.cpp" />
+    <ClCompile Include="src\Source Files\Rendering\Shader.cpp" />
+    <ClCompile Include="src\Source Files\Rendering\Transform.cpp" />
+    <ClCompile Include="src\Source Files\Rendering\VertexBuffer.cpp" />
+    <ClCompile Include="src\Source Files\Rendering\VertexShader.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
