@@ -7,9 +7,6 @@
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
 
-#include <d3dx11effect.h>
-#include <d3dxGlobal.h>
-
 using Microsoft::WRL::ComPtr;
 
 namespace Rendering
@@ -66,7 +63,6 @@ namespace Rendering
 		int height;
 		RenderMode renderMode;
 
-		D3D11_VIEWPORT viewport;
 
 		ComPtr<ID3D11Device> device;
 		ComPtr<ID3D11DeviceContext> context;
@@ -77,11 +73,11 @@ namespace Rendering
 		ComPtr<ID3D11RasterizerState> rasterizerStateSolid;
 		ComPtr<ID3D11RasterizerState> rasterizerStateWireframe;
 		ComPtr<ID3D11Buffer> constantBuffer;
-		ComPtr<ID3DX11Effect> basicEffect;
 		ComPtr<ID3D11ShaderResourceView> diffuseTextureResourceView;
 
 		std::shared_ptr<VertexShader> vertexShader;
 		std::shared_ptr<PixelShader> pixelShader;
+		std::vector<D3D11_VIEWPORT> viewports;
 	};
 }
 

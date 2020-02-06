@@ -230,14 +230,27 @@ namespace Rendering
 
 	void Renderer::SetViewport()
 	{
-		viewport.TopLeftX = 0.0f;
-		viewport.TopLeftY = 0.0f;
-		viewport.Width = static_cast<float>(width);
-		viewport.Height = static_cast<float>(height);
-		viewport.MinDepth = 0.0f;
-		viewport.MaxDepth = 1.0f;
+		D3D11_VIEWPORT leftViewport;
+		D3D11_VIEWPORT rightViewport;
 
-		context->RSSetViewports(1, &viewport);
+		leftViewport.TopLeftX = 0.0f;
+		leftViewport.TopLeftY = 0.0f;
+		leftViewport.Width = static_cast<float>(width) / 2;
+		leftViewport.Height = static_cast<float>(height);
+		leftViewport.MinDepth = 0.0f;
+		leftViewport.MaxDepth = 1.0f;
+
+		rightViewport.TopLeftX = width / 2;
+		rightViewport.TopLeftY = 0.0f;
+		rightViewport.Width = static_cast<float>(width) / 2;
+		rightViewport.Height = static_cast<float>(height);
+		rightViewport.MinDepth = 0.0f;
+		rightViewport.MaxDepth = 1.0f;
+
+		viewports.push_back(leftViewport);
+		viewports.push_back(rightViewport);
+
+		context->RSSetViewports(2, &viewports[0]);
 	}
 
 	void Renderer::CreateRasterizerStates()
@@ -291,35 +304,11 @@ namespace Rendering
 #ifdef _DEBUG
 		shaderCompileFlags |= D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION;
 #endif
-
-		ComPtr<ID3DBlob> compilationErrors;
-		MessageAndThrowIfFailed(
-			D3DX11CompileEffectFromFile(
-				L"../../../Shaders/BasicEffect.fx",
-				nullptr,
-				nullptr,
-				shaderCompileFlags,
-				effectFlags,
-				device.Get(),
-				basicEffect.GetAddressOf(),
-				compilationErrors.GetAddressOf()),
-			L"Failed to compile effect!");
 	}
 
 	void Renderer::CreateTextures()
 	{
-		MessageAndThrowIfFailed(
-			D3DX11CreateShaderResourceViewFromFile(
-				device.Get(),
-				L"E:/Programming/DirectX11/RTRHairModelling/ModelData/AngelinaFaceDiffuse.png",
-				nullptr,
-				nullptr,
-				diffuseTextureResourceView.GetAddressOf(),
-				nullptr
-			),
-			L"Failed to create shader resource view.");
-
-
+		
 	}
 
 	void Renderer::Clear()
