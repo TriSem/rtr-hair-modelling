@@ -43,6 +43,20 @@ namespace Rendering
 		void CreateShader() override;
 	};
 
+	class GeometryShader : public Shader
+	{
+	public:
+
+		GeometryShader(ComPtr<ID3D11Device>& device, std::wstring directoryPath);
+		ComPtr<ID3D11GeometryShader> GetShader() const;
+
+	private:
+
+		ComPtr<ID3D11GeometryShader> shader;
+
+		void CreateShader() override;
+	};
+
 	class PixelShader : public Shader
 	{
 	public:
@@ -53,8 +67,8 @@ namespace Rendering
 
 	private:
 
-		void CreateShader() override;
-
 		ComPtr<ID3D11PixelShader> shader;
+
+		void CreateShader() override;
 	};
 }
