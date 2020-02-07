@@ -77,7 +77,10 @@ namespace Rendering
 
 		std::shared_ptr<VertexShader> vertexShader;
 		std::shared_ptr<PixelShader> pixelShader;
+		std::shared_ptr<GeometryShader> geometryShader;
 		std::vector<D3D11_VIEWPORT> viewports;
+
+		D3D_FEATURE_LEVEL featureLevel;
 	};
 }
 

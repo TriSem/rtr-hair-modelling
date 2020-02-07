@@ -55,6 +55,7 @@ namespace Rendering
 			context->IASetIndexBuffer(indexBuffer->GetData().Get(), DXGI_FORMAT_R32_UINT, 0);
 			context->VSSetShader(vertexShader->GetShader().Get(), nullptr, 0);
 			context->VSSetConstantBuffers(0, 1, constantBuffer.GetAddressOf());
+			context->GSSetShader(geometryShader->GetShader().Get(), nullptr, 0);
 			context->PSSetShader(pixelShader->GetShader().Get(), nullptr, 0);
 			context->DrawIndexed(indexBuffer->GetIndexCount(), 0, 0);
 		}
@@ -94,8 +95,6 @@ namespace Rendering
 	#if defined(_DEBUG)
 		flags |= D3D11_CREATE_DEVICE_DEBUG;
 	#endif	
-
-		D3D_FEATURE_LEVEL featureLevel;
 
 		MessageAndThrowIfFailed(
 			D3D11CreateDevice(
@@ -296,9 +295,10 @@ namespace Rendering
 
 		std::wstring vertexShaderLocation = shaderPath + L"VertexShader.cso";
 		std::wstring pixelShaderLocation = shaderPath + L"PixelShader.cso";
-		vertexShader = std::make_unique<VertexShader>(device, vertexShaderLocation);
-		pixelShader = std::make_unique<PixelShader>(device, pixelShaderLocation); 
-
+		std::wstring geometryShaderLocation = shaderPath + L"GeometryShader.cso";
+		vertexShader = std::make_shared<VertexShader>(device, vertexShaderLocation);
+		pixelShader = std::make_shared<PixelShader>(device, pixelShaderLocation); 
+		geometryShader = std::make_shared<GeometryShader>(device, geometryShaderLocation);
 		UINT shaderCompileFlags = 0;
 		UINT effectFlags = 0;
 #ifdef _DEBUG

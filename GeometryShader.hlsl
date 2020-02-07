@@ -4,6 +4,11 @@ struct GSOutput
     uint viewport : SV_ViewportArrayIndex;
 };
 
+cbuffer Viewport
+{
+    uint index;
+};
+
 [maxvertexcount(3)]
 void main(
 	triangle float4 input[3] : SV_POSITION, 
@@ -14,7 +19,7 @@ void main(
 	{
 		GSOutput element;
 		element.pos = input[i];
-        element.viewport = 1;
+        element.viewport = 0;
 		output.Append(element);
 	}
 }
