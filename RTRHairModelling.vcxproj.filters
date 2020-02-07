@@ -56,6 +56,9 @@
     <FxCompile Include="Shaders\VertexShader.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
+    <FxCompile Include="GeometryShader.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="RTRHairModelling.rc">
@@ -179,6 +182,9 @@
       <Filter>Quelldateien\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="src\Source Files\Rendering\VertexShader.cpp">
+      <Filter>Quelldateien\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Source Files\Rendering\GeometryShader.cpp">
       <Filter>Quelldateien\Rendering</Filter>
     </ClCompile>
   </ItemGroup>
