@@ -74,7 +74,7 @@ void Application::Init()
 	RawFile indexFile("E:/Programming/DirectX11/RTRHairModelling/ModelData/AngelinaHeadIB.raw");
 	headMesh.vertices = vertexFile.InterpretAsBuffer<Vertex>();
 	headMesh.indices = indexFile.InterpretAsBuffer<uint32_t>();
-	std::shared_ptr<SceneObject> head = std::make_unique<SceneObject>(renderer->GetDevice(), headMesh, renderer->GetVertexShader());
+	std::shared_ptr<SceneObject> head = std::make_unique<SceneObject>(headMesh, renderer->GetVertexShader());
 	mainScene->AddSceneObject(head);
 
 	head->GetTransform().SetScale(0.5f);

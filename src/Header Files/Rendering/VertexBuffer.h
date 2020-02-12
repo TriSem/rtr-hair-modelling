@@ -9,11 +9,11 @@ using Microsoft::WRL::ComPtr;
 
 namespace Rendering
 {
-	class VertexBuffer
+	class VertexBuffer : public DeviceAccess
 	{
 	public:
 
-		VertexBuffer(ComPtr<ID3D11Device> device, std::shared_ptr<VertexShader> vertexShader, const std::vector<Vertex>& vertices);
+		VertexBuffer(std::shared_ptr<VertexShader> vertexShader, const std::vector<Vertex>& vertices);
 		ComPtr<ID3D11InputLayout> GetInputLayout() const;
 
 		static const UINT STRIDE = sizeof(Vertex);
@@ -25,7 +25,6 @@ namespace Rendering
 
 	private:
 
-		ComPtr<ID3D11Device> device;
 		ComPtr<ID3D11InputLayout> inputLayout;
 		ComPtr<ID3D11Buffer> vertexBuffer;
 		std::shared_ptr<VertexShader> vertexShader;

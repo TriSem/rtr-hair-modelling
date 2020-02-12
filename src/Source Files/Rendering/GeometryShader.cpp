@@ -2,8 +2,8 @@
 
 namespace Rendering
 {
-	GeometryShader::GeometryShader(std::shared_ptr<Device> device, std::wstring directoryPath)
-		: Shader::Shader(device, directoryPath)
+	GeometryShader::GeometryShader(std::wstring directoryPath)
+		: Shader::Shader(directoryPath)
 	{
 		CreateShader();
 	}

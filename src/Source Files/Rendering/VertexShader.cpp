@@ -2,8 +2,8 @@
 
 namespace Rendering
 {
-	VertexShader::VertexShader(std::shared_ptr<Device> device, std::wstring directoryPath)
-		: Shader::Shader(device, directoryPath)
+	VertexShader::VertexShader(std::wstring directoryPath)
+		: Shader::Shader(directoryPath)
 	{
 		CreateShader();
 	}

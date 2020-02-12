@@ -2,12 +2,12 @@
 
 namespace Rendering
 {
-	SceneObject::SceneObject(ComPtr<ID3D11Device> device, const Mesh& mesh, std::shared_ptr<VertexShader> vertexShader) :
+	SceneObject::SceneObject(const Mesh& mesh, std::shared_ptr<VertexShader> vertexShader) :
 		mesh(mesh),
 		vertexShader(vertexShader)
 	{
-		vertexBuffer = std::make_shared<VertexBuffer>(device, this->vertexShader, mesh.vertices);
-		indexBuffer = std::make_shared<IndexBuffer>(device, mesh.indices);
+		vertexBuffer = std::make_shared<VertexBuffer>(this->vertexShader, mesh.vertices);
+		indexBuffer = std::make_shared<IndexBuffer>(mesh.indices);
 	}
 
 	void SceneObject::Update()

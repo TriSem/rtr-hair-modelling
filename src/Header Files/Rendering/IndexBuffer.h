@@ -6,11 +6,11 @@ using Microsoft::WRL::ComPtr;
 
 namespace Rendering
 {
-	class IndexBuffer
+	class IndexBuffer : public DeviceAccess
 	{
 	public:
 
-		IndexBuffer(ComPtr<ID3D11Device> device, const std::vector<UINT>& indices);
+		IndexBuffer(const std::vector<UINT>& indices);
 
 		ComPtr<ID3D11Buffer> GetData();
 
@@ -20,7 +20,6 @@ namespace Rendering
 
 		uint32_t indexCount;
 		ComPtr<ID3D11Buffer> indexBuffer;
-		ComPtr<ID3D11Device> device;
 	};
 }
 

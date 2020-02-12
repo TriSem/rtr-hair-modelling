@@ -11,7 +11,6 @@ namespace Rendering
 		multisampleCount(4),
 		width(width),
 		height(height),
-		device(nullptr),
 		swapChain(nullptr),
 		depthStencilBuffer(nullptr),
 		backBufferView(nullptr),
@@ -66,7 +65,6 @@ namespace Rendering
 
 	void Renderer::Initialize()
 	{
-		device = std::make_shared<Device>();
 		CheckMultisamplingSupport();
 		CreateSwapChain();
 		CreateBackBufferView();

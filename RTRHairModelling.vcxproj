@@ -113,6 +113,9 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>DirectXTK.lib;Effects11d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <FxCompile>
+      <ShaderModel>5.0</ShaderModel>
+    </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -130,6 +133,9 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>DirectXTK.lib;Effects11d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <FxCompile>
+      <ShaderModel>5.0</ShaderModel>
+    </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -151,6 +157,9 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>DirectXTK.lib;Effects11.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <FxCompile>
+      <ShaderModel>5.0</ShaderModel>
+    </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -172,6 +181,9 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>DirectXTK.lib;Effects11.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <FxCompile>
+      <ShaderModel>5.0</ShaderModel>
+    </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
     <Image Include="ModelData\AngelinaFaceDiffuse.png" />
@@ -218,6 +230,7 @@
     <ClInclude Include="src\Header Files\Rendering\Camera.h" />
     <ClInclude Include="src\Header Files\Rendering\Color.h" />
     <ClInclude Include="src\Header Files\Rendering\Device.h" />
+    <ClInclude Include="src\Header Files\Rendering\DeviceAccess.h" />
     <ClInclude Include="src\Header Files\Rendering\Graphics.h" />
     <ClInclude Include="src\Header Files\Rendering\IndexBuffer.h" />
     <ClInclude Include="src\Header Files\Rendering\Light.h" />
@@ -243,6 +256,7 @@
     <ClCompile Include="src\Source Files\Framework\Window.cpp" />
     <ClCompile Include="src\Source Files\Rendering\Camera.cpp" />
     <ClCompile Include="src\Source Files\Rendering\Device.cpp" />
+    <ClCompile Include="src\Source Files\Rendering\DeviceAccess.cpp" />
     <ClCompile Include="src\Source Files\Rendering\GeometryShader.cpp" />
     <ClCompile Include="src\Source Files\Rendering\IndexBuffer.cpp" />
     <ClCompile Include="src\Source Files\Rendering\Light.cpp" />

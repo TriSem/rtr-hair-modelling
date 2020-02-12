@@ -4,18 +4,18 @@
 
 namespace Rendering
 {
-	enum class ScreenSectioning
+	enum class ScreenSectioning 
 	{
 		WHOLE,
 		HALVED,
 		QUARTERED
 	};
 
-	class SplitScreen
+	class SplitScreen : public DeviceAccess
 	{
 	public:
 
-		SplitScreen(std::shared_ptr<Device> device, ScreenSectioning sectioning, float screenWidth, float screenHeight);
+		SplitScreen(ScreenSectioning sectioning, float screenWidth, float screenHeight);
 		void ActivateSplitScreen(ScreenSectioning sectioning);
 
 	private:
@@ -24,7 +24,6 @@ namespace Rendering
 		float screenHeight;
 
 		std::vector<D3D11_VIEWPORT> viewports;
-		std::shared_ptr<Device> device;
 
 		void WholeScreen();
 		void HalveScreen();

@@ -24,7 +24,7 @@ namespace Rendering
 		Matrix modelMatrix;
 	};
 
-	class Renderer
+	class Renderer : public DeviceAccess
 	{
 	public:
 		Renderer(HWND windowHandle, int width, int height);
@@ -73,7 +73,6 @@ namespace Rendering
 
 		std::unique_ptr<SplitScreen> splitScreen;
 
-		std::shared_ptr<Device> device;
 		std::shared_ptr<VertexShader> vertexShader;
 		std::shared_ptr<PixelShader> pixelShader;
 		std::shared_ptr<GeometryShader> geometryShader;

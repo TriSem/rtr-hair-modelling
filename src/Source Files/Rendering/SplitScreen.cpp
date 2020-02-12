@@ -2,8 +2,7 @@
 
 namespace Rendering
 {
-	SplitScreen::SplitScreen(std::shared_ptr<Device> device, ScreenSectioning sectioning, float screenWidth, float screenHeight) :
-		device(device),
+	SplitScreen::SplitScreen(ScreenSectioning sectioning, float screenWidth, float screenHeight) :
 		screenWidth(screenWidth),
 		screenHeight(screenHeight)
 	{

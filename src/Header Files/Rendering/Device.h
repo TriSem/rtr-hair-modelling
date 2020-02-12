@@ -8,14 +8,16 @@ namespace Rendering
 {
 	class Device
 	{
-	public:
+		friend class DeviceAccess;
 
-		Device();
+	public:
 
 		ID3D11Device* GetDevice();
 		ID3D11DeviceContext* GetContext();
 
 	private:
+
+		Device();
 
 		ComPtr<ID3D11Device> device;
 		ComPtr<ID3D11DeviceContext> context;

@@ -2,8 +2,7 @@
 
 namespace Rendering
 {
-	IndexBuffer::IndexBuffer(ComPtr<ID3D11Device> device, const std::vector<UINT>& indices) :
-		device(device),
+	IndexBuffer::IndexBuffer(const std::vector<UINT>& indices) :
 		indexCount((UINT)indices.size())
 	{
 		D3D11_BUFFER_DESC indexBufferDescription = {};
@@ -16,7 +15,7 @@ namespace Rendering
 		indexSubresourceData.pSysMem = indices.data();
 
 		MessageAndThrowIfFailed(
-			device->CreateBuffer(
+			device->GetDevice()->CreateBuffer(
 				&indexBufferDescription,
 				&indexSubresourceData,
 				indexBuffer.ReleaseAndGetAddressOf()

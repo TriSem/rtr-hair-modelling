@@ -2,8 +2,8 @@
 
 namespace Rendering
 {
-	PixelShader::PixelShader(std::shared_ptr<Device> device, std::wstring directoryPath) :
-		Shader::Shader(device, directoryPath)
+	PixelShader::PixelShader(std::wstring directoryPath) :
+		Shader::Shader(directoryPath)
 	{
 		CreateShader();
 	}

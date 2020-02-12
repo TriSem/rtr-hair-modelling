@@ -5,8 +5,7 @@ using DirectX::VertexPositionNormalTexture;
 
 namespace Rendering
 {
-	VertexBuffer::VertexBuffer(ComPtr<ID3D11Device> device, std::shared_ptr<VertexShader> vertexShader, const std::vector<Vertex>& vertices) :
-		device(device),
+	VertexBuffer::VertexBuffer(std::shared_ptr<VertexShader> vertexShader, const std::vector<Vertex>& vertices) :
 		vertexShader(vertexShader),
 		offset(0)
 	{
@@ -22,7 +21,7 @@ namespace Rendering
 		subresourceData.pSysMem = vertices.data();
 
 		MessageAndThrowIfFailed(
-		device->CreateBuffer(
+		device->GetDevice()->CreateBuffer(
 			&bufferDescription,
 			&subresourceData,
 			vertexBuffer.ReleaseAndGetAddressOf()
@@ -69,7 +68,7 @@ namespace Rendering
 		
 
 		MessageAndThrowIfFailed(
-			device->CreateInputLayout(
+			device->GetDevice()->CreateInputLayout(
 				elementDescriptions,
 				5,
 				vertexShader->GetCompiledCode()->GetBufferPointer(),

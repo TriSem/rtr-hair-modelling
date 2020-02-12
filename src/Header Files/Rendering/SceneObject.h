@@ -15,7 +15,7 @@ namespace Rendering
 	{
 	public:
 
-		SceneObject(ComPtr<ID3D11Device> device, const Mesh& mesh, std::shared_ptr<VertexShader> vertexShader);
+		SceneObject(const Mesh& mesh, std::shared_ptr<VertexShader> vertexShader);
 
 		virtual void Update();
 

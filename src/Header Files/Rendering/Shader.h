@@ -11,11 +11,11 @@ using std::vector;
 
 namespace Rendering
 {
-	class Shader
+	class Shader : public DeviceAccess
 	{
 	public:
 
-		Shader(std::shared_ptr<Device> device, std::wstring shaderName);
+		Shader(std::wstring shaderName);
 
 		ComPtr<ID3DBlob> GetCompiledCode() const;
 
@@ -31,7 +31,7 @@ namespace Rendering
 	{
 	public:
 
-		VertexShader(std::shared_ptr<Device> device, std::wstring shaderName);
+		VertexShader(std::wstring shaderName);
 
 		ComPtr<ID3D11VertexShader> GetShader() const;
 
@@ -47,7 +47,7 @@ namespace Rendering
 	{
 	public:
 
-		GeometryShader(std::shared_ptr<Device> device, std::wstring shaderName);
+		GeometryShader(std::wstring shaderName);
 		ComPtr<ID3D11GeometryShader> GetShader() const;
 
 	private:
@@ -61,7 +61,7 @@ namespace Rendering
 	{
 	public:
 
-		PixelShader(std::shared_ptr<Device> device, std::wstring shaderName);
+		PixelShader(std::wstring shaderName);
 
 		ComPtr<ID3D11PixelShader> GetShader() const;
 
