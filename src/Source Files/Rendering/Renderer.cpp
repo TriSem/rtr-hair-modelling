@@ -18,7 +18,8 @@ namespace Rendering
 		depthStencilView(nullptr),
 		renderMode(RenderMode::SOLID),
 		vertexShader(nullptr),
-		pixelShader(nullptr)
+		pixelShader(nullptr),
+		splitScreen(nullptr)
 	{
 		Initialize();
 	}
@@ -71,7 +72,7 @@ namespace Rendering
 		CreateBackBufferView();
 		CreateDepthStencilView();
 		BindViewsToPipeline();
-		SetViewport();
+		splitScreen = std::make_unique<SplitScreen>(device, ScreenSectioning::HALVED, width, height);
 		CreateRasterizerStates();
 		CreateShaders();
 		CreateTextures();
@@ -201,31 +202,6 @@ namespace Rendering
 	void Renderer::BindViewsToPipeline()
 	{
 		device->GetContext()->OMSetRenderTargets(1, backBufferView.GetAddressOf(), depthStencilView.Get());
-	}
-
-	void Renderer::SetViewport()
-	{
-		D3D11_VIEWPORT leftViewport;
-		D3D11_VIEWPORT rightViewport;
-
-		leftViewport.TopLeftX = 0.0f;
-		leftViewport.TopLeftY = 0.0f;
-		leftViewport.Width = static_cast<float>(width) / 2;
-		leftViewport.Height = static_cast<float>(height);
-		leftViewport.MinDepth = 0.0f;
-		leftViewport.MaxDepth = 1.0f;
-
-		rightViewport.TopLeftX = width / 2;
-		rightViewport.TopLeftY = 0.0f;
-		rightViewport.Width = static_cast<float>(width) / 2;
-		rightViewport.Height = static_cast<float>(height);
-		rightViewport.MinDepth = 0.0f;
-		rightViewport.MaxDepth = 1.0f;
-
-		viewports.push_back(leftViewport);
-		viewports.push_back(rightViewport);
-
-		device->GetContext()->RSSetViewports(2, &viewports[0]);
 	}
 
 	void Renderer::CreateRasterizerStates()

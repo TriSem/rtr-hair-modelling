@@ -6,7 +6,7 @@
 #include "Shader.h"
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
-#include "Device.h"
+#include "SplitScreen.h"
 
 using Microsoft::WRL::ComPtr;
 
@@ -48,7 +48,6 @@ namespace Rendering
 		void CreateBackBufferView();
 		void CreateDepthStencilView();
 		void BindViewsToPipeline();
-		void SetViewport();
 		void CreateRasterizerStates();
 		void CreateShaders();
 		void CreateTextures();
@@ -72,13 +71,12 @@ namespace Rendering
 		ComPtr<ID3D11Buffer> constantBuffer;
 		ComPtr<ID3D11ShaderResourceView> diffuseTextureResourceView;
 
+		std::unique_ptr<SplitScreen> splitScreen;
+
 		std::shared_ptr<Device> device;
 		std::shared_ptr<VertexShader> vertexShader;
 		std::shared_ptr<PixelShader> pixelShader;
 		std::shared_ptr<GeometryShader> geometryShader;
-		std::vector<D3D11_VIEWPORT> viewports;
-
-		D3D_FEATURE_LEVEL featureLevel;
 	};
 }
 

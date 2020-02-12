@@ -10,3 +10,5 @@
 #include <d3dcompiler.h>
 #include <GeometricPrimitive.h>
 #include <DirectXMath.h>
+
+#include "Device.h"

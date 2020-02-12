@@ -226,6 +226,7 @@
     <ClInclude Include="src\Header Files\Rendering\Scene.h" />
     <ClInclude Include="src\Header Files\Rendering\SceneObject.h" />
     <ClInclude Include="src\Header Files\Rendering\Shader.h" />
+    <ClInclude Include="src\Header Files\Rendering\SplitScreen.h" />
     <ClInclude Include="src\Header Files\Rendering\Transform.h" />
     <ClInclude Include="src\Header Files\Rendering\Vertex.h" />
     <ClInclude Include="src\Header Files\Rendering\VertexBuffer.h" />
@@ -250,6 +251,7 @@
     <ClCompile Include="src\Source Files\Rendering\Scene.cpp" />
     <ClCompile Include="src\Source Files\Rendering\SceneObject.cpp" />
     <ClCompile Include="src\Source Files\Rendering\Shader.cpp" />
+    <ClCompile Include="src\Source Files\Rendering\SplitScreen.cpp" />
     <ClCompile Include="src\Source Files\Rendering\Transform.cpp" />
     <ClCompile Include="src\Source Files\Rendering\VertexBuffer.cpp" />
     <ClCompile Include="src\Source Files\Rendering\VertexShader.cpp" />

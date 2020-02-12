@@ -2,7 +2,6 @@
 
 #include "framework.h"
 #include "Graphics.h"
-#include "Device.h"
 #include <vector>
 
 enum class ShaderType;
