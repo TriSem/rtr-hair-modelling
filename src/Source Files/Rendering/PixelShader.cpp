@@ -2,7 +2,7 @@
 
 namespace Rendering
 {
-	PixelShader::PixelShader(ComPtr<ID3D11Device>& device, std::wstring directoryPath) :
+	PixelShader::PixelShader(std::shared_ptr<Device> device, std::wstring directoryPath) :
 		Shader::Shader(device, directoryPath)
 	{
 		CreateShader();
@@ -16,7 +16,7 @@ namespace Rendering
 	void PixelShader::CreateShader()
 	{
 		MessageAndThrowIfFailed(
-			device->CreatePixelShader(
+			device->GetDevice()->CreatePixelShader(
 				compiledCode->GetBufferPointer(),
 				compiledCode->GetBufferSize(), 
 				nullptr, 

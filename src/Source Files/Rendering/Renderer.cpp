@@ -12,7 +12,6 @@ namespace Rendering
 		width(width),
 		height(height),
 		device(nullptr),
-		context(nullptr),
 		swapChain(nullptr),
 		depthStencilBuffer(nullptr),
 		backBufferView(nullptr),
@@ -31,6 +30,7 @@ namespace Rendering
 	void Renderer::Render(Scene& scene)
 	{
 		Clear();
+		ID3D11DeviceContext* context = device->GetContext();
 		context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 		vector<std::shared_ptr<SceneObject>>& objects = scene.GetSceneObjects();
@@ -65,7 +65,7 @@ namespace Rendering
 
 	void Renderer::Initialize()
 	{
-		CreateDevice();
+		device = std::make_shared<Device>();
 		CheckMultisamplingSupport();
 		CreateSwapChain();
 		CreateBackBufferView();
@@ -83,39 +83,15 @@ namespace Rendering
 		description.ByteWidth = static_cast<uint32_t>(sizeof(ConstantBufferVS) + (16 - (sizeof(ConstantBufferVS) % 16)));
 
 		MessageAndThrowIfFailed(
-			device->CreateBuffer(&description, 0, constantBuffer.GetAddressOf()),
+			device->GetDevice()->CreateBuffer(&description, 0, constantBuffer.GetAddressOf()),
 			L"Failed to create constant buffer."
-		);
-	}
-
-	void Renderer::CreateDevice()
-	{
-		UINT flags = 0;
-
-	#if defined(_DEBUG)
-		flags |= D3D11_CREATE_DEVICE_DEBUG;
-	#endif	
-
-		MessageAndThrowIfFailed(
-			D3D11CreateDevice(
-				nullptr,
-				D3D_DRIVER_TYPE_HARDWARE,
-				0,
-				flags,
-				0,
-				0,
-				D3D11_SDK_VERSION,
-				&device,
-				&featureLevel,
-				&context),
-			L"Failed to create D3D11 device."
 		);
 	}
 
 	void Renderer::CheckMultisamplingSupport()
 	{
 		MessageAndThrowIfFailed(
-			device->CheckMultisampleQualityLevels(DXGI_FORMAT_R8G8B8A8_UNORM, multisampleCount, &msaaQuality),
+			device->GetDevice()->CheckMultisampleQualityLevels(DXGI_FORMAT_R8G8B8A8_UNORM, multisampleCount, &msaaQuality),
 			L"Failed to check multisample quality levels."
 		);
 	}
@@ -143,7 +119,7 @@ namespace Rendering
 
 		ComPtr<IDXGIDevice> dxgiDevice = nullptr;
 		MessageAndThrowIfFailed(
-			device->QueryInterface<IDXGIDevice>(dxgiDevice.GetAddressOf()),
+			device->GetDevice()->QueryInterface<IDXGIDevice>(dxgiDevice.GetAddressOf()),
 			L"Failed to query IDXGIDevice interface."
 		);
 
@@ -163,7 +139,7 @@ namespace Rendering
 
 		MessageAndThrowIfFailed(
 			dxgiFactory->CreateSwapChain(
-				device.Get(),
+				device->GetDevice(),
 				&description,
 				swapChain.GetAddressOf()),
 			L"Swap chain creation failed."
@@ -182,7 +158,7 @@ namespace Rendering
 		);
 
 		MessageAndThrowIfFailed(
-			device->CreateRenderTargetView(
+			device->GetDevice()->CreateRenderTargetView(
 				backBuffer.Get(),
 				0,
 				backBufferView.GetAddressOf()),
@@ -206,7 +182,7 @@ namespace Rendering
 		depthStencilDescription.MiscFlags = 0;
 
 		MessageAndThrowIfFailed(
-			device->CreateTexture2D(
+			device->GetDevice()->CreateTexture2D(
 				&depthStencilDescription,
 				nullptr,
 				depthStencilBuffer.GetAddressOf()),
@@ -214,7 +190,7 @@ namespace Rendering
 		);
 
 		MessageAndThrowIfFailed(
-			device->CreateDepthStencilView(
+			device->GetDevice()->CreateDepthStencilView(
 				depthStencilBuffer.Get(),
 				nullptr,
 				depthStencilView.GetAddressOf()),
@@ -224,7 +200,7 @@ namespace Rendering
 
 	void Renderer::BindViewsToPipeline()
 	{
-		context->OMSetRenderTargets(1, backBufferView.GetAddressOf(), depthStencilView.Get());
+		device->GetContext()->OMSetRenderTargets(1, backBufferView.GetAddressOf(), depthStencilView.Get());
 	}
 
 	void Renderer::SetViewport()
@@ -249,7 +225,7 @@ namespace Rendering
 		viewports.push_back(leftViewport);
 		viewports.push_back(rightViewport);
 
-		context->RSSetViewports(2, &viewports[0]);
+		device->GetContext()->RSSetViewports(2, &viewports[0]);
 	}
 
 	void Renderer::CreateRasterizerStates()
@@ -259,20 +235,20 @@ namespace Rendering
 		rasterizerDescription.FillMode = D3D11_FILL_WIREFRAME;
 		rasterizerDescription.CullMode = D3D11_CULL_NONE;
 		MessageAndThrowIfFailed(
-			device->CreateRasterizerState(&rasterizerDescription, rasterizerStateWireframe.ReleaseAndGetAddressOf()),
+			device->GetDevice()->CreateRasterizerState(&rasterizerDescription, rasterizerStateWireframe.ReleaseAndGetAddressOf()),
 			L"Failed to create rasterizer state: WIREFRAME."
 		);
 
 		rasterizerDescription.FillMode = D3D11_FILL_SOLID;
 		MessageAndThrowIfFailed(
-			device->CreateRasterizerState(&rasterizerDescription, rasterizerStateSolid.ReleaseAndGetAddressOf()),
+			device->GetDevice()->CreateRasterizerState(&rasterizerDescription, rasterizerStateSolid.ReleaseAndGetAddressOf()),
 			L"Failed to create rasterizer state: SOLID."
 		);
 
 		if(renderMode == RenderMode::SOLID)
-			context->RSSetState(rasterizerStateSolid.Get());
+			device->GetContext()->RSSetState(rasterizerStateSolid.Get());
 		else
-			context->RSSetState(rasterizerStateWireframe.Get());
+			device->GetContext()->RSSetState(rasterizerStateWireframe.Get());
 	}
 
 	void Renderer::CreateShaders()
@@ -314,8 +290,8 @@ namespace Rendering
 	void Renderer::Clear()
 	{
 		Color clearColor = DirectX::Colors::CornflowerBlue.v;
-		context->ClearRenderTargetView(backBufferView.Get(), clearColor);
-		context->ClearDepthStencilView(depthStencilView.Get(),
+		device->GetContext()->ClearRenderTargetView(backBufferView.Get(), clearColor);
+		device->GetContext()->ClearDepthStencilView(depthStencilView.Get(),
 			D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 	}
 
@@ -335,15 +311,15 @@ namespace Rendering
 		{
 			this->renderMode = renderMode;
 			if (renderMode == RenderMode::SOLID)
-				context->RSSetState(rasterizerStateSolid.Get());
+				device->GetContext()->RSSetState(rasterizerStateSolid.Get());
 			else
-				context->RSSetState(rasterizerStateWireframe.Get());
+				device->GetContext()->RSSetState(rasterizerStateWireframe.Get());
 		}
 	}
 
 	const ComPtr<ID3D11Device> Renderer::GetDevice() const
 	{
-		return device;
+		return device->GetDevice();
 	}
 
 	const std::shared_ptr<VertexShader> Renderer::GetVertexShader() const

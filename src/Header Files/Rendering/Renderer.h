@@ -6,6 +6,7 @@
 #include "Shader.h"
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
+#include "Device.h"
 
 using Microsoft::WRL::ComPtr;
 
@@ -42,7 +43,6 @@ namespace Rendering
 		Scene scene;
 
 		void Initialize();
-		void CreateDevice();
 		void CheckMultisamplingSupport();
 		void CreateSwapChain();
 		void CreateBackBufferView();
@@ -63,9 +63,6 @@ namespace Rendering
 		int height;
 		RenderMode renderMode;
 
-
-		ComPtr<ID3D11Device> device;
-		ComPtr<ID3D11DeviceContext> context;
 		ComPtr<IDXGISwapChain> swapChain;
 		ComPtr<ID3D11Texture2D> depthStencilBuffer;
 		ComPtr<ID3D11RenderTargetView> backBufferView;
@@ -75,6 +72,7 @@ namespace Rendering
 		ComPtr<ID3D11Buffer> constantBuffer;
 		ComPtr<ID3D11ShaderResourceView> diffuseTextureResourceView;
 
+		std::shared_ptr<Device> device;
 		std::shared_ptr<VertexShader> vertexShader;
 		std::shared_ptr<PixelShader> pixelShader;
 		std::shared_ptr<GeometryShader> geometryShader;

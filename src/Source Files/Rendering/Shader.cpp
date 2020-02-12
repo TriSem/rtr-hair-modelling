@@ -2,7 +2,7 @@
 
 namespace Rendering
 {
-	Shader::Shader(ComPtr<ID3D11Device>& device, std::wstring directoryPath) :
+	Shader::Shader(std::shared_ptr<Device> device, std::wstring directoryPath) :
 		device(device)
 	{
 		HRESULT result = D3DReadFileToBlob(directoryPath.c_str(),

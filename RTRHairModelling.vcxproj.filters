@@ -126,6 +126,9 @@
     <ClInclude Include="src\Header Files\Rendering\VertexBuffer.h">
       <Filter>Headerdateien\Rendering</Filter>
     </ClInclude>
+    <ClInclude Include="src\Header Files\Rendering\Device.h">
+      <Filter>Headerdateien\Rendering</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ModelData\AngelinaDiffuseTex2048.raw">
@@ -185,6 +188,9 @@
       <Filter>Quelldateien\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="src\Source Files\Rendering\GeometryShader.cpp">
+      <Filter>Quelldateien\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Source Files\Rendering\Device.cpp">
       <Filter>Quelldateien\Rendering</Filter>
     </ClCompile>
   </ItemGroup>

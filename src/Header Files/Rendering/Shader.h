@@ -2,6 +2,7 @@
 
 #include "framework.h"
 #include "Graphics.h"
+#include "Device.h"
 #include <vector>
 
 enum class ShaderType;
@@ -15,13 +16,13 @@ namespace Rendering
 	{
 	public:
 
-		Shader(ComPtr<ID3D11Device> &device, std::wstring directoryPath);
+		Shader(std::shared_ptr<Device> device, std::wstring directoryPath);
 
 		ComPtr<ID3DBlob> GetCompiledCode() const;
 
 	protected:
 
-		ComPtr<ID3D11Device> device;
+		std::shared_ptr<Device> device;
 		ComPtr<ID3DBlob> compiledCode;
 
 		virtual void CreateShader() = 0;
@@ -31,7 +32,7 @@ namespace Rendering
 	{
 	public:
 
-		VertexShader(ComPtr<ID3D11Device>& device, std::wstring directoryPath);
+		VertexShader(std::shared_ptr<Device> device, std::wstring directoryPath);
 
 		ComPtr<ID3D11VertexShader> GetShader() const;
 
@@ -47,7 +48,7 @@ namespace Rendering
 	{
 	public:
 
-		GeometryShader(ComPtr<ID3D11Device>& device, std::wstring directoryPath);
+		GeometryShader(std::shared_ptr<Device> device, std::wstring directoryPath);
 		ComPtr<ID3D11GeometryShader> GetShader() const;
 
 	private:
@@ -61,7 +62,7 @@ namespace Rendering
 	{
 	public:
 
-		PixelShader(ComPtr<ID3D11Device>& device, std::wstring directoryPath);
+		PixelShader(std::shared_ptr<Device> device, std::wstring directoryPath);
 
 		ComPtr<ID3D11PixelShader> GetShader() const;
 

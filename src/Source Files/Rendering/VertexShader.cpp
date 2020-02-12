@@ -2,7 +2,7 @@
 
 namespace Rendering
 {
-	VertexShader::VertexShader(ComPtr<ID3D11Device>& device, std::wstring directoryPath) 
+	VertexShader::VertexShader(std::shared_ptr<Device> device, std::wstring directoryPath)
 		: Shader::Shader(device, directoryPath)
 	{
 		CreateShader();
@@ -16,7 +16,7 @@ namespace Rendering
 	void VertexShader::CreateShader()
 	{
 		MessageAndThrowIfFailed(
-			device->CreateVertexShader(
+			device->GetDevice()->CreateVertexShader(
 				compiledCode->GetBufferPointer(),
 				compiledCode->GetBufferSize(),
 				nullptr,
