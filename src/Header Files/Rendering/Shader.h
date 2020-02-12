@@ -16,7 +16,7 @@ namespace Rendering
 	{
 	public:
 
-		Shader(std::shared_ptr<Device> device, std::wstring directoryPath);
+		Shader(std::shared_ptr<Device> device, std::wstring shaderName);
 
 		ComPtr<ID3DBlob> GetCompiledCode() const;
 
@@ -32,7 +32,7 @@ namespace Rendering
 	{
 	public:
 
-		VertexShader(std::shared_ptr<Device> device, std::wstring directoryPath);
+		VertexShader(std::shared_ptr<Device> device, std::wstring shaderName);
 
 		ComPtr<ID3D11VertexShader> GetShader() const;
 
@@ -48,7 +48,7 @@ namespace Rendering
 	{
 	public:
 
-		GeometryShader(std::shared_ptr<Device> device, std::wstring directoryPath);
+		GeometryShader(std::shared_ptr<Device> device, std::wstring shaderName);
 		ComPtr<ID3D11GeometryShader> GetShader() const;
 
 	private:
@@ -62,7 +62,7 @@ namespace Rendering
 	{
 	public:
 
-		PixelShader(std::shared_ptr<Device> device, std::wstring directoryPath);
+		PixelShader(std::shared_ptr<Device> device, std::wstring shaderName);
 
 		ComPtr<ID3D11PixelShader> GetShader() const;
 

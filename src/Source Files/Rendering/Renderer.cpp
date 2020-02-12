@@ -253,33 +253,9 @@ namespace Rendering
 
 	void Renderer::CreateShaders()
 	{
-		std::wstring shaderPath;
-
-#ifdef _DEBUG
-#ifdef _WIN64
-		shaderPath = L"./bin/x64/Debug/";
-#else
-		shaderPath = L"./bin/Win32/Debug/";
-#endif
-#else
-#ifdef _WIN64
-		shaderPath = L"./bin/x64/Release/";
-#else
-		shaderPath = L"./bin/Win32/Debug/";
-#endif
-#endif
-
-		std::wstring vertexShaderLocation = shaderPath + L"VertexShader.cso";
-		std::wstring pixelShaderLocation = shaderPath + L"PixelShader.cso";
-		std::wstring geometryShaderLocation = shaderPath + L"GeometryShader.cso";
-		vertexShader = std::make_shared<VertexShader>(device, vertexShaderLocation);
-		pixelShader = std::make_shared<PixelShader>(device, pixelShaderLocation); 
-		geometryShader = std::make_shared<GeometryShader>(device, geometryShaderLocation);
-		UINT shaderCompileFlags = 0;
-		UINT effectFlags = 0;
-#ifdef _DEBUG
-		shaderCompileFlags |= D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION;
-#endif
+		vertexShader = std::make_shared<VertexShader>(device, L"VertexShader");
+		pixelShader = std::make_shared<PixelShader>(device, L"PixelShader"); 
+		geometryShader = std::make_shared<GeometryShader>(device, L"GeometryShader");
 	}
 
 	void Renderer::CreateTextures()
