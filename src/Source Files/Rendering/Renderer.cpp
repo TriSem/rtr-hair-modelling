@@ -232,11 +232,6 @@ namespace Rendering
 		geometryShader = std::make_shared<GeometryShader>(L"StandardGS");
 	}
 
-	void Renderer::CreateTextures()
-	{
-		
-	}
-
 	void Renderer::Clear()
 	{
 		Color clearColor = DirectX::Colors::CornflowerBlue.v;

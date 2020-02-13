@@ -50,7 +50,6 @@ namespace Rendering
 		void BindViewsToPipeline();
 		void CreateRasterizerStates();
 		void CreateShaders();
-		void CreateTextures();
 		void Clear();
 
 		UINT multisampleCount;
