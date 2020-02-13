@@ -11,5 +11,4 @@
 #include <GeometricPrimitive.h>
 #include <DirectXMath.h>
 
-#include "DeviceAccess.h"
-#include "Device.h"
+#include <DeviceAccess.h>

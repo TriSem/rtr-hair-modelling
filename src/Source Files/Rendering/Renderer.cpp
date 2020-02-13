@@ -70,7 +70,7 @@ namespace Rendering
 		CreateBackBufferView();
 		CreateDepthStencilView();
 		BindViewsToPipeline();
-		splitScreen = std::make_unique<SplitScreen>(device, ScreenSectioning::HALVED, width, height);
+		splitScreen = std::make_unique<SplitScreen>(ScreenSectioning::HALVED, static_cast<float>(width), static_cast<float>(height));
 		CreateRasterizerStates();
 		CreateShaders();
 		CreateTextures();
@@ -227,9 +227,9 @@ namespace Rendering
 
 	void Renderer::CreateShaders()
 	{
-		vertexShader = std::make_shared<VertexShader>(device, L"VertexShader");
-		pixelShader = std::make_shared<PixelShader>(device, L"PixelShader"); 
-		geometryShader = std::make_shared<GeometryShader>(device, L"GeometryShader");
+		vertexShader = std::make_shared<VertexShader>(L"VertexShader");
+		pixelShader = std::make_shared<PixelShader>(L"PixelShader"); 
+		geometryShader = std::make_shared<GeometryShader>(L"GeometryShader");
 	}
 
 	void Renderer::CreateTextures()

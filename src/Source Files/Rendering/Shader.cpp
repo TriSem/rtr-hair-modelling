@@ -2,8 +2,7 @@
 
 namespace Rendering
 {
-	Shader::Shader(std::shared_ptr<Device> device, std::wstring shaderName) :
-		device(device)
+	Shader::Shader(std::wstring shaderName)
 	{
 		std::wstring shaderPath;
 

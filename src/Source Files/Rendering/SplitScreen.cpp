@@ -37,7 +37,7 @@ namespace Rendering
 
 		viewports.clear();
 		viewports.push_back(viewport);
-		device->GetContext()->RSSetViewports(viewports.size(), viewports.data());
+		device->GetContext()->RSSetViewports(static_cast<UINT>(viewports.size()), viewports.data());
 	}
 
 	void SplitScreen::HalveScreen()
@@ -63,7 +63,7 @@ namespace Rendering
 		viewports.push_back(leftViewport);
 		viewports.push_back(rightViewport);
 
-		device->GetContext()->RSSetViewports(viewports.size(), viewports.data());
+		device->GetContext()->RSSetViewports(static_cast<UINT>(viewports.size()), viewports.data());
 	}
 
 	void SplitScreen::QuarterScreen()
@@ -104,11 +104,11 @@ namespace Rendering
 		viewports.push_back(bottomLeft);
 		viewports.push_back(bottomRight);
 
-		device->GetContext()->RSSetViewports(viewports.size(), viewports.data());
+		device->GetContext()->RSSetViewports(static_cast<UINT>(viewports.size()), viewports.data());
 	}
 
-	int SplitScreen::GetNumberOfViewports()
+	uint32_t SplitScreen::GetNumberOfViewports()
 	{
-		return viewports.size();
+		return static_cast<UINT>(viewports.size());
 	}
 }

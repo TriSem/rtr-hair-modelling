@@ -29,6 +29,10 @@ namespace Rendering
 		);
 	}
 
+	Device::~Device()
+	{
+	}
+
 	ID3D11Device* Device::GetDevice()
 	{
 		return device.Get();

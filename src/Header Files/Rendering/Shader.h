@@ -21,7 +21,6 @@ namespace Rendering
 
 	protected:
 
-		std::shared_ptr<Device> device;
 		ComPtr<ID3DBlob> compiledCode;
 
 		virtual void CreateShader() = 0;

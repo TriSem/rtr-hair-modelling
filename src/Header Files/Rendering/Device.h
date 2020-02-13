@@ -1,6 +1,6 @@
 #pragma once
 #include <framework.h>
-#include "Graphics.h"
+#include <d3d11.h>
 
 using Microsoft::WRL::ComPtr;
 
@@ -8,8 +8,6 @@ namespace Rendering
 {
 	class Device
 	{
-		friend class DeviceAccess;
-
 	public:
 
 		ID3D11Device* GetDevice();
@@ -18,10 +16,13 @@ namespace Rendering
 	private:
 
 		Device();
+		~Device();
 
 		ComPtr<ID3D11Device> device;
 		ComPtr<ID3D11DeviceContext> context;
 
 		D3D_FEATURE_LEVEL featureLevel;
+
+		friend class DeviceAccess;
 	};
 }

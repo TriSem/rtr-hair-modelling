@@ -6,9 +6,19 @@ namespace Rendering
 	{
 		if (device == nullptr)
 		{
-			device = std::make_unique<Device>();
+			device = new Device();
 		}
+
+		numberOfAccessingObjects++;
 	}
 
-	std::unique_ptr<Device> DeviceAccess::device = nullptr;
+	DeviceAccess::~DeviceAccess()
+	{
+		numberOfAccessingObjects--;
+		if (numberOfAccessingObjects == 0)
+			delete device;
+	}
+
+	Device* DeviceAccess::device = nullptr;
+	uint32_t DeviceAccess::numberOfAccessingObjects = 0;
 }

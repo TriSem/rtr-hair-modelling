@@ -28,6 +28,6 @@ namespace Rendering
 		void WholeScreen();
 		void HalveScreen();
 		void QuarterScreen();
-		int GetNumberOfViewports();
+		uint32_t GetNumberOfViewports();
 	};
 }
