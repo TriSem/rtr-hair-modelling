@@ -227,9 +227,9 @@ namespace Rendering
 
 	void Renderer::CreateShaders()
 	{
-		vertexShader = std::make_shared<VertexShader>(L"VertexShader");
-		pixelShader = std::make_shared<PixelShader>(L"PixelShader"); 
-		geometryShader = std::make_shared<GeometryShader>(L"GeometryShader");
+		vertexShader = std::make_shared<VertexShader>(L"StandardVS");
+		pixelShader = std::make_shared<PixelShader>(L"UnlitPS"); 
+		geometryShader = std::make_shared<GeometryShader>(L"StandardGS");
 	}
 
 	void Renderer::CreateTextures()

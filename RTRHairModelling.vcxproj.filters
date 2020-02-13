@@ -50,13 +50,13 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Shaders\PixelShader.hlsl">
+    <FxCompile Include="Shaders\StandardGS.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="Shaders\VertexShader.hlsl">
+    <FxCompile Include="Shaders\StandardVS.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="GeometryShader.hlsl">
+    <FxCompile Include="Shaders\UnlitPS.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
   </ItemGroup>
