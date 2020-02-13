@@ -73,7 +73,6 @@ namespace Rendering
 		splitScreen = std::make_unique<SplitScreen>(ScreenSectioning::HALVED, static_cast<float>(width), static_cast<float>(height));
 		CreateRasterizerStates();
 		CreateShaders();
-		CreateTextures();
 
 		D3D11_BUFFER_DESC description = {};
 		description.Usage = D3D11_USAGE_DYNAMIC;
