@@ -35,14 +35,9 @@ namespace Rendering
 			);
 		}
 
-		ID3D11Buffer* Get() const
+		ComPtr<ID3D11Buffer> Data() const
 		{
-			return vertexBuffer.Get();
-		}
-
-		ID3D11Buffer* const* GetAddressOf() const
-		{
-			return vertexBuffer.GetAddressOf();
+			return vertexBuffer;
 		}
 
 		static const UINT STRIDE = sizeof(VertexType);

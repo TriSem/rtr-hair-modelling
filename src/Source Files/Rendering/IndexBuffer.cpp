@@ -24,10 +24,11 @@ namespace Rendering
 		);
 	}
 
-	ComPtr<ID3D11Buffer> IndexBuffer::GetData()
+	ComPtr<ID3D11Buffer> IndexBuffer::Data()
 	{
 		return indexBuffer;
 	}
+
 	uint32_t IndexBuffer::GetIndexCount()
 	{
 		return indexCount;

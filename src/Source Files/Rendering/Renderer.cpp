@@ -50,10 +50,10 @@ namespace Rendering
 			std::shared_ptr<IndexBuffer> indexBuffer = object->GetIndexBuffer(); 
 			context->IASetInputLayout(vertexShader->GetInputLayout().Get());
 			const UINT offsets[] = { 0 };
-			context->IASetVertexBuffers(0, 1, vertexBuffer->GetAddressOf(), &vertexBuffer->STRIDE, offsets);
-			context->IASetIndexBuffer(indexBuffer->GetData().Get(), DXGI_FORMAT_R32_UINT, 0);
+			context->IASetVertexBuffers(0, 1, vertexBuffer->Data().GetAddressOf(), &vertexBuffer->STRIDE, offsets);
+			context->IASetIndexBuffer(indexBuffer->Data().Get(), DXGI_FORMAT_R32_UINT, 0);
 			context->VSSetShader(vertexShader->GetShader().Get(), nullptr, 0);
-			context->VSSetConstantBuffers(0, 1, mvpConstantBuffer->GetAddressOf());
+			context->VSSetConstantBuffers(0, 1, mvpConstantBuffer->Data().GetAddressOf());
 			context->GSSetShader(geometryShader->GetShader().Get(), nullptr, 0);
 			context->PSSetShader(pixelShader->GetShader().Get(), nullptr, 0);
 			context->DrawIndexed(indexBuffer->GetIndexCount(), 0, 0);

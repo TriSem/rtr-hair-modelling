@@ -41,14 +41,9 @@ namespace Rendering
 			device->GetContext()->Unmap(constantBuffer.Get(), 0);
 		}
 
-		ID3D11Buffer* Get() const
+		ComPtr<ID3D11Buffer> Data() const
 		{
-			return constantBuffer.Get();
-		}
-
-		ID3D11Buffer* const* GetAddressOf() const
-		{
-			return constantBuffer.GetAddressOf();
+			return constantBuffer;
 		}
 
 	private:

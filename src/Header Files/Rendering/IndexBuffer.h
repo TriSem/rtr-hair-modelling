@@ -12,7 +12,7 @@ namespace Rendering
 
 		IndexBuffer(const std::vector<UINT>& indices);
 
-		ComPtr<ID3D11Buffer> GetData();
+		ComPtr<ID3D11Buffer> Data();
 
 		uint32_t GetIndexCount();
 
