@@ -5,10 +5,11 @@
 
 namespace Rendering
 {
+	template<typename VertexType>
 	struct Mesh
 	{
 	public:
-		std::vector<Vertex> vertices;
+		std::vector<VertexType> vertices;
 		std::vector<uint32_t> indices;
 	};
 }

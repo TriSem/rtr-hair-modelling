@@ -2,11 +2,11 @@
 
 namespace Rendering
 {
-	SceneObject::SceneObject(const Mesh& mesh, std::shared_ptr<VertexShader> vertexShader) :
+	SceneObject::SceneObject(const Mesh<HairVertex>& mesh, std::shared_ptr<VertexShader> vertexShader) :
 		mesh(mesh),
 		vertexShader(vertexShader)
 	{
-		vertexBuffer = std::make_shared<VertexBuffer>(this->vertexShader, mesh.vertices);
+		vertexBuffer = std::make_shared<VertexBuffer<HairVertex>>(mesh.vertices);
 		indexBuffer = std::make_shared<IndexBuffer>(mesh.indices);
 	}
 
@@ -19,7 +19,7 @@ namespace Rendering
 		return transform;
 	}
 
-	std::shared_ptr<VertexBuffer> SceneObject::GetVertexBuffer()
+	std::shared_ptr<VertexBuffer<HairVertex>> SceneObject::GetVertexBuffer()
 	{
 		return vertexBuffer;
 	}
@@ -29,7 +29,7 @@ namespace Rendering
 		return indexBuffer;
 	}
 
-	Mesh& SceneObject::GetMesh()
+	Mesh<HairVertex>& SceneObject::GetMesh()
 	{
 		return mesh;
 	}

@@ -15,25 +15,25 @@ namespace Rendering
 	{
 	public:
 
-		SceneObject(const Mesh& mesh, std::shared_ptr<VertexShader> vertexShader);
+		SceneObject(const Mesh<HairVertex>& mesh, std::shared_ptr<VertexShader> vertexShader);
 
 		virtual void Update();
 
 		Transform& GetTransform();
 
-		std::shared_ptr<VertexBuffer> GetVertexBuffer();
+		std::shared_ptr<VertexBuffer<HairVertex>> GetVertexBuffer();
 		std::shared_ptr<IndexBuffer> GetIndexBuffer();
-		Mesh& GetMesh();
+		Mesh<HairVertex>& GetMesh();
 
 	private:
 
-		std::shared_ptr<VertexBuffer> vertexBuffer;
+		std::shared_ptr<VertexBuffer<HairVertex>> vertexBuffer;
 		std::shared_ptr<IndexBuffer> indexBuffer;
 
 		std::shared_ptr<VertexShader> vertexShader;
 	
 	protected:
 		Transform transform;
-		Mesh mesh;
+		Mesh<HairVertex> mesh;
 	};
 }

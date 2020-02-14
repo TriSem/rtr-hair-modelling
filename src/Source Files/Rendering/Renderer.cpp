@@ -46,10 +46,10 @@ namespace Rendering
 			mvp.projection = camera.ProjectionMatrix();
 			mvpConstantBuffer->SetData(mvp);
 
-			std::shared_ptr<VertexBuffer> vertexBuffer = object->GetVertexBuffer();
+			std::shared_ptr<VertexBuffer<HairVertex>> vertexBuffer = object->GetVertexBuffer();
 			std::shared_ptr<IndexBuffer> indexBuffer = object->GetIndexBuffer(); 
-			context->IASetInputLayout(vertexBuffer->GetInputLayout().Get());
-			context->IASetVertexBuffers(0, 1, vertexBuffer->GetData().GetAddressOf(), &vertexBuffer->STRIDE, &vertexBuffer->GetOffset());
+			context->IASetInputLayout(vertexShader->GetInputLayout().Get());
+			context->IASetVertexBuffers(0, 1, vertexBuffer->GetAddressOf(), &vertexBuffer->STRIDE, 0);
 			context->IASetIndexBuffer(indexBuffer->GetData().Get(), DXGI_FORMAT_R32_UINT, 0);
 			context->VSSetShader(vertexShader->GetShader().Get(), nullptr, 0);
 			context->VSSetConstantBuffers(0, 1, mvpConstantBuffer->GetAddressOf());
@@ -215,7 +215,7 @@ namespace Rendering
 
 	void Renderer::CreateShaders()
 	{
-		vertexShader = std::make_shared<VertexShader>(L"StandardVS");
+		vertexShader = std::make_shared<VertexShader>(L"StandardVS", InputLayoutDescription::HairVertex());
 		pixelShader = std::make_shared<PixelShader>(L"UnlitPS"); 
 		geometryShader = std::make_shared<GeometryShader>(L"StandardGS");
 	}

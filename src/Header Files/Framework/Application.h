@@ -8,6 +8,7 @@
 #include <Keyboard.h>
 #include "SceneObject.h"
 #include "RawFile.h"
+#include <Vertex.h>
 
 using DirectX::Keyboard;
 using DirectX::Mouse;

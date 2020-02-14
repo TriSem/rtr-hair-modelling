@@ -238,6 +238,7 @@
     <ClInclude Include="src\Header Files\Rendering\Transform.h" />
     <ClInclude Include="src\Header Files\Rendering\Vertex.h" />
     <ClInclude Include="src\Header Files\Rendering\VertexBuffer.h" />
+    <ClInclude Include="src\Header Files\Rendering\InputLayoutDescription.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ModelData\AngelinaDiffuseTex2048.raw" />
@@ -262,7 +263,6 @@
     <ClCompile Include="src\Source Files\Rendering\Shader.cpp" />
     <ClCompile Include="src\Source Files\Rendering\SplitScreen.cpp" />
     <ClCompile Include="src\Source Files\Rendering\Transform.cpp" />
-    <ClCompile Include="src\Source Files\Rendering\VertexBuffer.cpp" />
     <ClCompile Include="src\Source Files\Rendering\VertexShader.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

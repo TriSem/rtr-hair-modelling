@@ -9,28 +9,46 @@ using Microsoft::WRL::ComPtr;
 
 namespace Rendering
 {
+	template<typename VertexType>
 	class VertexBuffer : public DeviceAccess
 	{
 	public:
 
-		VertexBuffer(std::shared_ptr<VertexShader> vertexShader, const std::vector<Vertex>& vertices);
-		ComPtr<ID3D11InputLayout> GetInputLayout() const;
+		VertexBuffer(const std::vector<HairVertex>& vertices)
+		{
+			D3D11_BUFFER_DESC bufferDescription = {};
 
-		static const UINT STRIDE = sizeof(Vertex);
+			bufferDescription.ByteWidth = UINT(sizeof(VertexType) * vertices.size());
+			bufferDescription.Usage = D3D11_USAGE_DEFAULT;
+			bufferDescription.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+			
+			D3D11_SUBRESOURCE_DATA subresourceData = {};
+			subresourceData.pSysMem = vertices.data();
 
-		void SetOffset(UINT offset);
+			MessageAndThrowIfFailed(
+				device->GetDevice()->CreateBuffer(
+					&bufferDescription,
+					&subresourceData,
+					vertexBuffer.ReleaseAndGetAddressOf()
+				),
+				L"Failed to create vertex buffer"
+			);
+		}
 
-		UINT& GetOffset();
-		ComPtr<ID3D11Buffer> GetData();
+		ID3D11Buffer* Get() const
+		{
+			return vertexBuffer.Get();
+		}
+
+		ID3D11Buffer* const* GetAddressOf() const
+		{
+			return vertexBuffer.GetAddressOf();
+		}
+
+		static const UINT STRIDE = sizeof(VertexType);
 
 	private:
 
-		ComPtr<ID3D11InputLayout> inputLayout;
 		ComPtr<ID3D11Buffer> vertexBuffer;
-		std::shared_ptr<VertexShader> vertexShader;
-
-		UINT offset;
-
-		void CreateInputLayout();
 	};
 }

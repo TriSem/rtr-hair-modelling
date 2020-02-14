@@ -69,10 +69,10 @@ void Application::Init()
 	keyboard = std::make_unique<Keyboard>();
 	mouse = std::make_unique<Mouse>();
 
-	Mesh headMesh;
+	Mesh<Rendering::HairVertex> headMesh;
 	RawFile vertexFile("E:/Programming/DirectX11/RTRHairModelling/ModelData/AngelinaHeadVB.raw");
 	RawFile indexFile("E:/Programming/DirectX11/RTRHairModelling/ModelData/AngelinaHeadIB.raw");
-	headMesh.vertices = vertexFile.InterpretAsBuffer<Vertex>();
+	headMesh.vertices = vertexFile.InterpretAsBuffer<Rendering::HairVertex>();
 	headMesh.indices = indexFile.InterpretAsBuffer<uint32_t>();
 	std::shared_ptr<SceneObject> head = std::make_unique<SceneObject>(headMesh, renderer->GetVertexShader());
 	mainScene->AddSceneObject(head);

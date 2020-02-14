@@ -138,6 +138,9 @@
     <ClInclude Include="src\Header Files\Rendering\ConstantBuffer.h">
       <Filter>Headerdateien\Rendering</Filter>
     </ClInclude>
+    <ClInclude Include="src\Header Files\Rendering\InputLayoutDescription.h">
+      <Filter>Headerdateien\Rendering</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ModelData\AngelinaDiffuseTex2048.raw">
@@ -188,9 +191,6 @@
       <Filter>Quelldateien\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="src\Source Files\Rendering\Transform.cpp">
-      <Filter>Quelldateien\Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Source Files\Rendering\VertexBuffer.cpp">
       <Filter>Quelldateien\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="src\Source Files\Rendering\VertexShader.cpp">
