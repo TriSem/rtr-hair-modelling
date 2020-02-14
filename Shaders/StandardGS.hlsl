@@ -6,7 +6,7 @@ struct GSOutput
 
 cbuffer Viewport
 {
-    uint index;
+    uint viewportIndex;
 };
 
 [maxvertexcount(3)]
@@ -19,7 +19,7 @@ void main(
     {
         GSOutput element;
         element.pos = input[i];
-        element.viewport = 0;
+        element.viewport = viewportIndex;
         output.Append(element);
     }
 }

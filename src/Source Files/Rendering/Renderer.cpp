@@ -19,7 +19,9 @@ namespace Rendering
 		vertexShader(nullptr),
 		pixelShader(nullptr),
 		splitScreen(nullptr),
-		mvpConstantBuffer(nullptr)
+		mvpConstantBuffer(nullptr),
+		viewportIndexBuffer(nullptr),
+		flatVertexShader(nullptr)
 	{
 		Initialize();
 	}
@@ -45,6 +47,9 @@ namespace Rendering
 			mvp.view = camera.ViewMatrix();
 			mvp.projection = camera.ProjectionMatrix();
 			mvpConstantBuffer->SetData(mvp);
+			ViewportIndex viewportIndex;
+			viewportIndex.index = 1;
+			viewportIndexBuffer->SetData(viewportIndex);
 
 			std::shared_ptr<VertexBuffer<HairVertex>> vertexBuffer = object->GetVertexBuffer();
 			std::shared_ptr<IndexBuffer> indexBuffer = object->GetIndexBuffer(); 
@@ -52,10 +57,17 @@ namespace Rendering
 			const UINT offsets[] = { 0 };
 			context->IASetVertexBuffers(0, 1, vertexBuffer->Data().GetAddressOf(), &vertexBuffer->STRIDE, offsets);
 			context->IASetIndexBuffer(indexBuffer->Data().Get(), DXGI_FORMAT_R32_UINT, 0);
-			context->VSSetShader(vertexShader->GetShader().Get(), nullptr, 0);
 			context->VSSetConstantBuffers(0, 1, mvpConstantBuffer->Data().GetAddressOf());
+			context->VSSetShader(vertexShader->GetShader().Get(), nullptr, 0);
+			context->GSSetConstantBuffers(0, 1, viewportIndexBuffer->Data().GetAddressOf());
 			context->GSSetShader(geometryShader->GetShader().Get(), nullptr, 0);
 			context->PSSetShader(pixelShader->GetShader().Get(), nullptr, 0);
+			context->DrawIndexed(indexBuffer->GetIndexCount(), 0, 0);
+
+			viewportIndex.index = 0;
+			viewportIndexBuffer->SetData(viewportIndex);
+			context->VSSetShader(flatVertexShader->GetShader().Get(), nullptr, 0);
+			context->GSGetConstantBuffers(0, 1, viewportIndexBuffer->Data().GetAddressOf());
 			context->DrawIndexed(indexBuffer->GetIndexCount(), 0, 0);
 		}
 
@@ -74,6 +86,7 @@ namespace Rendering
 		CreateShaders();
 
 		mvpConstantBuffer = std::make_shared<ConstantBuffer<MVPMatrices>>();
+		viewportIndexBuffer = std::make_shared<ConstantBuffer<ViewportIndex>>();
 	}
 
 	void Renderer::CheckMultisamplingSupport()
@@ -216,7 +229,9 @@ namespace Rendering
 
 	void Renderer::CreateShaders()
 	{
-		vertexShader = std::make_shared<VertexShader>(L"StandardVS", InputLayoutDescription::HairVertex());
+		InputLayoutDescription hairVertexDescription = InputLayoutDescription::HairVertex();
+		vertexShader = std::make_shared<VertexShader>(L"StandardVS", hairVertexDescription);
+		flatVertexShader = std::make_shared<VertexShader>(L"FlatVS", hairVertexDescription);
 		pixelShader = std::make_shared<PixelShader>(L"UnlitPS"); 
 		geometryShader = std::make_shared<GeometryShader>(L"StandardGS");
 	}

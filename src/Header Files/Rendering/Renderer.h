@@ -67,9 +67,11 @@ namespace Rendering
 		std::unique_ptr<SplitScreen> splitScreen;
 
 		std::shared_ptr<VertexShader> vertexShader;
+		std::shared_ptr<VertexShader> flatVertexShader;
 		std::shared_ptr<PixelShader> pixelShader;
 		std::shared_ptr<GeometryShader> geometryShader;
 		std::shared_ptr<ConstantBuffer<MVPMatrices>> mvpConstantBuffer;
+		std::shared_ptr<ConstantBuffer<ViewportIndex>> viewportIndexBuffer;
 	};
 }
 

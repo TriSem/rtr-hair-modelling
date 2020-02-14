@@ -59,6 +59,9 @@
     <FxCompile Include="Shaders\UnlitPS.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
+    <FxCompile Include="Shaders\FlatVS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="RTRHairModelling.rc">
