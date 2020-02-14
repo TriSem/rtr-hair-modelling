@@ -49,7 +49,8 @@ namespace Rendering
 			std::shared_ptr<VertexBuffer<HairVertex>> vertexBuffer = object->GetVertexBuffer();
 			std::shared_ptr<IndexBuffer> indexBuffer = object->GetIndexBuffer(); 
 			context->IASetInputLayout(vertexShader->GetInputLayout().Get());
-			context->IASetVertexBuffers(0, 1, vertexBuffer->GetAddressOf(), &vertexBuffer->STRIDE, 0);
+			const UINT offsets[] = { 0 };
+			context->IASetVertexBuffers(0, 1, vertexBuffer->GetAddressOf(), &vertexBuffer->STRIDE, offsets);
 			context->IASetIndexBuffer(indexBuffer->GetData().Get(), DXGI_FORMAT_R32_UINT, 0);
 			context->VSSetShader(vertexShader->GetShader().Get(), nullptr, 0);
 			context->VSSetConstantBuffers(0, 1, mvpConstantBuffer->GetAddressOf());
