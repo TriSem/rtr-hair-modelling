@@ -55,7 +55,7 @@ namespace Rendering
 		rightViewport.TopLeftX = screenWidth / 2;
 		rightViewport.TopLeftY = 0.0f;
 		rightViewport.Width = screenWidth / 2;
-		rightViewport.Height = screenHeight / 2;
+		rightViewport.Height = screenHeight;
 		rightViewport.MinDepth = 0.0f;
 		rightViewport.MaxDepth = 1.0f;
 
