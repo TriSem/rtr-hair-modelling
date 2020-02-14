@@ -135,6 +135,9 @@
     <ClInclude Include="src\Header Files\Rendering\DeviceAccess.h">
       <Filter>Headerdateien\Rendering</Filter>
     </ClInclude>
+    <ClInclude Include="src\Header Files\Rendering\ConstantBuffer.h">
+      <Filter>Headerdateien\Rendering</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ModelData\AngelinaDiffuseTex2048.raw">

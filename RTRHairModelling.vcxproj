@@ -223,6 +223,7 @@
     <ClInclude Include="src\Header Files\Framework\Window.h" />
     <ClInclude Include="src\Header Files\Rendering\Camera.h" />
     <ClInclude Include="src\Header Files\Rendering\Color.h" />
+    <ClInclude Include="src\Header Files\Rendering\ConstantBuffer.h" />
     <ClInclude Include="src\Header Files\Rendering\Device.h" />
     <ClInclude Include="src\Header Files\Rendering\DeviceAccess.h" />
     <ClInclude Include="src\Header Files\Rendering\Graphics.h" />

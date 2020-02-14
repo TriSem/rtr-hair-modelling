@@ -7,6 +7,7 @@
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
 #include "SplitScreen.h"
+#include "ConstantBuffer.h"
 
 using Microsoft::WRL::ComPtr;
 
@@ -16,12 +17,6 @@ namespace Rendering
 	{
 		SOLID,
 		WIREFRAME
-	};
-
-	struct ConstantBufferVS
-	{
-		Matrix mvp;
-		Matrix modelMatrix;
 	};
 
 	class Renderer : public DeviceAccess
@@ -67,7 +62,6 @@ namespace Rendering
 		ComPtr<ID3D11DepthStencilView> depthStencilView;
 		ComPtr<ID3D11RasterizerState> rasterizerStateSolid;
 		ComPtr<ID3D11RasterizerState> rasterizerStateWireframe;
-		ComPtr<ID3D11Buffer> constantBuffer;
 		ComPtr<ID3D11ShaderResourceView> diffuseTextureResourceView;
 
 		std::unique_ptr<SplitScreen> splitScreen;
@@ -75,6 +69,7 @@ namespace Rendering
 		std::shared_ptr<VertexShader> vertexShader;
 		std::shared_ptr<PixelShader> pixelShader;
 		std::shared_ptr<GeometryShader> geometryShader;
+		std::shared_ptr<ConstantBuffer<MVPMatrices>> mvpConstantBuffer;
 	};
 }
 

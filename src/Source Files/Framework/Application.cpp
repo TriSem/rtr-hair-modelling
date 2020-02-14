@@ -77,7 +77,7 @@ void Application::Init()
 	std::shared_ptr<SceneObject> head = std::make_unique<SceneObject>(headMesh, renderer->GetVertexShader());
 	mainScene->AddSceneObject(head);
 
-	head->GetTransform().SetScale(0.5f);
+	head->GetTransform().SetScale(0.3f);
 	head->GetTransform().SetRotation(Vector3(0.0f, 0.0f, 0.0f));
 
 	ShowWindow(mainWindow.WindowHandle(), nCmdShow);

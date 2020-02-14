@@ -18,7 +18,8 @@ namespace Rendering
 		renderMode(RenderMode::SOLID),
 		vertexShader(nullptr),
 		pixelShader(nullptr),
-		splitScreen(nullptr)
+		splitScreen(nullptr),
+		mvpConstantBuffer(nullptr)
 	{
 		Initialize();
 	}
@@ -37,16 +38,13 @@ namespace Rendering
 
 		for (auto it = objects.begin(); it != objects.end(); it++)
 		{
-			ConstantBufferVS constantBufferVS;
 			Camera& camera = scene.GetCamera();
 			std::shared_ptr<SceneObject> object = *it;
-			constantBufferVS.mvp = object->GetTransform().TransformationMatrix() * camera.ViewMatrix() * camera.ProjectionMatrix();
-			constantBufferVS.modelMatrix = object->GetTransform().TransformationMatrix();
-
-			D3D11_MAPPED_SUBRESOURCE resource;
-			context->Map(constantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &resource);
-			CopyMemory(resource.pData, &constantBufferVS, sizeof(ConstantBufferVS));
-			context->Unmap(constantBuffer.Get(), 0);
+			MVPMatrices mvp;
+			mvp.model = object->GetTransform().TransformationMatrix();
+			mvp.view = camera.ViewMatrix();
+			mvp.projection = camera.ProjectionMatrix();
+			mvpConstantBuffer->SetData(mvp);
 
 			std::shared_ptr<VertexBuffer> vertexBuffer = object->GetVertexBuffer();
 			std::shared_ptr<IndexBuffer> indexBuffer = object->GetIndexBuffer(); 
@@ -54,7 +52,7 @@ namespace Rendering
 			context->IASetVertexBuffers(0, 1, vertexBuffer->GetData().GetAddressOf(), &vertexBuffer->STRIDE, &vertexBuffer->GetOffset());
 			context->IASetIndexBuffer(indexBuffer->GetData().Get(), DXGI_FORMAT_R32_UINT, 0);
 			context->VSSetShader(vertexShader->GetShader().Get(), nullptr, 0);
-			context->VSSetConstantBuffers(0, 1, constantBuffer.GetAddressOf());
+			context->VSSetConstantBuffers(0, 1, mvpConstantBuffer->GetAddressOf());
 			context->GSSetShader(geometryShader->GetShader().Get(), nullptr, 0);
 			context->PSSetShader(pixelShader->GetShader().Get(), nullptr, 0);
 			context->DrawIndexed(indexBuffer->GetIndexCount(), 0, 0);
@@ -74,16 +72,7 @@ namespace Rendering
 		CreateRasterizerStates();
 		CreateShaders();
 
-		D3D11_BUFFER_DESC description = {};
-		description.Usage = D3D11_USAGE_DYNAMIC;
-		description.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-		description.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-		description.ByteWidth = static_cast<uint32_t>(sizeof(ConstantBufferVS) + (16 - (sizeof(ConstantBufferVS) % 16)));
-
-		MessageAndThrowIfFailed(
-			device->GetDevice()->CreateBuffer(&description, 0, constantBuffer.GetAddressOf()),
-			L"Failed to create constant buffer."
-		);
+		mvpConstantBuffer = std::make_shared<ConstantBuffer<MVPMatrices>>();
 	}
 
 	void Renderer::CheckMultisamplingSupport()
