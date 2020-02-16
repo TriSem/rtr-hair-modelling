@@ -25,17 +25,15 @@ std::vector<Rendering::Color> RawFile::InterpretAsTexture()
 	size_t numberOfPixels = bytes.size() / 4;
 	std::vector<Rendering::Color> texture(numberOfPixels);
 
-	static_assert(std::is_trivially_copyable<Rendering::Color>::value,
-		"Rendering must be trivially copyable");
-
-	for (uint32_t i = 0; i < numberOfPixels; i += sizeof(Rendering::Color))
+	for (uint32_t i = 0; i < numberOfPixels; i++)
 	{
+		size_t triple = i * (size_t)3;
 		Rendering::Color color = {};
-		color.red = bytes.at(i);
-		color.green = bytes.at(i + (size_t)1);
-		color.blue = bytes.at(i + (size_t)2);
+		color.red = bytes.at(triple);
+		color.green = bytes.at(triple + 1);
+		color.blue = bytes.at(triple + 2);
 		color.alpha = 255;
-		texture.push_back(color);
+		texture[i] = color;
 	}
 
 	return texture;
@@ -52,13 +50,13 @@ std::vector<RawFile::byte> RawFile::ReadBuffer()
 
 	unsigned int numberOfWords = 0;
 	memcpy(&numberOfWords, numberOfWordsBinary, sizeof(unsigned int));
-	size_t numberOfBytes = numberOfWords * sizeof(float);
-	std::vector<byte> buffer;
-	buffer.reserve(numberOfBytes);
 
-	std::istream_iterator<byte> start(stream);
-	buffer.insert(buffer.begin(), start, std::istream_iterator<byte>());
+	size_t numberOfBytes = numberOfWords * sizeof(float);
+	std::vector<byte> bytes(numberOfBytes);
+
+	stream.seekg(4, std::ios::beg);
+	stream.read(bytes.data(), numberOfBytes);
 	stream.close();
 
-	return buffer;
+	return bytes;
 }
