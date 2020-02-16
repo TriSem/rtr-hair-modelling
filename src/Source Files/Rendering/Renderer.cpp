@@ -87,6 +87,11 @@ namespace Rendering
 		CreateRasterizerStates();
 		CreateShaders();
 
+		TextureOptions options = { "E:/Programming/DirectX11/RTRHairModelling/ModelData/AngelinaDiffuseTex2048.raw", 2048, 2048 };
+		diffuseTexture = std::make_unique<Texture>(options);
+		device->GetContext()->PSSetShaderResources(0, 1, diffuseTexture->ResourceView().GetAddressOf());
+		device->GetContext()->PSSetSamplers(0, 1, diffuseTexture->SamplerState().GetAddressOf());
+
 		mvpConstantBuffer = std::make_shared<ConstantBuffer<MVPMatrices>>();
 		viewportIndexBuffer = std::make_shared<ConstantBuffer<ViewportIndex>>();
 	}
@@ -240,7 +245,7 @@ namespace Rendering
 
 	void Renderer::Clear()
 	{
-		Color clearColor = DirectX::Colors::CornflowerBlue.v;
+		DirectX::SimpleMath::Color clearColor = DirectX::Colors::CornflowerBlue.v;
 		device->GetContext()->ClearRenderTargetView(backBufferView.Get(), clearColor);
 		device->GetContext()->ClearDepthStencilView(depthStencilView.Get(),
 			D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);

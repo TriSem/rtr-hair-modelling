@@ -2,7 +2,7 @@
 
 namespace Rendering
 {
-	Texture::Texture(std::vector<Color> colorData) :
+	Texture::Texture(TextureOptions options) :
 		texture(nullptr),
 		resourceView(nullptr),
 		samplerState(nullptr)
@@ -12,8 +12,8 @@ namespace Rendering
 		sampleDescription.Quality = 0;
 
 		D3D11_TEXTURE2D_DESC textureDescription = {};
-		textureDescription.Height = 2048;
-		textureDescription.Width = 2048;
+		textureDescription.Width = options.width;
+		textureDescription.Height = options.height;
 		textureDescription.MipLevels = 1;
 		textureDescription.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 		textureDescription.SampleDesc = sampleDescription;
@@ -21,6 +21,9 @@ namespace Rendering
 		textureDescription.ArraySize = 1;
 		textureDescription.Usage = D3D11_USAGE_DEFAULT;
 		textureDescription.CPUAccessFlags = D3D11_CPU_ACCESS_READ | D3D11_CPU_ACCESS_WRITE;
+
+		RawFile textureFile(options.path);
+		std::vector<Color> colorData = textureFile.InterpretAsTexture();
 
 		D3D11_SUBRESOURCE_DATA resource = {};
 		resource.pSysMem = colorData.data();
@@ -33,9 +36,9 @@ namespace Rendering
 
 		D3D11_SAMPLER_DESC samplerDescription = {};
 		samplerDescription.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-		samplerDescription.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
-		samplerDescription.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
-		samplerDescription.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+		samplerDescription.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
+		samplerDescription.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
+		samplerDescription.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
 		samplerDescription.MaxAnisotropy = 1;
 		samplerDescription.ComparisonFunc = D3D11_COMPARISON_NEVER;
 		samplerDescription.MinLOD = 0;
@@ -59,5 +62,18 @@ namespace Rendering
 			device->GetDevice()->CreateShaderResourceView(texture.Get(), &viewDescription, resourceView.GetAddressOf()),
 			L"Failed to create shader resource view!"
 		);
+	}
+	ComPtr<ID3D11Texture2D> Texture::Get()
+	{
+		return texture;
+	}
+	ComPtr<ID3D11ShaderResourceView> Texture::ResourceView()
+	{
+		return resourceView;
+	}
+
+	ComPtr<ID3D11SamplerState> Texture::SamplerState()
+	{
+		return samplerState;
 	}
 }

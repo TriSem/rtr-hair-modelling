@@ -8,6 +8,7 @@
 #include "IndexBuffer.h"
 #include "SplitScreen.h"
 #include "ConstantBuffer.h"
+#include "Texture.h"
 
 using Microsoft::WRL::ComPtr;
 
@@ -62,7 +63,6 @@ namespace Rendering
 		ComPtr<ID3D11DepthStencilView> depthStencilView;
 		ComPtr<ID3D11RasterizerState> rasterizerStateSolid;
 		ComPtr<ID3D11RasterizerState> rasterizerStateWireframe;
-		ComPtr<ID3D11ShaderResourceView> diffuseTextureResourceView;
 
 		std::unique_ptr<SplitScreen> splitScreen;
 
@@ -72,6 +72,8 @@ namespace Rendering
 		std::shared_ptr<GeometryShader> geometryShader;
 		std::shared_ptr<ConstantBuffer<MVPMatrices>> mvpConstantBuffer;
 		std::shared_ptr<ConstantBuffer<ViewportIndex>> viewportIndexBuffer;
+		std::unique_ptr<Texture> diffuseTexture;
+
 	};
 }
 

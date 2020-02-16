@@ -52,6 +52,8 @@ namespace Rendering
 
 	void Transform::SetRotation(Vector3 eulerAngles)
 	{
+		float toRadian = 3.141592 / 180;
+		eulerAngles *= toRadian;
 		this->rotation = Quaternion::CreateFromYawPitchRoll(eulerAngles.y, eulerAngles.z, eulerAngles.x);
 	}
 

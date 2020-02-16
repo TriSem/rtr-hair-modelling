@@ -1,6 +1,5 @@
 #include "Application.h"
 #include <commdlg.h>
-#include <Texture.h>
 
 using Rendering::Renderer;
 using Rendering::Scene;
@@ -73,15 +72,13 @@ void Application::Init()
 	Mesh<Rendering::HairVertex> headMesh;
 	RawFile vertexFile("E:/Programming/DirectX11/RTRHairModelling/ModelData/AngelinaHeadVB.raw");
 	RawFile indexFile("E:/Programming/DirectX11/RTRHairModelling/ModelData/AngelinaHeadIB.raw");
-	RawFile textureFile("E:/Programming/DirectX11/RTRHairModelling/ModelData/AngelinaDiffuseTex2048.raw");
 	headMesh.vertices = vertexFile.InterpretAsBuffer<Rendering::HairVertex>();
 	headMesh.indices = indexFile.InterpretAsBuffer<uint32_t>();
-	Rendering::Texture texture(textureFile.InterpretAsTexture());
 	std::shared_ptr<SceneObject> head = std::make_unique<SceneObject>(headMesh, renderer->GetVertexShader());
 	mainScene->AddSceneObject(head);
 
-	head->GetTransform().SetScale(0.3f);
-	head->GetTransform().SetRotation(Vector3(0.0f, 0.0f, 0.0f));
+	head->GetTransform().SetScale(0.7f);
+	head->GetTransform().SetRotation(Vector3(0.0f, 180.0f, 0.0f));
 
 	ShowWindow(mainWindow.WindowHandle(), nCmdShow);
 }
