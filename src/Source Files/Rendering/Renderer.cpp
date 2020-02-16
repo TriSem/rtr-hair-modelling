@@ -51,6 +51,7 @@ namespace Rendering
 			viewportIndex.index = 1;
 			viewportIndexBuffer->SetData(viewportIndex);
 
+			SetRenderMode(RenderMode::SOLID);
 			std::shared_ptr<VertexBuffer<HairVertex>> vertexBuffer = object->GetVertexBuffer();
 			std::shared_ptr<IndexBuffer> indexBuffer = object->GetIndexBuffer(); 
 			context->IASetInputLayout(vertexShader->GetInputLayout().Get());
@@ -64,6 +65,7 @@ namespace Rendering
 			context->PSSetShader(pixelShader->GetShader().Get(), nullptr, 0);
 			context->DrawIndexed(indexBuffer->GetIndexCount(), 0, 0);
 
+			SetRenderMode(RenderMode::WIREFRAME);
 			viewportIndex.index = 0;
 			viewportIndexBuffer->SetData(viewportIndex);
 			context->VSSetShader(flatVertexShader->GetShader().Get(), nullptr, 0);

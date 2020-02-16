@@ -9,7 +9,7 @@
 
 class RawFile
 {
-	using byte = unsigned char;
+	using byte = char;
 
 public:
 	RawFile(std::string path);
@@ -24,7 +24,7 @@ public:
 		for (size_t i = 0; i < buffer.size(); i += typeSize)
 		{
 			DataType value;
-			unsigned char bytes[typeSize];
+			byte bytes[typeSize];
 			for (size_t j = 0; j < typeSize; j++)
 			{
 				bytes[j] = buffer.at(i + j);
