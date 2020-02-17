@@ -27,7 +27,7 @@ namespace Rendering
 
 		D3D11_SUBRESOURCE_DATA resource = {};
 		resource.pSysMem = colorData.data();
-		resource.SysMemPitch = 32;
+		resource.SysMemPitch = sizeof(Color) * options.width;
 
 		MessageAndThrowIfFailed(
 			device->GetDevice()->CreateTexture2D(&textureDescription, &resource, texture.GetAddressOf()),
@@ -36,9 +36,9 @@ namespace Rendering
 
 		D3D11_SAMPLER_DESC samplerDescription = {};
 		samplerDescription.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-		samplerDescription.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
-		samplerDescription.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
-		samplerDescription.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
+		samplerDescription.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+		samplerDescription.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+		samplerDescription.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
 		samplerDescription.MaxAnisotropy = 1;
 		samplerDescription.ComparisonFunc = D3D11_COMPARISON_NEVER;
 		samplerDescription.MinLOD = 0;

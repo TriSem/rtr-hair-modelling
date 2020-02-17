@@ -22,7 +22,7 @@ std::vector<Rendering::Color> RawFile::InterpretAsTexture()
 	stream.read(bytes.data(), numberOfBytes);
 	stream.close();
 
-	size_t numberOfPixels = bytes.size() / 4;
+	size_t numberOfPixels = bytes.size() / 3;
 	std::vector<Rendering::Color> texture(numberOfPixels);
 
 	for (uint32_t i = 0; i < numberOfPixels; i++)
