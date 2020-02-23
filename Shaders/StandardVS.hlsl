@@ -11,7 +11,7 @@ struct VSInput
     float2 textureCoordinate : TEXCOORD;
     float3 normal : NORMAL;
     float3 tangent : TANGENT;
-    float3 bitangent : TANGENT;
+    float3 bitangent : BINORMAL;
 };
 
 struct VSOutput

@@ -34,7 +34,7 @@ namespace Rendering
 				D3D11_INPUT_PER_VERTEX_DATA, 0 };
 			tangent = { "TANGENT", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 32,
 				D3D11_INPUT_PER_VERTEX_DATA, 0 };
-			bitangent = { "TANGENT", 1, DXGI_FORMAT_R32G32B32_FLOAT, 0, 44,
+			bitangent = { "BINORMAL", 1, DXGI_FORMAT_R32G32B32_FLOAT, 0, 44,
 				D3D11_INPUT_PER_VERTEX_DATA, 0 };
 
 			InputLayoutDescription hairVertex;
