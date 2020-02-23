@@ -11,5 +11,6 @@ struct PSInput
 
 float4 main(PSInput input, uint viewport : SV_ViewportArrayIndex) : SV_TARGET
 {
-    return diffuseTexture.Sample(samplerState, input.textureCoordinate);
+    // return diffuseTexture.Sample(samplerState, input.textureCoordinate);
+    return float4(1.0f, 1.0f, 1.0f, 1.0f);
 }

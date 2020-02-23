@@ -4,7 +4,7 @@ namespace Rendering
 {
 	Scene::Scene() :
 		camera(Camera()),
-		light(Light())
+		light(DirectionalLight())
 	{
 	}
 
@@ -29,6 +29,11 @@ namespace Rendering
 		sceneObjects.erase(sceneObjects.begin() + index);
 	}
 
+	void Scene::SetLight(DirectionalLight light)
+	{
+		this->light = light;
+	}
+
 	std::vector<std::shared_ptr<SceneObject>>& Scene::GetSceneObjects()
 	{
 		return sceneObjects;
@@ -37,5 +42,9 @@ namespace Rendering
 	Camera& Scene::GetCamera()
 	{
 		return camera;
+	}
+	DirectionalLight Scene::GetLight() const
+	{
+		return light;
 	}
 }

@@ -16,17 +16,19 @@ namespace Rendering
 		void Update();
 		void AddSceneObject(std::shared_ptr<SceneObject> object);
 		void DeleteSceneObject(int index);
+		void SetLight(DirectionalLight light);
 
 		std::vector<std::shared_ptr<SceneObject>>& GetSceneObjects();
 
 		Camera& GetCamera();
+		DirectionalLight GetLight() const;
 
 	private:
 
 		int a = 0;
 		std::vector<std::shared_ptr<SceneObject>> sceneObjects;
 		Camera camera;
-		Light light;
+		DirectionalLight light;
 	};
 }
 

@@ -2,6 +2,7 @@
 #include <framework.h>
 #include <DirectXMath.h>
 #include "DeviceAccess.h"
+#include "Light.h"
 
 using DirectX::XMMATRIX;
 
@@ -54,15 +55,21 @@ namespace Rendering
 
 	// Constant Buffer Types:
 
-	struct MVPMatrices
+	struct MVPMatricesCBT
 	{
 		XMMATRIX model;
 		XMMATRIX view;
 		XMMATRIX projection;
 	};
 
-	struct ViewportIndex
+	struct ViewportIndexCBT
 	{
 		UINT index;
+	};
+
+	struct LightingCBT
+	{
+		DirectionalLight directionalLight;
+		Vector3 viewPoint;
 	};
 }

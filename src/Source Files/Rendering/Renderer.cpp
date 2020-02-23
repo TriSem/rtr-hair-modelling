@@ -17,7 +17,7 @@ namespace Rendering
 		depthStencilView(nullptr),
 		renderMode(RenderMode::SOLID),
 		vertexShader(nullptr),
-		pixelShader(nullptr),
+		unlitPixelShader(nullptr),
 		splitScreen(nullptr),
 		mvpConstantBuffer(nullptr),
 		viewportIndexBuffer(nullptr),
@@ -36,18 +36,23 @@ namespace Rendering
 		ID3D11DeviceContext* context = device->GetContext();
 		context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
+		LightingCBT lightingData;
+		lightingData.directionalLight = scene.GetLight();
+		lightingData.viewPoint = scene.GetCamera().Position();
+		lightingConstantBuffer->SetData(lightingData);
+
 		vector<std::shared_ptr<SceneObject>>& objects = scene.GetSceneObjects();
 
 		for (auto it = objects.begin(); it != objects.end(); it++)
 		{
 			Camera& camera = scene.GetCamera();
 			std::shared_ptr<SceneObject> object = *it;
-			MVPMatrices mvp;
+			MVPMatricesCBT mvp;
 			mvp.model = object->GetTransform().TransformationMatrix();
 			mvp.view = camera.ViewMatrix();
 			mvp.projection = camera.ProjectionMatrix();
 			mvpConstantBuffer->SetData(mvp);
-			ViewportIndex viewportIndex;
+			ViewportIndexCBT viewportIndex;
 			viewportIndex.index = 1;
 			viewportIndexBuffer->SetData(viewportIndex);
 
@@ -62,7 +67,8 @@ namespace Rendering
 			context->VSSetShader(vertexShader->GetShader().Get(), nullptr, 0);
 			context->GSSetConstantBuffers(0, 1, viewportIndexBuffer->Data().GetAddressOf());
 			context->GSSetShader(geometryShader->GetShader().Get(), nullptr, 0);
-			context->PSSetShader(pixelShader->GetShader().Get(), nullptr, 0);
+			context->PSSetConstantBuffers(0, 1, lightingConstantBuffer->Data().GetAddressOf());
+			context->PSSetShader(litPixelShader->GetShader().Get(), nullptr, 0);
 			context->DrawIndexed(indexBuffer->GetIndexCount(), 0, 0);
 
 			SetRenderMode(RenderMode::WIREFRAME);
@@ -70,6 +76,7 @@ namespace Rendering
 			viewportIndexBuffer->SetData(viewportIndex);
 			context->VSSetShader(flatVertexShader->GetShader().Get(), nullptr, 0);
 			context->GSGetConstantBuffers(0, 1, viewportIndexBuffer->Data().GetAddressOf());
+			context->PSSetShader(unlitPixelShader->GetShader().Get(), nullptr, 0);
 			context->DrawIndexed(indexBuffer->GetIndexCount(), 0, 0);
 		}
 
@@ -92,8 +99,9 @@ namespace Rendering
 		device->GetContext()->PSSetShaderResources(0, 1, diffuseTexture->ResourceView().GetAddressOf());
 		device->GetContext()->PSSetSamplers(0, 1, diffuseTexture->SamplerState().GetAddressOf());
 
-		mvpConstantBuffer = std::make_shared<ConstantBuffer<MVPMatrices>>();
-		viewportIndexBuffer = std::make_shared<ConstantBuffer<ViewportIndex>>();
+		mvpConstantBuffer = std::make_shared<ConstantBuffer<MVPMatricesCBT>>();
+		viewportIndexBuffer = std::make_shared<ConstantBuffer<ViewportIndexCBT>>();
+		lightingConstantBuffer = std::make_shared<ConstantBuffer<LightingCBT>>();
 	}
 
 	void Renderer::CheckMultisamplingSupport()
@@ -239,7 +247,8 @@ namespace Rendering
 		InputLayoutDescription hairVertexDescription = InputLayoutDescription::HairVertex();
 		vertexShader = std::make_shared<VertexShader>(L"StandardVS", hairVertexDescription);
 		flatVertexShader = std::make_shared<VertexShader>(L"FlatVS", hairVertexDescription);
-		pixelShader = std::make_shared<PixelShader>(L"UnlitPS"); 
+		litPixelShader = std::make_shared<PixelShader>(L"LitPS");
+		unlitPixelShader = std::make_shared<PixelShader>(L"UnlitPS"); 
 		geometryShader = std::make_shared<GeometryShader>(L"StandardGS");
 	}
 

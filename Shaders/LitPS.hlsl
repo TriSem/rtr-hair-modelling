@@ -28,33 +28,39 @@ float4 calculateDirectionalLighting()
 }
 
 // WARNING: Not providing unit vectors for both parameters will produce incorrect results!
-float diffuseLambertCosine(float3 lightDirection, float3 surfaceNormal)
+float scatterDiffuse(float3 surfaceNormal)
 {
-    float cosine = dot(directionalLight.direction, surfaceNormal);
+    float cosine = dot(-directionalLight.direction, surfaceNormal);
     return max(cosine, 0);
 }
 
-float specularLambertCosine(float3 surfacePoint, float3 surfaceNormal)
+float scatterSpecular(float3 surfacePoint, float3 surfaceNormal, float specularPower)
 {
     float3 viewVector = viewPoint - surfacePoint;
     viewVector = normalize(viewVector);
-    float3 reflectedLight = reflect(-directionalLight.direction, surfaceNormal);
+    float3 reflectedLight = reflect(directionalLight.direction, surfaceNormal);
     
     float result = 0;
-    if(dot(directionalLight.direction, surfaceNormal) > 0)
+    if(dot(-directionalLight.direction, surfaceNormal) > 0)
     {
-        result = max(dot(viewVector, reflectedLight), 0); // Specular power is currently assumed to be 1.
+        result = max(dot(viewVector, reflectedLight), 0);
+        if(specularPower < 1.0f)
+            specularPower = 1.0f;
+        result = pow(result, specularPower);
     }
     
+    return result;
 }
 
 float4 main(PSInput input, uint viewport : SV_ViewportArrayIndex) : SV_TARGET
 {
     float4 ambientValue = directionalLight.ambient;
-    float4 specularValue = directionalLight.specular;
+    
+    float4 specularValue = directionalLight.specular * 0.0f; // TODO: inplement specular texture support
+    specularValue *= scatterSpecular((float3) input.position, input.normal, 1);
     
     float4 diffuseValue = diffuseTexture.Sample(samplerState, input.textureCoordinate);
     diffuseValue *= directionalLight.diffuse;
-    diffuseValue *= diffuseLambertCosine(directionalLight.direction, input.normal);
-    return diffuseValue;
+    diffuseValue *= scatterDiffuse(input.normal);
+    return ambientValue + diffuseValue + specularValue;
 }

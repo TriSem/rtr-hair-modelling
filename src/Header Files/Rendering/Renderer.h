@@ -68,10 +68,12 @@ namespace Rendering
 
 		std::shared_ptr<VertexShader> vertexShader;
 		std::shared_ptr<VertexShader> flatVertexShader;
-		std::shared_ptr<PixelShader> pixelShader;
+		std::shared_ptr<PixelShader> unlitPixelShader;
+		std::shared_ptr<PixelShader> litPixelShader;
 		std::shared_ptr<GeometryShader> geometryShader;
-		std::shared_ptr<ConstantBuffer<MVPMatrices>> mvpConstantBuffer;
-		std::shared_ptr<ConstantBuffer<ViewportIndex>> viewportIndexBuffer;
+		std::shared_ptr<ConstantBuffer<MVPMatricesCBT>> mvpConstantBuffer;
+		std::shared_ptr<ConstantBuffer<ViewportIndexCBT>> viewportIndexBuffer;
+		std::shared_ptr<ConstantBuffer<LightingCBT>> lightingConstantBuffer;
 		std::unique_ptr<Texture> diffuseTexture;
 
 	};
