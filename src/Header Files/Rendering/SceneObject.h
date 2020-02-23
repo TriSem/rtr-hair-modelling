@@ -27,13 +27,13 @@ namespace Rendering
 
 	private:
 
-		std::shared_ptr<VertexBuffer<HairVertex>> vertexBuffer;
-		std::shared_ptr<IndexBuffer> indexBuffer;
+		std::shared_ptr<VertexBuffer<HairVertex>> vertexBuffer = nullptr;
+		std::shared_ptr<IndexBuffer> indexBuffer = nullptr;
+		std::shared_ptr<VertexShader> vertexShader = nullptr;
 
-		std::shared_ptr<VertexShader> vertexShader;
 	
 	protected:
-		Transform transform;
-		Mesh<HairVertex> mesh;
+		Transform transform = {};
+		Mesh<HairVertex> mesh = {};
 	};
 }

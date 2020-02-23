@@ -25,9 +25,9 @@ namespace Rendering
 
 	private:
 
-		Vector3 position;
-		Quaternion rotation;
-		float scale;
+		Vector3 position = Vector3::Zero;
+		Quaternion rotation = Quaternion::Identity;
+		float scale = 1.0f;
 	};
 }
 

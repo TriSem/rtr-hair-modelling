@@ -44,6 +44,6 @@ namespace Rendering
 
 	private:
 
-		ComPtr<ID3D11Buffer> vertexBuffer;
+		ComPtr<ID3D11Buffer> vertexBuffer = nullptr;
 	};
 }

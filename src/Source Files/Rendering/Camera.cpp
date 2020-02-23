@@ -2,29 +2,12 @@
 
 namespace Rendering
 {
-	Camera::Camera() :
-		projectionMode(ProjectionMode::PERSPECTIVE),
-		position(Vector3(0, 0, -5)),
-		up(Vector3(0, 1, 0)),
-		viewingDirection(Vector3(0, 0, 1)),
-		fieldOfView(70),
-		nearPlane(0.1f),
-		farPlane(100.0f),
-		aspectRatio(16.0f / 9.0f),
-		viewingRectangle(XMFLOAT2(10, 10))
+	Camera::Camera()
 	{
 	}
 
 	Camera::Camera(ProjectionMode projectionMode) :
-		projectionMode(projectionMode),
-		position(Vector3(0, 0, -5)),
-		up(Vector3(0, 1, 0)),
-		viewingDirection(Vector3(0, 0, 1)),
-		fieldOfView(70),
-		nearPlane(0.1f),
-		farPlane(100.0f),
-		aspectRatio(16.0f / 9.0f),
-		viewingRectangle(XMFLOAT2(10, 10))
+		projectionMode(projectionMode)
 	{
 	}
 

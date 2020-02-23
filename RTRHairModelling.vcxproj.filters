@@ -184,9 +184,6 @@
     <ClCompile Include="src\Source Files\Rendering\IndexBuffer.cpp">
       <Filter>Quelldateien\Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="src\Source Files\Rendering\Light.cpp">
-      <Filter>Quelldateien\Rendering</Filter>
-    </ClCompile>
     <ClCompile Include="src\Source Files\Rendering\PixelShader.cpp">
       <Filter>Quelldateien\Rendering</Filter>
     </ClCompile>

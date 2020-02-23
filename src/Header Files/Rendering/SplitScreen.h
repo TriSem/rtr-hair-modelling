@@ -20,14 +20,14 @@ namespace Rendering
 
 	private:
 
-		float screenWidth;
-		float screenHeight;
-
 		std::vector<D3D11_VIEWPORT> viewports;
 
 		void WholeScreen();
 		void HalveScreen();
 		void QuarterScreen();
 		uint32_t GetNumberOfViewports();
+
+		float screenWidth;
+		float screenHeight;
 	};
 }

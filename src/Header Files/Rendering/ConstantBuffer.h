@@ -2,7 +2,7 @@
 #include <framework.h>
 #include <DirectXMath.h>
 #include "DeviceAccess.h"
-#include "Light.h"
+#include <Light.h>
 
 using DirectX::XMMATRIX;
 
@@ -13,8 +13,7 @@ namespace Rendering
 	{
 	public:
 
-		ConstantBuffer() :
-			data({})
+		ConstantBuffer()
 		{
 			D3D11_BUFFER_DESC description = {};
 			description.Usage = D3D11_USAGE_DYNAMIC;
@@ -49,8 +48,8 @@ namespace Rendering
 
 	private:
 		
-		ComPtr<ID3D11Buffer> constantBuffer;
-		BufferType data;
+		ComPtr<ID3D11Buffer> constantBuffer = nullptr;
+		BufferType data = {};
 	};
 
 	// Constant Buffer Types:

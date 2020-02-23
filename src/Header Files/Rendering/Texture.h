@@ -20,9 +20,9 @@ namespace Rendering
 
 	private:
 
-		ComPtr<ID3D11SamplerState> samplerState;
-		ComPtr<ID3D11Texture2D> texture;
-		ComPtr<ID3D11ShaderResourceView> resourceView;
+		ComPtr<ID3D11SamplerState> samplerState = nullptr;
+		ComPtr<ID3D11Texture2D> texture = nullptr;
+		ComPtr<ID3D11ShaderResourceView> resourceView = nullptr;
 	};
 
 	struct TextureOptions

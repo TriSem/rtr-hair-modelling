@@ -12,10 +12,7 @@ Keyboard::KeyboardStateTracker Application::INPUT;
 Application::Application(HINSTANCE instanceHandle, int nCmdShow, std::wstring appTitle) :
 	instanceHandle(instanceHandle),
 	appTitle(appTitle),
-	renderer(nullptr),
-	mainScene(nullptr),
-	nCmdShow(nCmdShow),
-	state({})
+	nCmdShow(nCmdShow)
 {
 }
 

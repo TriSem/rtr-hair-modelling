@@ -2,10 +2,7 @@
 
 namespace Rendering
 {
-	Texture::Texture(TextureOptions options) :
-		texture(nullptr),
-		resourceView(nullptr),
-		samplerState(nullptr)
+	Texture::Texture(TextureOptions options)
 	{
 		DXGI_SAMPLE_DESC sampleDescription = {};
 		sampleDescription.Count = 1;

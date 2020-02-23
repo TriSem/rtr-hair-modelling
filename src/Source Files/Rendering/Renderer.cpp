@@ -8,20 +8,8 @@ namespace Rendering
 {
 	Renderer::Renderer(HWND windowHandle, int width, int height) :
 		windowHandle(windowHandle),
-		multisampleCount(4),
 		width(width),
-		height(height),
-		swapChain(nullptr),
-		depthStencilBuffer(nullptr),
-		backBufferView(nullptr),
-		depthStencilView(nullptr),
-		renderMode(RenderMode::SOLID),
-		vertexShader(nullptr),
-		unlitPixelShader(nullptr),
-		splitScreen(nullptr),
-		mvpConstantBuffer(nullptr),
-		viewportIndexBuffer(nullptr),
-		flatVertexShader(nullptr)
+		height(height)
 	{
 		Initialize();
 	}

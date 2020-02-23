@@ -2,9 +2,7 @@
 
 namespace Rendering
 {
-	Scene::Scene() :
-		camera(Camera()),
-		light(DirectionalLight())
+	Scene::Scene()
 	{
 	}
 

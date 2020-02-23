@@ -2,7 +2,7 @@
 
 namespace Rendering
 {
-	IndexBuffer::IndexBuffer(const std::vector<UINT>& indices) :
+	IndexBuffer::IndexBuffer(const std::vector<uint32_t>& indices) :
 		indexCount((UINT)indices.size())
 	{
 		D3D11_BUFFER_DESC indexBufferDescription = {};

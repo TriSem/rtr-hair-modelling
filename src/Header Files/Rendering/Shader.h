@@ -22,7 +22,7 @@ namespace Rendering
 
 	protected:
 
-		ComPtr<ID3DBlob> compiledCode;
+		ComPtr<ID3DBlob> compiledCode = nullptr;
 
 		virtual void CreateShader() = 0;
 	};

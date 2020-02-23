@@ -18,10 +18,10 @@ namespace Rendering
 		Device();
 		~Device();
 
-		ComPtr<ID3D11Device> device;
-		ComPtr<ID3D11DeviceContext> context;
+		ComPtr<ID3D11Device> device = nullptr;
+		ComPtr<ID3D11DeviceContext> context = nullptr;
 
-		D3D_FEATURE_LEVEL featureLevel;
+		D3D_FEATURE_LEVEL featureLevel = D3D_FEATURE_LEVEL_11_0;
 
 		friend class DeviceAccess;
 	};

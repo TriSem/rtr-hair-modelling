@@ -2,12 +2,7 @@
 
 namespace Rendering
 {
-	Transform::Transform() :
-		position(Vector3::Zero),
-		rotation(Quaternion::Identity),
-		scale(1.0f)
-	{
-	}
+	Transform::Transform() {}
 
 	Transform::Transform(Vector3 position, Quaternion rotation, float scale) :
 		position(position),
@@ -52,7 +47,7 @@ namespace Rendering
 
 	void Transform::SetRotation(Vector3 eulerAngles)
 	{
-		float toRadian = 3.141592 / 180;
+		float toRadian = 3.141592f / 180.0f;
 		eulerAngles *= toRadian;
 		this->rotation = Quaternion::CreateFromYawPitchRoll(eulerAngles.y, eulerAngles.z, eulerAngles.x);
 	}

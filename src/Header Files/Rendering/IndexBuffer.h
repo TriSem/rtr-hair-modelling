@@ -10,7 +10,7 @@ namespace Rendering
 	{
 	public:
 
-		IndexBuffer(const std::vector<UINT>& indices);
+		IndexBuffer(const std::vector<uint32_t>& indices);
 
 		ComPtr<ID3D11Buffer> Data();
 
@@ -19,7 +19,7 @@ namespace Rendering
 	private:
 
 		uint32_t indexCount;
-		ComPtr<ID3D11Buffer> indexBuffer;
+		ComPtr<ID3D11Buffer> indexBuffer = nullptr;
 	};
 }
 

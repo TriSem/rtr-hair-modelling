@@ -25,10 +25,9 @@ namespace Rendering
 
 	private:
 
-		int a = 0;
 		std::vector<std::shared_ptr<SceneObject>> sceneObjects;
-		Camera camera;
-		DirectionalLight light;
+		Camera camera = {};
+		DirectionalLight light = {};
 	};
 }
 

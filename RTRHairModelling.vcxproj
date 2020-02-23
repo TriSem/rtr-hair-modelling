@@ -274,7 +274,6 @@
     <ClCompile Include="src\Source Files\Rendering\DeviceAccess.cpp" />
     <ClCompile Include="src\Source Files\Rendering\GeometryShader.cpp" />
     <ClCompile Include="src\Source Files\Rendering\IndexBuffer.cpp" />
-    <ClCompile Include="src\Source Files\Rendering\Light.cpp" />
     <ClCompile Include="src\Source Files\Rendering\PixelShader.cpp" />
     <ClCompile Include="src\Source Files\Rendering\Renderer.cpp" />
     <ClCompile Include="src\Source Files\Rendering\Scene.cpp" />

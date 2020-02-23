@@ -2,8 +2,7 @@
 
 namespace Rendering
 {
-	Device::Device() :
-		featureLevel(D3D_FEATURE_LEVEL_11_0)
+	Device::Device()
 	{
 		UINT flags = 0;
 

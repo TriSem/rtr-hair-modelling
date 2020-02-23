@@ -39,15 +39,15 @@ namespace Rendering
 
 	private:
 
-		Vector3 position;
-		Vector3 up;
-		Vector3 viewingDirection;
-		float fieldOfView;
-		float nearPlane;
-		float farPlane;
-		float aspectRatio;
-		ProjectionMode projectionMode;
-		XMFLOAT2 viewingRectangle;
+		Vector3 position = {0, 0, -5};
+		Vector3 up = {0, 1, 0};
+		Vector3 viewingDirection = {0, 0, 1};
+		float fieldOfView = 70;
+		float nearPlane = 0.1f;
+		float farPlane = 100.0f;
+		float aspectRatio = 4 / 3.0f;
+		ProjectionMode projectionMode = ProjectionMode::PERSPECTIVE;
+		XMFLOAT2 viewingRectangle = {10, 10};
 	};
 }
 
