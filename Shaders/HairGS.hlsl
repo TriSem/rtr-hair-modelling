@@ -104,47 +104,9 @@ void createHair(HairDefinition hairDefinition, out OutputVertex vertices[6])
     }
 }
 
-LineStream<OutputVertex> createHairs(HairVertex inputVertices[3], HairProperties hairData)
-{
-    float3x3 rotation = createHairSegmentRotation(hairData);
-        
-    HairVertex interpolated[7];
-    interpolated[0] = interpolateBarycentric(inputVertices, float3(0.33f, 0.33f, 0.33f));
-    interpolated[1] = interpolateBarycentric(inputVertices, float3(0.67f, 0.165f, 0.165f));
-    interpolated[2] = interpolateBarycentric(inputVertices, float3(0.165f, 0.67f, 0.165f));
-    interpolated[3] = interpolateBarycentric(inputVertices, float3(0.165f, 0.165f, 0.67f));
-    interpolated[4] = interpolateBarycentric(inputVertices, float3(0.415f, 0.415f, 0.17f));
-    interpolated[5] = interpolateBarycentric(inputVertices, float3(0.17f, 0.415f, 0.415f));
-    interpolated[6] = interpolateBarycentric(inputVertices, float3(0.415f, 0.17f, 0.415f));
-        
-    LineStream<OutputVertex> output;
-    
-    for (int i = 0; i < 7; i++)
-    {
-        float3x3 tangentSpace =
-        {
-            interpolated[i].tangent, interpolated[i].bitangent, interpolated[i].normal
-        };
-            
-        float3x3 transposeTangentSpace = transpose(tangentSpace);
-        HairDefinition hairDefinition = { hairData.length, (float3) interpolated[i].position, transposeTangentSpace, rotation};
-        OutputVertex vertices[6];
-        createHair(hairDefinition, vertices);
-
-        for (int j = 0; j < 6; j++)
-        {
-            output.Append(vertices[j]);
-        }
-        
-        output.RestartStrip();
-    }
-    
-    return output;
-}
-
 [maxvertexcount(42)]
 void main(
-	triangle HairVertex inputVertex[3],
+	triangle HairVertex inputVertices[3],
 	inout LineStream<OutputVertex> output
 )
 {
@@ -159,6 +121,45 @@ void main(
     
     if (hairAverages.length > 0.01f)
     {
-        output = createHairs(inputVertex, hairAverages);
+        float3x3 rotation = createHairSegmentRotation(hairAverages);
+        
+        HairVertex interpolated[7];
+        interpolated[0] = interpolateBarycentric(inputVertices, float3(0.33f, 0.33f, 0.33f));
+        interpolated[1] = interpolateBarycentric(inputVertices, float3(0.67f, 0.165f, 0.165f));
+        interpolated[2] = interpolateBarycentric(inputVertices, float3(0.165f, 0.67f, 0.165f));
+        interpolated[3] = interpolateBarycentric(inputVertices, float3(0.165f, 0.165f, 0.67f));
+        interpolated[4] = interpolateBarycentric(inputVertices, float3(0.415f, 0.415f, 0.17f));
+        interpolated[5] = interpolateBarycentric(inputVertices, float3(0.17f, 0.415f, 0.415f));
+        interpolated[6] = interpolateBarycentric(inputVertices, float3(0.415f, 0.17f, 0.415f));
+        
+        OutputVertex vertexBuffer[42];
+    
+        for (int i = 0; i < 6; i++)
+        {
+            float3x3 tangentSpace =
+            {
+                interpolated[i].tangent, interpolated[i].bitangent, interpolated[i].normal
+            };
+            
+            float3x3 transposeTangentSpace = transpose(tangentSpace);
+            HairDefinition hairDefinition = { hairAverages.length, (float3) interpolated[i].position, transposeTangentSpace, rotation };
+            OutputVertex vertices[6];
+            createHair(hairDefinition, vertices);
+        
+            vertexBuffer[i * 7] = vertices[0];
+            vertexBuffer[i * 7 + 1] = vertices[1];
+            vertexBuffer[i * 7 + 2] = vertices[2];
+            vertexBuffer[i * 7 + 3] = vertices[3];
+            vertexBuffer[i * 7 + 4] = vertices[4];
+            vertexBuffer[i * 7 + 5] = vertices[5];
+        }
+    
+        for (int j = 0; j < 42; j++)
+        {
+            if (j > 0 && j % 6 == 0)
+                output.RestartStrip();
+            OutputVertex outputVertex = vertexBuffer[j];
+            output.Append(outputVertex);
+        }
     }
 }
