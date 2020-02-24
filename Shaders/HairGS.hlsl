@@ -99,7 +99,7 @@ void createHair(HairDefinition hairDefinition, out OutputVertex vertices[6])
         float3 finalPosition = (float3) hairVertices[j - 1].position;
         float3 worldSpaceDirection = mul(hairDefinition.transposeTangentSpace, hairVertices[j].direction);
         finalPosition += hairDefinition.length * worldSpaceDirection;
-        hairVertices[j].position = finalPosition;
+        hairVertices[j].position = float4(finalPosition, 1);
         hairVertices[j].viewport = viewportIndex;
     }
 }
@@ -127,7 +127,7 @@ LineStream<OutputVertex> createHairs(HairVertex inputVertices[3], HairProperties
         };
             
         float3x3 transposeTangentSpace = transpose(tangentSpace);
-        HairDefinition hairDefinition = { hairData.length, interpolated[i].position, transposeTangentSpace, rotation};
+        HairDefinition hairDefinition = { hairData.length, (float3) interpolated[i].position, transposeTangentSpace, rotation};
         OutputVertex vertices[6];
         createHair(hairDefinition, vertices);
 
