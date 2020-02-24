@@ -74,6 +74,9 @@
     <FxCompile Include="Shaders\HairGS.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
+    <FxCompile Include="Shaders\LitLinesPS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="RTRHairModelling.rc">
