@@ -7,9 +7,9 @@ cbuffer mvpMatrix
 
 struct HairProperties
 {
-    uint length;
-    unorm float tangent;
-    unorm float bitangent;
+    float length;
+    float tangent;
+    float bitangent;
 };
 
 struct VSInput
@@ -23,11 +23,12 @@ struct VSInput
 
 struct VSOutput
 {
-    float4 position : SV_POSITION;
+    float3 position : POSITION;
     float3 normal : NORMAL;
     float3 tangent : TANGENT;
     float3 bitangent : BINORMAL;
-    HairProperties hairProperties : POSITION;
+    HairProperties hairProperties : HAIR;
+    float4x4 projection : MATRIX;
 };
 
 VSOutput main(VSInput vertex)
@@ -35,11 +36,12 @@ VSOutput main(VSInput vertex)
     VSOutput output;
     float4x4 mv = mul(view, model);
     output.position = mul(mv, float4(vertex.position, 1));
-    output.normal = mul(mv, float4(vertex.normal, 0));
-    output.tangent = mul(mv, float4(vertex.tangent, 0));
-    output.bitangent = mul(mv, float4(vertex.bitangent, 0));
-    output.hairProperties.length = 2;
-    output.hairProperties.tangent = 0.5f;
-    output.hairProperties.length = 0.5f;
+    output.normal = (float3) mul(mv, float4(vertex.normal, 0));
+    output.tangent = (float3) mul(mv, float4(vertex.tangent, 0));
+    output.bitangent = (float3) mul(mv, float4(vertex.bitangent, 0));
+    output.hairProperties.length = 0.1;
+    output.hairProperties.tangent = 0.8;
+    output.hairProperties.bitangent = 0.8;
+    output.projection = projection;
     return output;
 }

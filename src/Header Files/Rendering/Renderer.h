@@ -67,10 +67,13 @@ namespace Rendering
 		std::unique_ptr<Texture> diffuseTexture = nullptr;
 
 		std::shared_ptr<VertexShader> vertexShader = nullptr;
+		std::shared_ptr<VertexShader> hairVertexShader = nullptr;
 		std::shared_ptr<VertexShader> flatVertexShader = nullptr;
 		std::shared_ptr<PixelShader> unlitPixelShader = nullptr;
 		std::shared_ptr<PixelShader> litPixelShader = nullptr;
-		std::shared_ptr<GeometryShader> geometryShader = nullptr;
+		std::shared_ptr<PixelShader> litLinePixelShader = nullptr;
+		std::shared_ptr<GeometryShader> standardGeometryShader = nullptr;
+		std::shared_ptr<GeometryShader> hairGeometryShader = nullptr;
 		std::shared_ptr<ConstantBuffer<MVPMatricesCBT>> mvpConstantBuffer = nullptr;
 		std::shared_ptr<ConstantBuffer<ViewportIndexCBT>> viewportIndexBuffer = nullptr;
 		std::shared_ptr<ConstantBuffer<LightingCBT>> lightingConstantBuffer = nullptr;

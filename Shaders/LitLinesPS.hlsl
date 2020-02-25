@@ -51,16 +51,17 @@ float scatterSpecular(float3 surfacePoint, float3 direction, float specularPower
 
 float4 main(PSInput input) : SV_TARGET
 {
-    float4 hairBaseColor = { 0.3, 0.3, 0.3, 1.0f };
-    float specularPower = 1;
+    float4 hairBaseColor = { 1, 0, 1, 1 };
+    //float specularPower = 1;
     
-    float4 ambientValue = directionalLight.ambient;
+    //float4 ambientValue = directionalLight.ambient;
     
-    float4 specularValue = directionalLight.specular * hairBaseColor;
-    specularValue *= scatterSpecular((float3) input.position, input.direction, 1);
+    //float4 specularValue = directionalLight.specular * hairBaseColor;
+    //specularValue *= scatterSpecular((float3) input.position, input.direction, 1);
     
-    float4 diffuseValue = hairBaseColor;
-    diffuseValue *= directionalLight.diffuse;
-    diffuseValue *= scatterDiffuse(input.direction);
-    return ambientValue + diffuseValue + specularValue;
+    //float4 diffuseValue = hairBaseColor;
+    //diffuseValue *= directionalLight.diffuse;
+    //diffuseValue *= scatterDiffuse(input.direction);
+    //return ambientValue + diffuseValue + specularValue;
+    return hairBaseColor;
 }

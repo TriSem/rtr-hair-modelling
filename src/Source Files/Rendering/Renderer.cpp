@@ -54,9 +54,16 @@ namespace Rendering
 			context->VSSetConstantBuffers(0, 1, mvpConstantBuffer->Data().GetAddressOf());
 			context->VSSetShader(vertexShader->GetShader().Get(), nullptr, 0);
 			context->GSSetConstantBuffers(0, 1, viewportIndexBuffer->Data().GetAddressOf());
-			context->GSSetShader(geometryShader->GetShader().Get(), nullptr, 0);
+			context->GSSetShader(standardGeometryShader->GetShader().Get(), nullptr, 0);
 			context->PSSetConstantBuffers(0, 1, lightingConstantBuffer->Data().GetAddressOf());
 			context->PSSetShader(litPixelShader->GetShader().Get(), nullptr, 0);
+			context->DrawIndexed(indexBuffer->GetIndexCount(), 0, 0);
+
+			// Hair pass
+			context->VSSetShader(hairVertexShader->GetShader().Get(), nullptr, 0);
+			context->GSSetConstantBuffers(0, 1, viewportIndexBuffer->Data().GetAddressOf());
+			context->GSSetShader(hairGeometryShader->GetShader().Get(), nullptr, 0);
+			context->PSSetShader(litLinePixelShader->GetShader().Get(), nullptr, 0);
 			context->DrawIndexed(indexBuffer->GetIndexCount(), 0, 0);
 
 			SetRenderMode(RenderMode::WIREFRAME);
@@ -64,6 +71,7 @@ namespace Rendering
 			viewportIndexBuffer->SetData(viewportIndex);
 			context->VSSetShader(flatVertexShader->GetShader().Get(), nullptr, 0);
 			context->GSGetConstantBuffers(0, 1, viewportIndexBuffer->Data().GetAddressOf());
+			context->GSSetShader(standardGeometryShader->GetShader().Get(), nullptr, 0);
 			context->PSSetShader(unlitPixelShader->GetShader().Get(), nullptr, 0);
 			context->DrawIndexed(indexBuffer->GetIndexCount(), 0, 0);
 		}
@@ -235,9 +243,12 @@ namespace Rendering
 		InputLayoutDescription hairVertexDescription = InputLayoutDescription::HairVertex();
 		vertexShader = std::make_shared<VertexShader>(L"StandardVS", hairVertexDescription);
 		flatVertexShader = std::make_shared<VertexShader>(L"FlatVS", hairVertexDescription);
+		hairVertexShader = std::make_shared<VertexShader>(L"HairVS", hairVertexDescription);
 		litPixelShader = std::make_shared<PixelShader>(L"LitPS");
+		litLinePixelShader = std::make_shared<PixelShader>(L"LitLinesPS");
 		unlitPixelShader = std::make_shared<PixelShader>(L"UnlitPS"); 
-		geometryShader = std::make_shared<GeometryShader>(L"StandardGS");
+		standardGeometryShader = std::make_shared<GeometryShader>(L"StandardGS");
+		hairGeometryShader = std::make_shared<GeometryShader>(L"HairGS");
 	}
 
 	void Renderer::Clear()
