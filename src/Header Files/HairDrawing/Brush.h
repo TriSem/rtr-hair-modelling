@@ -1,4 +1,5 @@
 #pragma once
+#include <Canvas.h>
 
 enum class BrushMode;
 
@@ -6,24 +7,19 @@ class Brush
 {
 public:
 
-	Brush();
+	Brush(std::shared_ptr<Canvas> canvas);
 
-	void SetBrushMode(BrushMode mode);
-	BrushMode GetBrushMode();
-	void Paint();
-	void Erase();
+	void SetPaintChannel(PaintChannel channel);
+	PaintChannel GetPaintChannel();
+	void Paint(Vector2 position);
+	void Erase(Vector2 position);
+	void IncreaseStrength();
+	void DecreaseStrength();
 
 private:
 
-	float radius = 0.5f;
-	int strength = 10;
-	int strengthChange = 5;
-	BrushMode mode = BrushMode::Length;
-};
+	uint8_t strengthChange = 5;
+	BrushData data = { 5, 0.5f, PaintChannel::Length, BrushMode::Paint };
 
-enum class BrushMode
-{
-	Length,
-	Curl,
-	Twist
+	std::shared_ptr<Canvas> canvas = nullptr;
 };

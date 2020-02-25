@@ -1,23 +1,39 @@
 #include <Brush.h>
 
-Brush::Brush()
+Brush::Brush(std::shared_ptr<Canvas> canvas) :
+	canvas(canvas)
 {
+
 }
 
-void Brush::SetBrushMode(BrushMode mode)
+void Brush::SetPaintChannel(PaintChannel channel)
 {
-	this->mode = mode;
+	data.paintChannel = channel;
 }
 
-BrushMode Brush::GetBrushMode()
+PaintChannel Brush::GetPaintChannel()
 {
-	return mode;
+	return data.paintChannel;
 }
 
-void Brush::Paint()
+void Brush::Paint(Vector2 position)
 {
+	data.mode = BrushMode::Paint;
+	canvas->PaintInto(data, position);
 }
 
-void Brush::Erase()
+void Brush::Erase(Vector2 position)
 {
+	data.mode = BrushMode::Erase;
+	canvas->PaintInto(data, position);
+}
+
+void Brush::IncreaseStrength()
+{
+	data.strength += strengthChange;
+}
+
+void Brush::DecreaseStrength()
+{
+	data.strength -= strengthChange;
 }
