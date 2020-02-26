@@ -21,7 +21,8 @@ cbuffer Lighting
 
 float dotReplacement(float3 direction, float3 lightVector)
 {
-    return sqrt(1 - pow(dot(direction, lightVector), 2));
+    float dotProduct = dot(direction, lightVector);
+    return sqrt(1 - dotProduct * dotProduct);
 }
 
 float scatterDiffuse(float3 hairDirection)
@@ -35,7 +36,7 @@ float scatterSpecular(float3 surfacePoint, float3 direction, float specularPower
     float3 viewVector = viewPoint - surfacePoint;
     float3 incidentVector = directionalLight.direction;
     viewVector = normalize(viewVector);
-    float3 reflectedLight = incidentVector - 2 * dotReplacement(direction, incidentVector) * direction;
+    float3 reflectedLight = incidentVector - direction * dotReplacement(direction, incidentVector);
     
     float result = 0;
     if (dotReplacement(direction, -directionalLight.direction) > 0)
@@ -51,17 +52,17 @@ float scatterSpecular(float3 surfacePoint, float3 direction, float specularPower
 
 float4 main(PSInput input) : SV_TARGET
 {
-    float4 hairBaseColor = { 1, 0, 1, 1 };
-    //float specularPower = 1;
+    float4 hairBaseColor = { 1 , 0, 1, 1 };
+    float4 hairSpecularColor = { 0.3f, 0.3f, 0.3f, 1 };
+    float4 hairAmbientColor = { 1, 0, 1, 1 };
+    float specularPower = 2;
     
-    //float4 ambientValue = directionalLight.ambient;
+    float4 ambientValue = directionalLight.ambient * hairAmbientColor;
     
-    //float4 specularValue = directionalLight.specular * hairBaseColor;
-    //specularValue *= scatterSpecular((float3) input.position, input.direction, 1);
+    float4 specularValue = directionalLight.specular * hairSpecularColor;
+    specularValue *= scatterSpecular(input.position.xyz, input.direction, specularPower);
     
-    //float4 diffuseValue = hairBaseColor;
-    //diffuseValue *= directionalLight.diffuse;
-    //diffuseValue *= scatterDiffuse(input.direction);
-    //return ambientValue + diffuseValue + specularValue;
-    return hairBaseColor;
+    float4 diffuseValue = hairBaseColor * directionalLight.diffuse;
+    diffuseValue *= scatterDiffuse(input.direction);
+    return ambientValue + diffuseValue + specularValue;
 }

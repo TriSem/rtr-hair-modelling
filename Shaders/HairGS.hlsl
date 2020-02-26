@@ -134,22 +134,25 @@ void main(
             
             float4 direction = { 0, 0, 1, 0 };
             float4 position = { interpolated[i].position, 1 };
+            float4 worldDirection = mul(transposeTangentSpace, direction);
             
             OutputVertex vertex;
             vertex.viewport = 1;
             vertex.position = mul(input[0].projectionMatrix, position);
-            vertex.direction = mul(input[0].projectionMatrix, direction).xyz;
+            vertex.direction = mul(input[0].projectionMatrix, worldDirection).xyz;
             output.Append(vertex);
             
             float length = hairAverages.length / 5;
             
             for (uint j = 1; j <= 5; j++)
             {
-                direction.xyz += mul(rotation, direction.xyz);
-                position.xyz += length * mul(transposeTangentSpace, direction).xyz;
+                direction.xyz += normalize(mul(rotation, direction.xyz));
+                worldDirection = mul(transposeTangentSpace, direction);
+                position.xyz += length * worldDirection;
                 
                 vertex.position = mul(input[0].projectionMatrix, position);
-                vertex.direction = mul(input[0].projectionMatrix, direction).xyz;
+                vertex.direction = mul(input[0].projectionMatrix, worldDirection).xyz;
+                vertex.direction = normalize(vertex.direction);
                 output.Append(vertex);
             }
         }
