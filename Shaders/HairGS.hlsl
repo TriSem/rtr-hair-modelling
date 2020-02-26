@@ -1,3 +1,10 @@
+cbuffer mvpMatrix
+{
+    float4x4 model;
+    float4x4 view;
+    float4x4 projection;
+};
+
 struct OutputVertex
 {
     float4 position : SV_POSITION;
@@ -18,8 +25,13 @@ struct HairVertex
     float3 normal : NORMAL;
     float3 tangent : TANGENT;
     float3 bitangent : BINORMAL;
-    HairProperties hairProperties : HAIR;
-    float4x4 projection : MATRIX;
+};
+
+struct GSInput
+{
+    HairVertex hairVertex : HAIR_VERTEX;
+    HairProperties hairProperties : HAIR_PROPERTIES;
+    float4x4 projectionMatrix : MATRIX;
 };
 
 struct HairDefinition
@@ -88,43 +100,22 @@ HairProperties averageHairProperties(HairProperties properties[3])
     return average;
 }
 
-void createHair(HairDefinition hairDefinition, out OutputVertex vertices[6])
-{
-    OutputVertex hairVertices[6];
-    hairVertices[0].position = float4(hairDefinition.basePosition, 1);
-    hairVertices[0].direction = float3(0, 0, 1);
-    hairVertices[0].viewport = viewportIndex;
-            
-    for (uint j = 1; j <= 5; j++)
-    {
-        hairVertices[j].direction = mul(hairDefinition.rotation, hairVertices[j - 1].direction);
-        float3 finalPosition = (float3) hairVertices[j - 1].position;
-        float3 worldSpaceDirection = mul(hairDefinition.transposeTangentSpace, hairVertices[j].direction);
-        finalPosition += hairDefinition.length * worldSpaceDirection;
-        hairVertices[j].position = float4(finalPosition, 1);
-        hairVertices[j].viewport = viewportIndex;
-    }
-}
-
 [maxvertexcount(42)]
 void main(
-	triangle HairVertex inputVertices[3],
+	triangle GSInput input[3],
 	inout LineStream<OutputVertex> output
 )
 {
-    //HairProperties hairProperties[3] =
-    //{
-    //    { 10, 1, 1 },
-    //    { 10, 1, 1 },
-    //    { 10, 1, 1 }
-    //};
-    HairProperties hairProperties[3] = { inputVertices[0].hairProperties, inputVertices[1].hairProperties, inputVertices[2].hairProperties };
+    HairProperties hairProperties[3] = { input[0].hairProperties, input[1].hairProperties, input[2].hairProperties };
     HairProperties hairAverages = averageHairProperties(hairProperties);
     
     if (hairAverages.length > 0.01f)
     {
-        float3x3 rotation = createHairSegmentRotation(hairAverages);
-        float4x4 projection = inputVertices[0].projection;
+        HairVertex inputVertices[3] =
+        {
+            input[0].hairVertex, input[1].hairVertex, input[2].hairVertex
+        };
+        
         HairVertex interpolated[7];
         interpolated[0] = interpolateBarycentric(inputVertices, float3(0.33f, 0.33f, 0.33f));
         interpolated[1] = interpolateBarycentric(inputVertices, float3(0.67f, 0.165f, 0.165f));
@@ -134,59 +125,40 @@ void main(
         interpolated[5] = interpolateBarycentric(inputVertices, float3(0.17f, 0.415f, 0.415f));
         interpolated[6] = interpolateBarycentric(inputVertices, float3(0.415f, 0.17f, 0.415f));
         
-        OutputVertex vertexBuffer[42];
+        float3x3 rotation = createHairSegmentRotation(hairAverages);
     
-        //for (int i = 0; i < 6; i++)
-        //{
-        float3x3 tangentSpace =
+        for (int i = 0; i < 6; i++)
         {
-            interpolated[0].tangent, interpolated[0].bitangent, interpolated[0].normal
-        };
+            float4x4 tangentSpace =
+            {
+                interpolated[i].tangent, 0,
+                interpolated[i].bitangent, 0,
+                interpolated[i].normal, 0,
+                0, 0, 0, 1
+            };
             
-        float3x3 transposeTangentSpace = transpose(tangentSpace);
-        //    HairDefinition hairDefinition = { hairAverages.length, (float3) interpolated[i].position, transposeTangentSpace, rotation };
-        //    OutputVertex vertices[6];
-        //    createHair(hairDefinition, vertices);
+            float4x4 transposeTangentSpace = transpose(tangentSpace);
         
-        //    vertexBuffer[i * 7] = vertices[0];
-        //    vertexBuffer[i * 7 + 1] = vertices[1];
-        //    vertexBuffer[i * 7 + 2] = vertices[2];
-        //    vertexBuffer[i * 7 + 3] = vertices[3];
-        //    vertexBuffer[i * 7 + 4] = vertices[4];
-        //    vertexBuffer[i * 7 + 5] = vertices[5];
-        //}
-    
-        //for (uint j = 0; j < 42; j++)
-        //{
-        //    if (j > 0 && j % 6 == 0)
-        //        output.RestartStrip();
-        //    OutputVertex outputVertex = vertexBuffer[j];
-        //    output.Append(outputVertex);
-        //}
+            float4 d0 = { 0, 0, 1, 0 };
+            float4 d1 = { mul(rotation, d0.xyz), 0 };
+            float4 d2 = { mul(rotation, d1.xyz), 0 };
+            float4 p0 = float4(interpolated[i].position, 1);
+            float4 p1 = p0 + hairAverages.length * mul(transposeTangentSpace, d1);
+            float4 p2 = p1 + hairAverages.length * mul(transposeTangentSpace, d2);
         
-        float3 d0 = float3(0, 0, 1);
-        float3 d1 = mul(rotation, d0);
-        float3 d2 = mul(rotation, d1);
-        float3 p0 = mul(transposeTangentSpace, interpolated[0].position);
-        float3 p1 = p0 + hairAverages.length * mul(transposeTangentSpace, d1);
-        float3 p2 = p1 + hairAverages.length * mul(transposeTangentSpace, d2);
+            OutputVertex vertex;
+            vertex.viewport = 1;
+            vertex.direction = d0.xyz;
+            vertex.position = mul(projection, p0);
+            output.Append(vertex);
         
-        p0 = mul(transposeTangentSpace, p0);
-        p1 = mul(transposeTangentSpace, p1);
-        p2 = mul(transposeTangentSpace, p2);
+            vertex.direction = d1.xyz;
+            vertex.position = mul(projection, p1);
+            output.Append(vertex);
         
-        OutputVertex vertex;
-        vertex.viewport = 1;
-        vertex.direction = d0;
-        vertex.position = float4(p0, 1);
-        output.Append(vertex);
-        
-        vertex.direction = d1;
-        vertex.position = float4(p1, 1);
-        output.Append(vertex);
-        
-        vertex.direction = d2;
-        vertex.position = float4(p2, 1);
-        output.Append(vertex);
+            vertex.direction = d2.xyz;
+            vertex.position = mul(projection, p2);
+            output.Append(vertex);
+        }
     }
 }

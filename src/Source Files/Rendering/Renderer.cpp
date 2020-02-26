@@ -61,7 +61,6 @@ namespace Rendering
 
 			// Hair pass
 			context->VSSetShader(hairVertexShader->GetShader().Get(), nullptr, 0);
-			context->GSSetConstantBuffers(0, 1, viewportIndexBuffer->Data().GetAddressOf());
 			context->GSSetShader(hairGeometryShader->GetShader().Get(), nullptr, 0);
 			context->PSSetShader(litLinePixelShader->GetShader().Get(), nullptr, 0);
 			context->DrawIndexed(indexBuffer->GetIndexCount(), 0, 0);

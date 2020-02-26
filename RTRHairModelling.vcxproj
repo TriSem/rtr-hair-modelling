@@ -73,7 +73,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)src\Header Files\Framework;$(SolutionDir)src\Header Files\Rendering;$(SolutionDir)src\Header Files\FileReading;$(SolutionDir)Libraries\FX11\Inc;$(SolutionDir)Libraries\DirectXTK\Inc;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)src\Header Files\Framework;$(SolutionDir)src\Header Files\Rendering;$(SolutionDir)src\Header Files\HairDrawing;$(SolutionDir)src\Header Files\FileReading;$(SolutionDir)Libraries\FX11\Inc;$(SolutionDir)Libraries\DirectXTK\Inc;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Libraries\FX11\Libs\Win32\Debug;$(SolutionDir)Libraries\DirectXTK\Libs\x86\Debug;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
@@ -82,11 +82,11 @@
     <LinkIncremental>true</LinkIncremental>
     <LibraryPath>$(SolutionDir)Libraries\FX11\Libs\x64\Debug;$(SolutionDir)Libraries\DirectXTK\Libs\x64\Debug;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutDir>
-    <IncludePath>$(SolutionDir)src\Header Files\Framework;$(SolutionDir)src\Header Files\Rendering;$(SolutionDir)src\Header Files\FileReading;$(SolutionDir)Libraries\FX11\Inc;$(SolutionDir)Libraries\DirectXTK\Inc;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)src\Header Files\Framework;$(SolutionDir)src\Header Files\Rendering;$(SolutionDir)src\Header Files\HairDrawing;$(SolutionDir)src\Header Files\FileReading;$(SolutionDir)Libraries\FX11\Inc;$(SolutionDir)Libraries\DirectXTK\Inc;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)src\Header Files\Framework;$(SolutionDir)src\Header Files\Rendering;$(SolutionDir)src\Header Files\FileReading;$(SolutionDir)Libraries\FX11\Inc;$(SolutionDir)Libraries\DirectXTK\Inc;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)src\Header Files\Framework;$(SolutionDir)src\Header Files\Rendering;$(SolutionDir)src\Header Files\HairDrawing;$(SolutionDir)src\Header Files\FileReading;$(SolutionDir)Libraries\FX11\Inc;$(SolutionDir)Libraries\DirectXTK\Inc;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Libraries\FX11\Libs\Win32\Release;$(SolutionDir)Libraries\DirectXTK\Libs\x86\Release;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)bin\$(Platform)$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
@@ -95,7 +95,7 @@
     <LinkIncremental>false</LinkIncremental>
     <LibraryPath>$(SolutionDir)Libaries\FX11\Libs\x64\Release;$(SolutionDir)Libraries\DirectXTK\Libs\x64\Release;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutDir>
-    <IncludePath>$(SolutionDir)src\Header Files\Framework;$(SolutionDir)src\Header Files\Rendering;$(SolutionDir)src\Header Files\FileReading;$(SolutionDir)Libraries\FX11\Inc;$(SolutionDir)Libraries\DirectXTK\Inc;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)src\Header Files\Framework;$(SolutionDir)src\Header Files\Rendering;$(SolutionDir)src\Header Files\HairDrawing;$(SolutionDir)src\Header Files\FileReading;$(SolutionDir)Libraries\FX11\Inc;$(SolutionDir)Libraries\DirectXTK\Inc;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -257,6 +257,9 @@
     <ClInclude Include="src\Header Files\Framework\resource.h" />
     <ClInclude Include="src\Header Files\Framework\targetver.h" />
     <ClInclude Include="src\Header Files\Framework\Window.h" />
+    <ClInclude Include="src\Header Files\HairDrawing\Brush.h" />
+    <ClInclude Include="src\Header Files\HairDrawing\BrushData.h" />
+    <ClInclude Include="src\Header Files\HairDrawing\Canvas.h" />
     <ClInclude Include="src\Header Files\Rendering\Camera.h" />
     <ClInclude Include="src\Header Files\Rendering\Color.h" />
     <ClInclude Include="src\Header Files\Rendering\ConstantBuffer.h" />
@@ -287,6 +290,8 @@
     <ClCompile Include="src\Source Files\Framework\Application.cpp" />
     <ClCompile Include="src\Source Files\Framework\Main.cpp" />
     <ClCompile Include="src\Source Files\Framework\Window.cpp" />
+    <ClCompile Include="src\Source Files\HairDrawing\Brush.cpp" />
+    <ClCompile Include="src\Source Files\HairDrawing\Canvas.cpp" />
     <ClCompile Include="src\Source Files\Rendering\Camera.cpp" />
     <ClCompile Include="src\Source Files\Rendering\Device.cpp" />
     <ClCompile Include="src\Source Files\Rendering\DeviceAccess.cpp" />

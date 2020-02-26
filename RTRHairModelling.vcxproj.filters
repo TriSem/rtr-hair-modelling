@@ -37,6 +37,12 @@
     <Filter Include="ModelData">
       <UniqueIdentifier>{65043805-3648-4b2d-b368-0b4fb9bbe176}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Quelldateien\HairDrawing">
+      <UniqueIdentifier>{74c1bbad-ced3-42ed-a69c-5558c032cafd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\HairDrawing">
+      <UniqueIdentifier>{46c68ac6-289a-4e75-a23a-97ce185daaea}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -162,6 +168,15 @@
     <ClInclude Include="src\Header Files\Rendering\Texture.h">
       <Filter>Headerdateien\Rendering</Filter>
     </ClInclude>
+    <ClInclude Include="src\Header Files\HairDrawing\Brush.h">
+      <Filter>Headerdateien\HairDrawing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Header Files\HairDrawing\Canvas.h">
+      <Filter>Headerdateien\HairDrawing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Header Files\HairDrawing\BrushData.h">
+      <Filter>Headerdateien\HairDrawing</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ModelData\AngelinaDiffuseTex2048.raw">
@@ -228,6 +243,12 @@
     </ClCompile>
     <ClCompile Include="src\Source Files\Rendering\Texture.cpp">
       <Filter>Quelldateien\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Source Files\HairDrawing\Brush.cpp">
+      <Filter>Quelldateien\HairDrawing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Source Files\HairDrawing\Canvas.cpp">
+      <Filter>Quelldateien\HairDrawing</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
