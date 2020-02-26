@@ -1,10 +1,3 @@
-cbuffer mvpMatrix
-{
-    float4x4 model;
-    float4x4 view;
-    float4x4 projection;
-};
-
 struct OutputVertex
 {
     float4 position : SV_POSITION;
@@ -149,15 +142,15 @@ void main(
             OutputVertex vertex;
             vertex.viewport = 1;
             vertex.direction = d0.xyz;
-            vertex.position = mul(projection, p0);
+            vertex.position = mul(input[0].projectionMatrix, p0);
             output.Append(vertex);
         
             vertex.direction = d1.xyz;
-            vertex.position = mul(projection, p1);
+            vertex.position = mul(input[0].projectionMatrix, p1);
             output.Append(vertex);
         
             vertex.direction = d2.xyz;
-            vertex.position = mul(projection, p2);
+            vertex.position = mul(input[0].projectionMatrix, p2);
             output.Append(vertex);
         }
     }
