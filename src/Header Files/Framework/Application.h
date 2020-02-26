@@ -9,6 +9,7 @@
 #include "SceneObject.h"
 #include "RawFile.h"
 #include <Vertex.h>
+#include <Brush.h>
 
 using DirectX::Keyboard;
 using DirectX::Mouse;
@@ -32,6 +33,8 @@ private:
 
 	std::unique_ptr<Rendering::Renderer> renderer = nullptr;
 	std::shared_ptr<Rendering::Scene> mainScene = nullptr;
+	std::shared_ptr<Canvas> canvas = nullptr;
+	std::shared_ptr<Brush> brush = nullptr;
 
 	std::unique_ptr<Keyboard> keyboard = nullptr;
 	std::unique_ptr<Mouse> mouse = nullptr;
@@ -44,7 +47,7 @@ private:
 
 	int nCmdShow;
 
-	static const int WIDTH = 1920;
-	static const int HEIGHT = 1080;
+	static const uint32_t WIDTH = 1920;
+	static const uint32_t HEIGHT = 1080;
 };
 

@@ -60,11 +60,12 @@ void Application::Init()
 		mainWindow.Height()
 	);
 
-	renderer->SetRenderMode(Rendering::RenderMode::WIREFRAME);
-
 	mainScene = std::make_shared<Scene>();
 	keyboard = std::make_unique<Keyboard>();
 	mouse = std::make_unique<Mouse>();
+
+	canvas = std::make_shared<Canvas>(WIDTH, HEIGHT);
+	brush = std::make_shared<Brush>(canvas);
 
 	Mesh<Rendering::HairVertex> headMesh;
 	RawFile vertexFile("E:/Programming/DirectX11/RTRHairModelling/ModelData/AngelinaHeadVB.raw");
@@ -75,7 +76,7 @@ void Application::Init()
 	mainScene->AddSceneObject(head);
 
 	head->GetTransform().SetScale(0.5f);
-	head->GetTransform().SetRotation(Vector3(0.0f, 135.0f, 0.0f));
+	head->GetTransform().SetRotation(Vector3(0.0f, 180.0f, 0.0f));
 
 	ShowWindow(mainWindow.WindowHandle(), nCmdShow);
 }
@@ -87,6 +88,63 @@ void Application::Input()
 
 	if (INPUT.pressed.Escape)
 		PostQuitMessage(0);
+	else if (INPUT.pressed.S)
+	{
+		// Save hairstyle
+	}
+	else if (INPUT.pressed.X)
+	{
+		// Load hairstyle
+	}
+	else if (INPUT.pressed.N)
+	{
+		// Load next predefined hairstyle
+	}
+	else if (INPUT.pressed.L)
+	{
+		brush->SetPaintChannel(PaintChannel::Length);
+	}
+	else if (INPUT.pressed.C)
+	{
+		brush->SetPaintChannel(PaintChannel::Curl);
+	}
+	else if (INPUT.pressed.T)
+	{
+		brush->SetPaintChannel(PaintChannel::Twist);
+	}
+	else if (INPUT.pressed.R)
+	{
+		canvas->Clear();
+	}
+	else if (INPUT.pressed.D)
+	{
+		// toggle overlay
+	}
+	else if (INPUT.pressed.D1 || INPUT.pressed.D2 || INPUT.pressed.D3 || INPUT.pressed.D4 || INPUT.pressed.D5)
+	{
+		// change hair color
+	}
+
+	if (state.LeftShift)
+	{
+		// Inverse bend angle
+	}
+	else if (state.OemPlus)
+	{
+		// Increase brush size
+	}
+	else if (state.OemMinus)
+	{
+		// decrease brush size
+	}
+	else if (state.P)
+	{
+		brush->IncreaseStrength();
+	}
+	else if (state.M)
+	{
+		brush->DecreaseStrength();
+	}
 }
 
 void Application::Update()
