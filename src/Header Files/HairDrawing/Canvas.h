@@ -4,6 +4,7 @@
 #include <BrushData.h>
 #include <Graphics.h>
 
+using DirectX::SimpleMath::Rectangle;
 using DirectX::SimpleMath::Vector2;
 
 class Canvas
@@ -14,10 +15,10 @@ public:
 	void TextureToRaw(std::string name);
 	void LoadFromRaw(std::string path);
 	void PaintInto(BrushData brushData, Vector2 brushPosition);
+	void Clear();
 
 private:
 
-	uint32_t width;
-	uint32_t height;
+	DirectX::SimpleMath::Rectangle area;
 	std::vector<Rendering::Color> colors;
 };
