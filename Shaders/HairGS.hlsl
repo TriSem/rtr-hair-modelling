@@ -131,27 +131,27 @@ void main(
             };
             
             float4x4 transposeTangentSpace = transpose(tangentSpace);
-        
-            float4 d0 = { 0, 0, 1, 0 };
-            float4 d1 = { mul(rotation, d0.xyz), 0 };
-            float4 d2 = { mul(rotation, d1.xyz), 0 };
-            float4 p0 = float4(interpolated[i].position, 1);
-            float4 p1 = p0 + hairAverages.length * mul(transposeTangentSpace, d1);
-            float4 p2 = p1 + hairAverages.length * mul(transposeTangentSpace, d2);
-        
+            
+            float4 direction = { 0, 0, 1, 0 };
+            float4 position = { interpolated[i].position, 1 };
+            
             OutputVertex vertex;
             vertex.viewport = 1;
-            vertex.direction = d0.xyz;
-            vertex.position = mul(input[0].projectionMatrix, p0);
+            vertex.position = mul(input[0].projectionMatrix, position);
+            vertex.direction = mul(input[0].projectionMatrix, direction).xyz;
             output.Append(vertex);
-        
-            vertex.direction = d1.xyz;
-            vertex.position = mul(input[0].projectionMatrix, p1);
-            output.Append(vertex);
-        
-            vertex.direction = d2.xyz;
-            vertex.position = mul(input[0].projectionMatrix, p2);
-            output.Append(vertex);
+            
+            float length = hairAverages.length / 5;
+            
+            for (uint j = 1; j <= 5; j++)
+            {
+                direction.xyz += mul(rotation, direction.xyz);
+                position.xyz += length * mul(transposeTangentSpace, direction).xyz;
+                
+                vertex.position = mul(input[0].projectionMatrix, position);
+                vertex.direction = mul(input[0].projectionMatrix, direction).xyz;
+                output.Append(vertex);
+            }
         }
     }
 }
