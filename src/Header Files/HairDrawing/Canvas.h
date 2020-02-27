@@ -11,7 +11,7 @@ class Canvas
 {
 public:
 
-	Canvas(uint32_t width, uint32_t height);
+	Canvas(long width, long height);
 	void TextureToRaw(std::string name);
 	void LoadFromRaw(std::string path);
 	void PaintInto(BrushData brushData, Vector2 brushPosition);

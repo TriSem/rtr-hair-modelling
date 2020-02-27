@@ -34,8 +34,8 @@ namespace Rendering
 
 		VertexShader(std::wstring shaderName);
 
-		ComPtr<ID3D11VertexShader> GetShader() const;
 		ComPtr<ID3D11InputLayout> GetInputLayout() const;
+		virtual void IssueRenderCommands() override;
 
 	private:
 
@@ -44,6 +44,7 @@ namespace Rendering
 
 		void CreateShader() override;
 		void CreateInputLayout();
+
 	};
 
 	class GeometryShader : public Shader
@@ -51,7 +52,7 @@ namespace Rendering
 	public:
 
 		GeometryShader(std::wstring shaderName);
-		ComPtr<ID3D11GeometryShader> GetShader() const;
+		virtual void IssueRenderCommands() override;
 
 	private:
 
@@ -65,8 +66,7 @@ namespace Rendering
 	public:
 
 		PixelShader(std::wstring shaderName);
-
-		ComPtr<ID3D11PixelShader> GetShader() const;
+		virtual void IssueRenderCommands() override;
 
 	private:
 

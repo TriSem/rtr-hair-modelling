@@ -18,8 +18,9 @@ namespace Rendering
 
 	private:
 
+		virtual void IssueRenderCommands() override;
+
 		uint32_t indexCount;
 		ComPtr<ID3D11Buffer> indexBuffer = nullptr;
 	};
 }
-

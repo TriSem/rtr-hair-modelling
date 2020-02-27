@@ -68,7 +68,6 @@ namespace Rendering
 		CreateDepthStencilView();
 		BindViewsToPipeline();
 		splitScreen = std::make_unique<SplitScreen>(ScreenSectioning::HALVED, static_cast<float>(width), static_cast<float>(height));
-		CreateRasterizerStates();
 
 		mvpConstantBuffer = std::make_shared<ConstantBuffer<MVPMatricesCBT>>();
 		viewportIndexBuffer = std::make_shared<ConstantBuffer<ViewportIndexCBT>>();
@@ -204,5 +203,9 @@ namespace Rendering
 			multisampleCount = count;
 		else
 			multisampleCount = 1;
+	}
+
+	void Renderer::IssueRenderCommands()
+	{
 	}
 }

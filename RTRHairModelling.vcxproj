@@ -271,9 +271,11 @@
     <ClInclude Include="src\Header Files\Rendering\Material.h" />
     <ClInclude Include="src\Header Files\Rendering\Mesh.h" />
     <ClInclude Include="src\Header Files\Rendering\Renderer.h" />
+    <ClInclude Include="src\Header Files\Rendering\RenderMode.h" />
     <ClInclude Include="src\Header Files\Rendering\Scene.h" />
     <ClInclude Include="src\Header Files\Rendering\SceneObject.h" />
     <ClInclude Include="src\Header Files\Rendering\Shader.h" />
+    <ClInclude Include="src\Header Files\Rendering\ShaderCollection.h" />
     <ClInclude Include="src\Header Files\Rendering\SplitScreen.h" />
     <ClInclude Include="src\Header Files\Rendering\Texture.h" />
     <ClInclude Include="src\Header Files\Rendering\Transform.h" />
@@ -287,6 +289,7 @@
     <None Include="ModelData\AngelinaHeadVB.raw" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Header Files\Rendering\VertexBuffer.cpp" />
     <ClCompile Include="src\Source Files\FileReading\RawFile.cpp" />
     <ClCompile Include="src\Source Files\Framework\Application.cpp" />
     <ClCompile Include="src\Source Files\Framework\Main.cpp" />
@@ -299,6 +302,7 @@
     <ClCompile Include="src\Source Files\Rendering\GeometryShader.cpp" />
     <ClCompile Include="src\Source Files\Rendering\IndexBuffer.cpp" />
     <ClCompile Include="src\Source Files\Rendering\Material.cpp" />
+    <ClCompile Include="src\Source Files\Rendering\Mesh.cpp" />
     <ClCompile Include="src\Source Files\Rendering\PixelShader.cpp" />
     <ClCompile Include="src\Source Files\Rendering\Renderer.cpp" />
     <ClCompile Include="src\Source Files\Rendering\Scene.cpp" />

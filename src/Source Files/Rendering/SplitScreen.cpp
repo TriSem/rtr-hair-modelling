@@ -24,6 +24,11 @@ namespace Rendering
 		}
 	}
 	
+	void SplitScreen::IssueRenderCommands()
+	{
+		device->GetContext()->RSSetViewports(static_cast<uint32_t>(viewports.size()), viewports.data());
+	}
+
 	void SplitScreen::WholeScreen()
 	{
 		D3D11_VIEWPORT viewport;
@@ -37,7 +42,7 @@ namespace Rendering
 
 		viewports.clear();
 		viewports.push_back(viewport);
-		device->GetContext()->RSSetViewports(static_cast<UINT>(viewports.size()), viewports.data());
+		IssueRenderCommands();
 	}
 
 	void SplitScreen::HalveScreen()
@@ -63,7 +68,7 @@ namespace Rendering
 		viewports.push_back(leftViewport);
 		viewports.push_back(rightViewport);
 
-		device->GetContext()->RSSetViewports(static_cast<UINT>(viewports.size()), viewports.data());
+		IssueRenderCommands();
 	}
 
 	void SplitScreen::QuarterScreen()
@@ -104,11 +109,11 @@ namespace Rendering
 		viewports.push_back(bottomLeft);
 		viewports.push_back(bottomRight);
 
-		device->GetContext()->RSSetViewports(static_cast<UINT>(viewports.size()), viewports.data());
+		IssueRenderCommands();
 	}
 
 	uint32_t SplitScreen::GetNumberOfViewports()
 	{
-		return static_cast<UINT>(viewports.size());
+		return static_cast<uint32_t>(viewports.size());
 	}
 }

@@ -14,8 +14,6 @@ using Microsoft::WRL::ComPtr;
 
 namespace Rendering
 {
-	
-
 	class Renderer : public DeviceAccess
 	{
 	public:
@@ -27,6 +25,7 @@ namespace Rendering
 
 	private:
 
+		virtual void IssueRenderCommands() override;
 		void Initialize();
 		void CheckMultisamplingSupport();
 		void CreateSwapChain();

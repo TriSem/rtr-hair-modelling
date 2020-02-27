@@ -9,11 +9,6 @@ namespace Rendering
 		CreateInputLayout();
 	}
 
-	ComPtr<ID3D11VertexShader> VertexShader::GetShader() const
-	{
-		return shader;
-	}
-
 	ComPtr<ID3D11InputLayout> VertexShader::GetInputLayout() const
 	{
 		return inputLayout;
@@ -44,5 +39,10 @@ namespace Rendering
 			),
 			L"Failed to create input layout."
 		);
+	}
+
+	void VertexShader::IssueRenderCommands()
+	{
+		device->GetContext()->VSSetShader(shader.Get(), nullptr, 0);
 	}
 }

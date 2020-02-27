@@ -180,6 +180,12 @@
     <ClInclude Include="src\Header Files\Rendering\Color.h">
       <Filter>Headerdateien\Rendering</Filter>
     </ClInclude>
+    <ClInclude Include="src\Header Files\Rendering\RenderMode.h">
+      <Filter>Headerdateien\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Header Files\Rendering\ShaderCollection.h">
+      <Filter>Headerdateien\Rendering</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ModelData\AngelinaDiffuseTex2048.raw">
@@ -254,6 +260,12 @@
       <Filter>Quelldateien\HairDrawing</Filter>
     </ClCompile>
     <ClCompile Include="src\Source Files\Rendering\Material.cpp">
+      <Filter>Quelldateien\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Source Files\Rendering\Mesh.cpp">
+      <Filter>Quelldateien\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Header Files\Rendering\VertexBuffer.cpp">
       <Filter>Quelldateien\Rendering</Filter>
     </ClCompile>
   </ItemGroup>

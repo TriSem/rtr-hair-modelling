@@ -43,6 +43,7 @@ namespace Rendering
 
 	private:
 
+		virtual void IssueRenderCommands() override;
 		ComPtr<ID3D11Buffer> vertexBuffer = nullptr;
 	};
 }

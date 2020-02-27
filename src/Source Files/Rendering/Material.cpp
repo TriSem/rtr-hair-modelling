@@ -19,9 +19,9 @@ namespace Rendering
 			return;
 		}
 
-		device->GetContext()->VSSetShader(vertexShader->GetShader().Get(), nullptr, 0);
-		device->GetContext()->GSSetShader(geometryShader->GetShader().Get(), nullptr, 0);
-		device->GetContext()->PSSetShader(pixelShader->GetShader().Get(), nullptr, 0);
+		vertexShader->IssueRenderCommands();
+		geometryShader->IssueRenderCommands();
+		pixelShader->IssueRenderCommands();
 		device->GetContext()->PSSetConstantBuffers(1, 1, materialConstantBuffer->Data().GetAddressOf());
 	}
 

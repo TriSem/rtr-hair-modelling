@@ -20,12 +20,13 @@ namespace Rendering
 
 	private:
 
-		std::vector<D3D11_VIEWPORT> viewports;
-
+		virtual void IssueRenderCommands() override;
 		void WholeScreen();
 		void HalveScreen();
 		void QuarterScreen();
 		uint32_t GetNumberOfViewports();
+
+		std::vector<D3D11_VIEWPORT> viewports;
 
 		float screenWidth;
 		float screenHeight;

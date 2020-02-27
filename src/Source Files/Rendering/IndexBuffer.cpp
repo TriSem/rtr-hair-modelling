@@ -33,4 +33,8 @@ namespace Rendering
 	{
 		return indexCount;
 	}
+
+	void IndexBuffer::IssueRenderCommands()
+	{
+	}
 }
