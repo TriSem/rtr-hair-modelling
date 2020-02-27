@@ -32,7 +32,7 @@ namespace Rendering
 	{
 	public:
 
-		VertexShader(std::wstring shaderName, const Vertex& vertex);
+		VertexShader(std::wstring shaderName);
 
 		ComPtr<ID3D11VertexShader> GetShader() const;
 		ComPtr<ID3D11InputLayout> GetInputLayout() const;
@@ -43,7 +43,7 @@ namespace Rendering
 		ComPtr<ID3D11InputLayout> inputLayout;
 
 		void CreateShader() override;
-		void CreateInputLayout(const Vertex& vertex);
+		void CreateInputLayout();
 	};
 
 	class GeometryShader : public Shader
