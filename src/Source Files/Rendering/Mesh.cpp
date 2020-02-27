@@ -31,8 +31,9 @@ namespace Rendering
 
 	std::shared_ptr<Mesh> Mesh::CreateQuad(uint32_t vertexCountX, uint32_t vertexCountY)
 	{
-		std::vector<Vertex> vertices;
-		std::vector<uint32_t> indices;
+		size_t resolution = (size_t) vertexCountX * vertexCountY;
+		std::vector<Vertex> vertices(resolution);
+		std::vector<uint32_t> indices(6 * resolution);
 
 		float deltaX = 1.0f / vertexCountX;
 		float deltaY = 1.0f / vertexCountY;
@@ -44,25 +45,29 @@ namespace Rendering
 		Vector3 bitangent(1, 0, 0);
 
 		Vertex vertex = { position, texCoord, normal, tangent, bitangent };
+		std::fill(vertices.begin(), vertices.end(), vertex);
+
+		uint32_t quadIndex = 0;
 
 		for (uint32_t y = 0; y < vertexCountY; y++)
 		{
 			for (uint32_t x = 0; x < vertexCountX; x++)
 			{
-				indices.push_back(x);
-				indices.push_back(x + vertexCountX);
-				indices.push_back(x + vertexCountX + 1);
-				indices.push_back(x);
-				indices.push_back(x + vertexCountX + 1);
-				indices.push_back(x + 1);
+				indices[quadIndex++] = x;
+				indices[quadIndex++] = x + vertexCountX;
+				indices[quadIndex++] = x + vertexCountX + 1;
+				indices[quadIndex++] = x;
+				indices[quadIndex++] = x + vertexCountX + 1;
+				indices[quadIndex++] = x + 1;
 
-				vertices.push_back(vertex);
-				vertex.position.x += deltaX;
-				vertex.textureCoordinates.x += deltaX;
+				size_t current = (size_t)x + (size_t)y * vertexCountX;
+				float xIncrement = deltaX * x;
+				float yIncrement = deltaY * y;
+				vertices[current].position.x += xIncrement;
+				vertices[current].position.y += yIncrement;
+				vertices[current].textureCoordinates.x += xIncrement;
+				vertices[current].textureCoordinates.y += yIncrement;
 			}
-
-			vertex.position.y += deltaY;
-			vertex.textureCoordinates.y -= deltaY;
 		}
 
 		return std::make_shared<Mesh>(vertices, indices);
