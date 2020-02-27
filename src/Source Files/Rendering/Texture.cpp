@@ -18,6 +18,21 @@ namespace Rendering
 		CreateViews(options.type);
 	}
 
+	Texture::Texture(Color color, TextureOptions options)
+	{
+		uint32_t resolution = options.width * options.height;
+		std::vector<Color> colorData(resolution);
+
+		for (int i = 0; i < resolution; i++)
+		{
+			colorData.push_back(color);
+		}
+
+		CreateTexture(colorData, options);
+		CreateSamplerState();
+		CreateViews(options.type);
+	}
+
 	ComPtr<ID3D11Texture2D> Texture::Get()
 	{
 		return texture;

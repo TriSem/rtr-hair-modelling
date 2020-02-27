@@ -26,6 +26,7 @@ namespace Rendering
 	public:
 
 		Texture(std::vector<Color> colorData, TextureOptions options);
+		Texture(Color color, TextureOptions options);
 		Texture(std::string path, TextureOptions options);
 		ComPtr<ID3D11Texture2D> Get();
 		ComPtr<ID3D11ShaderResourceView> ResourceView();
