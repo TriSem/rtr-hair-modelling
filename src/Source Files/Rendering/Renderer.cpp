@@ -20,18 +20,6 @@ namespace Rendering
 
 	void Renderer::Render(Scene& scene)
 	{
-		/*
-			Things to set:
-				1. Primitive topology +
-				2. Input layout 
-				3. Shaders
-				4. ConstantBuffers
-				5. Samplers
-				6. Shader Resources
-				7. Rasterizer State
-				8. RenderTargets
-		*/
-
 		Clear();
 		ID3D11DeviceContext* context = device->GetContext();
 		context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);

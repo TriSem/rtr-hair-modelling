@@ -11,14 +11,12 @@ namespace Rendering
 	public:
 
 		IndexBuffer(const std::vector<uint32_t>& indices);
-
-		ComPtr<ID3D11Buffer> Data();
+		virtual void IssueRenderCommands() override;
 
 		uint32_t GetIndexCount();
 
 	private:
 
-		virtual void IssueRenderCommands() override;
 
 		uint32_t indexCount;
 		ComPtr<ID3D11Buffer> indexBuffer = nullptr;

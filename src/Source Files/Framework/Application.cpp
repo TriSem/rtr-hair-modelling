@@ -87,7 +87,7 @@ void Application::Init()
 	Material diffuseMaterial;
 	diffuseMaterial.vertexShader = shaderCollection->standardVertexShader;
 	diffuseMaterial.geometryShader = shaderCollection->standardGeometryShader;
-	diffuseMaterial.pixelShader = shaderCollection->litPixelShader;
+	diffuseMaterial.pixelShader = shaderCollection->unlitPixelShader;
 	diffuseMaterial.SetTexture(diffuseTexture);
 
 	Material hairMaterial;
@@ -105,8 +105,7 @@ void Application::Init()
 	Material overlayMaterial;
 	overlayMaterial.vertexShader = shaderCollection->flatVertexShader;
 	overlayMaterial.geometryShader = shaderCollection->standardGeometryShader;
-	overlayMaterial.pixelShader = shaderCollection->monoColorPixelShader;
-	//overlayMaterial.SetTexture(diffuseTexture);
+	overlayMaterial.pixelShader = shaderCollection->unlitPixelShader;
 	overlay->SetRenderMode(RenderMode::WireFrame);
 	overlay->materials.push_back(overlayMaterial);
 

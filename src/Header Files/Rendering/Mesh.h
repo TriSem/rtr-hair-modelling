@@ -18,8 +18,7 @@ namespace Rendering
 
 		virtual void IssueRenderCommands() override;
 
-		std::shared_ptr<VertexBuffer> GetVertexBuffer() const;
-		std::shared_ptr<IndexBuffer> GetIndexBuffer() const;
+		uint32_t GetIndexCount() const;
 
 		static std::shared_ptr<Mesh> CreateQuad(uint32_t vertexCountX, uint32_t vertexCountY);
 
@@ -27,6 +26,5 @@ namespace Rendering
 
 		std::shared_ptr<VertexBuffer> vertexBuffer = nullptr;
 		std::shared_ptr<IndexBuffer> indexBuffer = nullptr;
-		static const uint32_t offset = 0;
 	};
 }

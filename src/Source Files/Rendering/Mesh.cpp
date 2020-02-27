@@ -15,18 +15,13 @@ namespace Rendering
 
 	void Mesh::IssueRenderCommands()
 	{
-		device->GetContext()->IASetVertexBuffers(0, 1, vertexBuffer->Data().GetAddressOf(), &vertexBuffer->STRIDE, &offset);
-		device->GetContext()->IASetIndexBuffer(indexBuffer->Data().Get(), DXGI_FORMAT_R32_UINT, 0);
+		vertexBuffer->IssueRenderCommands();
+		indexBuffer->IssueRenderCommands();
 	}
 
-	std::shared_ptr<VertexBuffer> Mesh::GetVertexBuffer() const
+	uint32_t Mesh::GetIndexCount() const
 	{
-		return vertexBuffer;
-	}
-
-	std::shared_ptr<IndexBuffer> Mesh::GetIndexBuffer() const
-	{
-		return indexBuffer;
+		return indexBuffer->GetIndexCount();
 	}
 
 	std::shared_ptr<Mesh> Mesh::CreateQuad(uint32_t vertexCountX, uint32_t vertexCountY)

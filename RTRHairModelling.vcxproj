@@ -289,7 +289,6 @@
     <None Include="ModelData\AngelinaHeadVB.raw" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Header Files\Rendering\VertexBuffer.cpp" />
     <ClCompile Include="src\Source Files\FileReading\RawFile.cpp" />
     <ClCompile Include="src\Source Files\Framework\Application.cpp" />
     <ClCompile Include="src\Source Files\Framework\Main.cpp" />
@@ -311,6 +310,7 @@
     <ClCompile Include="src\Source Files\Rendering\SplitScreen.cpp" />
     <ClCompile Include="src\Source Files\Rendering\Texture.cpp" />
     <ClCompile Include="src\Source Files\Rendering\Transform.cpp" />
+    <ClCompile Include="src\Source Files\Rendering\VertexBuffer.cpp" />
     <ClCompile Include="src\Source Files\Rendering\VertexShader.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

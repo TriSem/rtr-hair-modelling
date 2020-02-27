@@ -265,7 +265,7 @@
     <ClCompile Include="src\Source Files\Rendering\Mesh.cpp">
       <Filter>Quelldateien\Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="src\Header Files\Rendering\VertexBuffer.cpp">
+    <ClCompile Include="src\Source Files\Rendering\VertexBuffer.cpp">
       <Filter>Quelldateien\Rendering</Filter>
     </ClCompile>
   </ItemGroup>

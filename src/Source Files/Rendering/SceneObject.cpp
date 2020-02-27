@@ -25,17 +25,16 @@ namespace Rendering
 
 	void SceneObject::IssueRenderCommands()
 	{
-		if (mesh != nullptr)
-		{
-			mesh->IssueRenderCommands();
-		}
+		if (mesh == nullptr)
+			return;
 
+		mesh->IssueRenderCommands();
 		SetRenderMode(renderMode);
 
 		for (auto it = materials.begin(); it != materials.end(); it++)
 		{
 			it->IssueRenderCommands();
-			device->GetContext()->DrawIndexed(mesh->GetIndexBuffer()->GetIndexCount(), 0, 0);
+			device->GetContext()->DrawIndexed(mesh->GetIndexCount(), 0, 0);
 		}
 	}
 
@@ -46,7 +45,7 @@ namespace Rendering
 		if (rasterizerStateSolid == nullptr)
 		{
 			rasterizerDescription.FillMode = D3D11_FILL_WIREFRAME;
-			rasterizerDescription.CullMode = D3D11_CULL_BACK;
+			rasterizerDescription.CullMode = D3D11_CULL_NONE;
 			MessageAndThrowIfFailed(
 				device->GetDevice()->CreateRasterizerState(&rasterizerDescription, rasterizerStateWireframe.ReleaseAndGetAddressOf()),
 				L"Failed to create rasterizer state: WIREFRAME."
