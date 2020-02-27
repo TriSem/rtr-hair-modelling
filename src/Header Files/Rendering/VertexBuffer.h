@@ -14,7 +14,7 @@ namespace Rendering
 	{
 	public:
 
-		VertexBuffer(const std::vector<HairVertex>& vertices)
+		VertexBuffer(const std::vector<VertexType>& vertices)
 		{
 			D3D11_BUFFER_DESC bufferDescription = {};
 
