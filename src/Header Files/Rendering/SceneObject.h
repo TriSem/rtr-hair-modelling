@@ -29,8 +29,7 @@ namespace Rendering
 
 		std::shared_ptr<Mesh> mesh = nullptr;
 		std::vector<Material> materials;
-
-
+		uint8_t outputViewport = 0;
 	
 	protected:
 
