@@ -4,6 +4,7 @@
 #include "Graphics.h"
 #include <vector>
 #include "InputLayoutDescription.h"
+#include "Vertex.h"
 
 enum class ShaderType;
 
@@ -31,7 +32,7 @@ namespace Rendering
 	{
 	public:
 
-		VertexShader(std::wstring shaderName, const InputLayoutDescription& inputLayout);
+		VertexShader(std::wstring shaderName, const IVertex& vertex);
 
 		ComPtr<ID3D11VertexShader> GetShader() const;
 		ComPtr<ID3D11InputLayout> GetInputLayout() const;
@@ -42,7 +43,7 @@ namespace Rendering
 		ComPtr<ID3D11InputLayout> inputLayout;
 
 		void CreateShader() override;
-		void CreateInputLayout(const InputLayoutDescription& inputLayout);
+		void CreateInputLayout(const IVertex& vertex);
 	};
 
 	class GeometryShader : public Shader
