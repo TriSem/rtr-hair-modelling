@@ -1,4 +1,4 @@
-#pragma once
+ #pragma once
 
 #include <vector>
 #include "DeviceAccess.h"
@@ -12,32 +12,16 @@ namespace Rendering
 	{
 	public:
 
-		Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices) 
-		{
-			SetTriangles(vertices, indices);
-		}
+		Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices);
 
-		void SetTriangles(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices)
-		{
-			vertexBuffer = std::make_unique<VertexBuffer>(vertices);
-			indexBuffer = std::make_unique<IndexBuffer>(indices);
-		}
+		void SetTriangles(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices);
 
-		virtual void IssueRenderCommands() override
-		{
-			device->GetContext()->IASetVertexBuffers(0, 1, vertexBuffer->Data().GetAddressOf(), &vertexBuffer->STRIDE, &offset);
-			device->GetContext()->IASetIndexBuffer(indexBuffer->Data().Get(), DXGI_FORMAT_R32_UINT, 0);
-		}
+		virtual void IssueRenderCommands() override;
 
-		std::shared_ptr<VertexBuffer> GetVertexBuffer() const
-		{
-			return vertexBuffer;
-		}
+		std::shared_ptr<VertexBuffer> GetVertexBuffer() const;
+		std::shared_ptr<IndexBuffer> GetIndexBuffer() const;
 
-		std::shared_ptr<IndexBuffer> GetIndexBuffer() const
-		{
-			return indexBuffer;
-		}
+		static std::shared_ptr<Mesh> CreateQuad(uint32_t vertexCountX, uint32_t vertexCountY);
 
 	private:
 
