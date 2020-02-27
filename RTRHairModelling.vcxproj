@@ -268,6 +268,7 @@
     <ClInclude Include="src\Header Files\Rendering\Graphics.h" />
     <ClInclude Include="src\Header Files\Rendering\IndexBuffer.h" />
     <ClInclude Include="src\Header Files\Rendering\Light.h" />
+    <ClInclude Include="src\Header Files\Rendering\Material.h" />
     <ClInclude Include="src\Header Files\Rendering\Mesh.h" />
     <ClInclude Include="src\Header Files\Rendering\Renderer.h" />
     <ClInclude Include="src\Header Files\Rendering\Scene.h" />
@@ -297,6 +298,7 @@
     <ClCompile Include="src\Source Files\Rendering\DeviceAccess.cpp" />
     <ClCompile Include="src\Source Files\Rendering\GeometryShader.cpp" />
     <ClCompile Include="src\Source Files\Rendering\IndexBuffer.cpp" />
+    <ClCompile Include="src\Source Files\Rendering\Material.cpp" />
     <ClCompile Include="src\Source Files\Rendering\PixelShader.cpp" />
     <ClCompile Include="src\Source Files\Rendering\Renderer.cpp" />
     <ClCompile Include="src\Source Files\Rendering\Scene.cpp" />

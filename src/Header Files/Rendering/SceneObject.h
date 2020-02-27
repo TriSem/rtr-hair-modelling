@@ -12,7 +12,7 @@ using namespace DirectX::SimpleMath;
 
 namespace Rendering
 {
-	class SceneObject : DeviceAccess
+	class SceneObject : public DeviceAccess
 	{
 	public:
 
@@ -27,10 +27,17 @@ namespace Rendering
 		virtual void IssueRenderCommands() override;
 
 		std::shared_ptr<Mesh> mesh = nullptr;
-		std::shared_ptr<Material> material = nullptr;
+		std::vector<Material> materials;
 	
 	protected:
 
 		Transform transform = {};
+		void SetRasterizerState(RenderMode renderMode);
+
+	private:
+
+		void CreateRasterizerStates();
+		static ComPtr<ID3D11RasterizerState> rasterizerStateSolid;
+		static ComPtr<ID3D11RasterizerState> rasterizerStateWireframe;
 	};
 }

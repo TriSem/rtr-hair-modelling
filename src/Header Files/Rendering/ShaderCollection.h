@@ -1,0 +1,7 @@
+namespace Rendering
+{
+	class ShaderCollection
+	{
+
+	};
+}

@@ -29,10 +29,20 @@ namespace Rendering
 			device->GetContext()->IASetIndexBuffer(indexBuffer->Data().Get(), DXGI_FORMAT_R32_UINT, 0);
 		}
 
+		std::shared_ptr<VertexBuffer> GetVertexBuffer() const
+		{
+			return vertexBuffer;
+		}
+
+		std::shared_ptr<IndexBuffer> GetIndexBuffer() const
+		{
+			return indexBuffer;
+		}
+
 	private:
 
-		std::unique_ptr<VertexBuffer<VertexType>> vertexBuffer = nullptr;
-		std::unique_ptr<IndexBuffer> indexBuffer = nullptr;
+		std::shared_ptr<VertexBuffer> vertexBuffer = nullptr;
+		std::shared_ptr<IndexBuffer> indexBuffer = nullptr;
 		static const uint32_t offset = 0;
 	};
 }

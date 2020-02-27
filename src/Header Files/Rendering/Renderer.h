@@ -14,11 +14,7 @@ using Microsoft::WRL::ComPtr;
 
 namespace Rendering
 {
-	enum class RenderMode
-	{
-		SOLID,
-		WIREFRAME
-	};
+	
 
 	class Renderer : public DeviceAccess
 	{
@@ -54,14 +50,12 @@ namespace Rendering
 
 		int width;
 		int height;
-		RenderMode renderMode = RenderMode::SOLID;
 
 		ComPtr<IDXGISwapChain> swapChain = nullptr;
 		ComPtr<ID3D11Texture2D> depthStencilBuffer = nullptr;
 		ComPtr<ID3D11RenderTargetView> backBufferView = nullptr;
 		ComPtr<ID3D11DepthStencilView> depthStencilView = nullptr;
-		ComPtr<ID3D11RasterizerState> rasterizerStateSolid = nullptr;
-		ComPtr<ID3D11RasterizerState> rasterizerStateWireframe = nullptr;
+		
 
 		std::unique_ptr<SplitScreen> splitScreen = nullptr;
 		std::unique_ptr<Texture> diffuseTexture = nullptr;
@@ -77,7 +71,6 @@ namespace Rendering
 		std::shared_ptr<ConstantBuffer<MVPMatricesCBT>> mvpConstantBuffer = nullptr;
 		std::shared_ptr<ConstantBuffer<ViewportIndexCBT>> viewportIndexBuffer = nullptr;
 		std::shared_ptr<ConstantBuffer<LightingCBT>> lightingConstantBuffer = nullptr;
-
 	};
 }
 

@@ -67,12 +67,12 @@ void Application::Init()
 	canvas = std::make_shared<Canvas>(WIDTH, HEIGHT);
 	brush = std::make_shared<Brush>(canvas);
 
-	Mesh<Rendering::HairVertex> headMesh;
 	RawFile vertexFile("E:/Programming/DirectX11/RTRHairModelling/ModelData/AngelinaHeadVB.raw");
 	RawFile indexFile("E:/Programming/DirectX11/RTRHairModelling/ModelData/AngelinaHeadIB.raw");
-	headMesh.vertices = vertexFile.InterpretAsBuffer<Rendering::HairVertex>();
-	headMesh.indices = indexFile.InterpretAsBuffer<uint32_t>();
-	std::shared_ptr<SceneObject> head = std::make_unique<SceneObject>(headMesh, renderer->GetVertexShader());
+	std::shared_ptr<Mesh> headMesh = std::make_shared<Mesh>(vertexFile.InterpretAsBuffer<Rendering::Vertex>(), indexFile.InterpretAsBuffer<uint32_t>());
+	
+	std::shared_ptr<SceneObject> head = std::make_shared<SceneObject>(headMesh);
+	std::shared_ptr<SceneObject> overlay = std::make_shared<SceneObject>(headMesh);
 	mainScene->AddSceneObject(head);
 
 	head->GetTransform().SetScale(0.5f);
