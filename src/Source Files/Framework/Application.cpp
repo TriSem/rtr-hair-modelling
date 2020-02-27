@@ -1,11 +1,11 @@
 #include "Application.h"
 #include <commdlg.h>
 
-using Rendering::Renderer;
-using Rendering::Scene;
-using Rendering::Mesh;
-using Rendering::SceneObject;
-using Rendering::Vertex;
+using namespace Rendering;
+using std::shared_ptr;
+using std::make_shared;
+using std::unique_ptr;
+using std::make_unique;
 
 Keyboard::KeyboardStateTracker Application::INPUT;
 
@@ -54,26 +54,60 @@ void Application::Init()
 
 	Window& mainWindow = windows.at(0);
 
-	renderer = std::make_unique<Renderer>(
+	renderer = make_unique<Renderer>(
 		mainWindow.WindowHandle(), 
 		mainWindow.Width(), 
 		mainWindow.Height()
 	);
 
-	mainScene = std::make_shared<Scene>();
-	keyboard = std::make_unique<Keyboard>();
-	mouse = std::make_unique<Mouse>();
+	shaderCollection = make_unique<ShaderCollection>();
+	mainScene = make_shared<Scene>();
+	keyboard = make_unique<Keyboard>();
+	mouse = make_unique<Mouse>();
 
-	canvas = std::make_shared<Canvas>(WIDTH, HEIGHT);
-	brush = std::make_shared<Brush>(canvas);
+	canvas = make_shared<Canvas>(WIDTH, HEIGHT);
+	brush = make_shared<Brush>(canvas);
 
 	RawFile vertexFile("E:/Programming/DirectX11/RTRHairModelling/ModelData/AngelinaHeadVB.raw");
 	RawFile indexFile("E:/Programming/DirectX11/RTRHairModelling/ModelData/AngelinaHeadIB.raw");
-	std::shared_ptr<Mesh> headMesh = std::make_shared<Mesh>(vertexFile.InterpretAsBuffer<Rendering::Vertex>(), indexFile.InterpretAsBuffer<uint32_t>());
+	shared_ptr<Mesh> headMesh = make_shared<Mesh>(vertexFile.InterpretAsBuffer<Vertex>(), indexFile.InterpretAsBuffer<uint32_t>());
+
+	TextureOptions options = { TextureType::ShaderResource, 2048, 2048 };
+	shared_ptr<Texture> diffuseTexture = make_shared<Texture>(
+		"E:/Programming/DirectX11/RTRHairModelling/ModelData/AngelinaDiffuseTex2048.raw", options);
+
+	options.type = TextureType::Mixed;
+	Rendering::Color color = { 0, 0, 0, 0 };
+	shared_ptr<Texture> paintTexture = make_shared<Texture>(color, options);
 	
-	std::shared_ptr<SceneObject> head = std::make_shared<SceneObject>(headMesh);
-	std::shared_ptr<SceneObject> overlay = std::make_shared<SceneObject>(headMesh);
+	shared_ptr<SceneObject> head = make_shared<SceneObject>(headMesh);
+	Material diffuseMaterial;
+	diffuseMaterial.vertexShader = shaderCollection->standardVertexShader;
+	diffuseMaterial.geometryShader = shaderCollection->standardGeometryShader;
+	diffuseMaterial.pixelShader = shaderCollection->litPixelShader;
+	diffuseMaterial.SetTexture(diffuseTexture);
+
+	Material hairMaterial;
+	hairMaterial.vertexShader = shaderCollection->hairVertexShader;
+	hairMaterial.geometryShader = shaderCollection->hairGeometryShader;
+	hairMaterial.pixelShader = shaderCollection->litLinesPixelShader;
+	hairMaterial.SetTexture(paintTexture);
+	head->materials.push_back(diffuseMaterial);
+
+	shared_ptr<Mesh> quadMesh = Mesh::CreateQuad(2048, 2048);
+	shared_ptr<SceneObject> canvas = make_shared<SceneObject>(quadMesh);
+	
+	
+	shared_ptr<SceneObject> overlay = make_shared<SceneObject>(headMesh);
+	Material overlayMaterial;
+	overlayMaterial.vertexShader = shaderCollection->flatVertexShader;
+	overlayMaterial.geometryShader = shaderCollection->standardGeometryShader;
+	overlayMaterial.pixelShader = shaderCollection->unlitPixelShader;
+	overlay->SetRenderMode(RenderMode::WireFrame);
+	overlay->materials.push_back(overlayMaterial);
+
 	mainScene->AddSceneObject(head);
+	mainScene->AddSceneObject(overlay);
 
 	head->GetTransform().SetScale(0.5f);
 	head->GetTransform().SetRotation(Vector3(0.0f, 180.0f, 0.0f));

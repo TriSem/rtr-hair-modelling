@@ -10,6 +10,8 @@
 #include "RawFile.h"
 #include <Vertex.h>
 #include <Brush.h>
+#include <ShaderCollection.h>
+#include <RenderMode.h>
 
 using DirectX::Keyboard;
 using DirectX::Mouse;
@@ -32,6 +34,7 @@ private:
 	std::wstring appTitle;
 
 	std::unique_ptr<Rendering::Renderer> renderer = nullptr;
+	std::unique_ptr<Rendering::ShaderCollection> shaderCollection = nullptr;
 	std::shared_ptr<Rendering::Scene> mainScene = nullptr;
 	std::shared_ptr<Canvas> canvas = nullptr;
 	std::shared_ptr<Brush> brush = nullptr;
