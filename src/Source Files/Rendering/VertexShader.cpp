@@ -2,11 +2,11 @@
 
 namespace Rendering
 {
-	VertexShader::VertexShader(std::wstring directoryPath, const IVertex& vertex)
+	VertexShader::VertexShader(std::wstring directoryPath)
 		: Shader::Shader(directoryPath)
 	{
 		CreateShader();
-		CreateInputLayout(vertex);
+		CreateInputLayout();
 	}
 
 	ComPtr<ID3D11VertexShader> VertexShader::GetShader() const
@@ -31,8 +31,9 @@ namespace Rendering
 		);
 	}
 
-	void VertexShader::CreateInputLayout(const IVertex& vertex)
+	void VertexShader::CreateInputLayout()
 	{
+		Vertex vertex;
 		MessageAndThrowIfFailed(
 			device->GetDevice()->CreateInputLayout(
 				vertex.GetLayoutDescription().data(),
