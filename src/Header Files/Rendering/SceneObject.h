@@ -33,7 +33,7 @@ namespace Rendering
 	
 	protected:
 
-		Transform transform = {};
+		Transform transform = Transform();
 
 	private:
 

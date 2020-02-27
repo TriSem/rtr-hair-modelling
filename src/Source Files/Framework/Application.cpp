@@ -83,6 +83,7 @@ void Application::Init()
 	shared_ptr<Texture> paintTexture = make_shared<Texture>(color, options);
 	
 	shared_ptr<SceneObject> head = make_shared<SceneObject>(headMesh);
+	head->outputViewport = 1;
 	Material diffuseMaterial;
 	diffuseMaterial.vertexShader = shaderCollection->standardVertexShader;
 	diffuseMaterial.geometryShader = shaderCollection->standardGeometryShader;
@@ -95,16 +96,17 @@ void Application::Init()
 	hairMaterial.pixelShader = shaderCollection->litLinesPixelShader;
 	hairMaterial.SetTexture(paintTexture);
 	head->materials.push_back(diffuseMaterial);
+	head->materials.push_back(hairMaterial);
 
 	shared_ptr<Mesh> quadMesh = Mesh::CreateQuad(100, 100);
 	shared_ptr<SceneObject> canvas = make_shared<SceneObject>(quadMesh);
-	
 	
 	shared_ptr<SceneObject> overlay = make_shared<SceneObject>(headMesh);
 	Material overlayMaterial;
 	overlayMaterial.vertexShader = shaderCollection->flatVertexShader;
 	overlayMaterial.geometryShader = shaderCollection->standardGeometryShader;
-	overlayMaterial.pixelShader = shaderCollection->unlitPixelShader;
+	overlayMaterial.pixelShader = shaderCollection->monoColorPixelShader;
+	//overlayMaterial.SetTexture(diffuseTexture);
 	overlay->SetRenderMode(RenderMode::WireFrame);
 	overlay->materials.push_back(overlayMaterial);
 

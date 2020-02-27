@@ -50,7 +50,7 @@ float scatterSpecular(float3 surfacePoint, float3 direction, float specularPower
     return result;
 }
 
-float4 main(PSInput input) : SV_TARGET
+float4 main(PSInput input, uint viewport : SV_ViewportArrayIndex) : SV_TARGET
 {
     float4 hairBaseColor = { 1 , 0, 1, 1 };
     float4 hairSpecularColor = { 0.3f, 0.3f, 0.3f, 1 };

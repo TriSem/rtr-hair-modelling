@@ -22,7 +22,10 @@ namespace Rendering
 		vertexShader->IssueRenderCommands();
 		geometryShader->IssueRenderCommands();
 		pixelShader->IssueRenderCommands();
-		device->GetContext()->PSSetConstantBuffers(1, 1, materialConstantBuffer->Data().GetAddressOf());
+		if (colorMap != nullptr)
+			colorMap->IssueRenderCommands();
+			
+		//device->GetContext()->PSSetConstantBuffers(1, 1, materialConstantBuffer->Data().GetAddressOf());
 	}
 
 	void Material::SetAlbedo(Color albedo)

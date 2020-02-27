@@ -43,6 +43,7 @@ namespace Rendering
 
 	void VertexShader::IssueRenderCommands()
 	{
+		device->GetContext()->IASetInputLayout(inputLayout.Get());
 		device->GetContext()->VSSetShader(shader.Get(), nullptr, 0);
 	}
 }

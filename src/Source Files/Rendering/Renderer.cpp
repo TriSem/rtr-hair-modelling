@@ -22,8 +22,8 @@ namespace Rendering
 	{
 		/*
 			Things to set:
-				1. Primitive topology
-				2. Input layout
+				1. Primitive topology +
+				2. Input layout 
 				3. Shaders
 				4. ConstantBuffers
 				5. Samplers
@@ -35,11 +35,12 @@ namespace Rendering
 		Clear();
 		ID3D11DeviceContext* context = device->GetContext();
 		context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
 		LightingCBT lightingData;
 		lightingData.directionalLight = scene.GetLight();
 		lightingData.viewPoint = scene.GetCamera().Position();
 		lightingConstantBuffer->SetData(lightingData);
+
+		device->GetContext()->PSSetConstantBuffers(0, 1, lightingConstantBuffer->Data().GetAddressOf());
 
 		vector<std::shared_ptr<SceneObject>>& objects = scene.GetSceneObjects();
 
@@ -47,14 +48,21 @@ namespace Rendering
 		{
 			Camera& camera = scene.GetCamera();
 			std::shared_ptr<SceneObject> object = *it;
+
 			MVPMatricesCBT mvp;
 			mvp.model = object->GetTransform().TransformationMatrix();
 			mvp.view = camera.ViewMatrix();
 			mvp.projection = camera.ProjectionMatrix();
 			mvpConstantBuffer->SetData(mvp);
+
 			ViewportIndexCBT viewportIndex;
-			viewportIndex.index = 1;
+			viewportIndex.index = object->outputViewport;
 			viewportIndexBuffer->SetData(viewportIndex);
+
+			device->GetContext()->VSSetConstantBuffers(0, 1, mvpConstantBuffer->Data().GetAddressOf());
+			device->GetContext()->GSSetConstantBuffers(0, 1, viewportIndexBuffer->Data().GetAddressOf());
+
+			object->IssueRenderCommands();
 		}
 
 		swapChain->Present(0, 0);
