@@ -68,13 +68,13 @@ void Application::Init()
 	canvas = make_shared<Canvas>(WIDTH, HEIGHT);
 	brush = make_shared<Brush>(canvas);
 
-	RawFile vertexFile("E:/Programming/DirectX11/RTRHairModelling/ModelData/AngelinaHeadVB.raw");
-	RawFile indexFile("E:/Programming/DirectX11/RTRHairModelling/ModelData/AngelinaHeadIB.raw");
+	RawFile vertexFile("./ModelData/AngelinaHeadVB.raw");
+	RawFile indexFile("./ModelData/AngelinaHeadIB.raw");
 	shared_ptr<Mesh> headMesh = make_shared<Mesh>(vertexFile.InterpretAsBuffer<Vertex>(), indexFile.InterpretAsBuffer<uint32_t>());
 
 	TextureOptions options = { TextureType::ShaderResource, 2048, 2048 };
 	shared_ptr<Texture> diffuseTexture = make_shared<Texture>(
-		"E:/Programming/DirectX11/RTRHairModelling/ModelData/AngelinaDiffuseTex2048.raw", options);
+		"./ModelData/AngelinaDiffuseTex2048.raw", options);
 
 	options.type = TextureType::Mixed;
 	options.width = 512;
@@ -96,7 +96,7 @@ void Application::Init()
 	hairMaterial.pixelShader = shaderCollection->litLinesPixelShader;
 	hairMaterial.SetTexture(paintTexture);
 	head->materials.push_back(diffuseMaterial);
-	head->materials.push_back(hairMaterial);
+	//head->materials.push_back(hairMaterial);
 
 	shared_ptr<Mesh> quadMesh = Mesh::CreateQuad(100, 100);
 	shared_ptr<SceneObject> canvas = make_shared<SceneObject>(quadMesh);
@@ -111,6 +111,8 @@ void Application::Init()
 
 	mainScene->AddSceneObject(head);
 	mainScene->AddSceneObject(overlay);
+
+	//head->SetRenderMode(RenderMode::WireFrame);
 
 	head->GetTransform().SetScale(0.5f);
 	head->GetTransform().SetRotation(Vector3(0.0f, 180.0f, 0.0f));

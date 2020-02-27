@@ -55,6 +55,7 @@ namespace Rendering
 		if (rasterizerStateWireframe == nullptr)
 		{
 			rasterizerDescription.FillMode = D3D11_FILL_SOLID;
+
 			MessageAndThrowIfFailed(
 				device->GetDevice()->CreateRasterizerState(&rasterizerDescription, rasterizerStateSolid.ReleaseAndGetAddressOf()),
 				L"Failed to create rasterizer state: SOLID."
