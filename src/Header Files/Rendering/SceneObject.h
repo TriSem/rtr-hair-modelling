@@ -7,6 +7,7 @@
 #include "IndexBuffer.h"
 #include "Mesh.h"
 #include "Material.h"
+#include "RenderMode.h"
 
 using namespace DirectX::SimpleMath;
 
@@ -18,25 +19,27 @@ namespace Rendering
 
 		SceneObject(std::shared_ptr<Mesh> mesh);
 
-		virtual void Update();
-
 		Transform& GetTransform();
-
 		std::shared_ptr<Mesh> GetMesh();
 
+		void SetRenderMode(RenderMode renderMode);
+
+		virtual void Update();
 		virtual void IssueRenderCommands() override;
 
 		std::shared_ptr<Mesh> mesh = nullptr;
 		std::vector<Material> materials;
+
+
 	
 	protected:
 
 		Transform transform = {};
-		void SetRasterizerState(RenderMode renderMode);
 
 	private:
 
 		void CreateRasterizerStates();
+		RenderMode renderMode = RenderMode::Solid;
 		static ComPtr<ID3D11RasterizerState> rasterizerStateSolid;
 		static ComPtr<ID3D11RasterizerState> rasterizerStateWireframe;
 	};

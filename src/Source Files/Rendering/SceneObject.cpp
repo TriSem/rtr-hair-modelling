@@ -5,6 +5,7 @@ namespace Rendering
 	SceneObject::SceneObject(std::shared_ptr<Mesh> mesh) :
 		mesh(mesh)
 	{
+		SetRenderMode(RenderMode::Solid);
 	}
 
 	void SceneObject::Update()
@@ -28,7 +29,6 @@ namespace Rendering
 
 		for (auto it = materials.begin(); it != materials.end(); it++)
 		{
-			SetRasterizerState(it->renderMode);
 			it->IssueRenderCommands();
 			device->GetContext()->DrawIndexed(mesh->GetIndexBuffer()->GetIndexCount(), 0, 0);
 		}
@@ -58,12 +58,18 @@ namespace Rendering
 		}
 	}
 
-	void SceneObject::SetRasterizerState(RenderMode renderMode)
+	void SceneObject::SetRenderMode(RenderMode renderMode)
 	{
-		if (renderMode == RenderMode::Solid)
-			device->GetContext()->RSSetState(rasterizerStateSolid.Get());
+		if (this->renderMode == renderMode)
+			return;
 		else
-			device->GetContext()->RSSetState(rasterizerStateWireframe.Get());
+		{
+			this->renderMode = renderMode;
+			if (renderMode == RenderMode::Solid)
+				device->GetContext()->RSSetState(rasterizerStateSolid.Get());
+			else
+				device->GetContext()->RSSetState(rasterizerStateWireframe.Get());
+		}
 	}
 
 	ComPtr<ID3D11RasterizerState> SceneObject::rasterizerStateSolid = nullptr;

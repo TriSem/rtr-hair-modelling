@@ -4,7 +4,6 @@
 #include "Shader.h"
 #include "Vertex.h"
 #include "ConstantBuffer.h"
-#include "RenderMode.h"
 
 namespace Rendering
 {
@@ -28,8 +27,6 @@ namespace Rendering
 		std::shared_ptr<VertexShader> vertexShader = nullptr;
 		std::shared_ptr<PixelShader> pixelShader = nullptr;
 		std::shared_ptr<GeometryShader> geometryShader = nullptr;
-
-		RenderMode renderMode = RenderMode::Solid;
 
 	private:
 
