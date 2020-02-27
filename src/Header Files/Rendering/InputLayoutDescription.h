@@ -6,24 +6,7 @@ namespace Rendering
 {
 	struct InputLayoutDescription
 	{
-		static InputLayoutDescription Standard()
-		{
-			D3D11_INPUT_ELEMENT_DESC position, texcoord, normal;
-			position = { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0,
-				D3D11_INPUT_PER_VERTEX_DATA, 0 };
-			texcoord = { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12,
-				D3D11_INPUT_PER_VERTEX_DATA, 0 };
-			normal = { "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 20,
-				D3D11_INPUT_PER_VERTEX_DATA, 0 };
-
-			InputLayoutDescription standard;
-			standard.elementDescriptions.push_back(position);
-			standard.elementDescriptions.push_back(texcoord);
-			standard.elementDescriptions.push_back(normal);
-			return standard;
-		}
-
-		static InputLayoutDescription HairVertex()
+		static InputLayoutDescription Vertex()
 		{
 			D3D11_INPUT_ELEMENT_DESC position, texcoord, normal, tangent, bitangent;
 			position = { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0,
@@ -37,13 +20,13 @@ namespace Rendering
 			bitangent = { "BINORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 44,
 				D3D11_INPUT_PER_VERTEX_DATA, 0 };
 
-			InputLayoutDescription hairVertex;
-			hairVertex.elementDescriptions.push_back(position);
-			hairVertex.elementDescriptions.push_back(texcoord);
-			hairVertex.elementDescriptions.push_back(normal);
-			hairVertex.elementDescriptions.push_back(tangent);
-			hairVertex.elementDescriptions.push_back(bitangent);
-			return hairVertex;
+			InputLayoutDescription standardVertex;
+			standardVertex.elementDescriptions.push_back(position);
+			standardVertex.elementDescriptions.push_back(texcoord);
+			standardVertex.elementDescriptions.push_back(normal);
+			standardVertex.elementDescriptions.push_back(tangent);
+			standardVertex.elementDescriptions.push_back(bitangent);
+			return standardVertex;
 		}
 
 		std::vector<D3D11_INPUT_ELEMENT_DESC> elementDescriptions;

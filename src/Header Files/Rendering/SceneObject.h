@@ -6,34 +6,31 @@
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
 #include "Mesh.h"
+#include "Material.h"
 
 using namespace DirectX::SimpleMath;
 
 namespace Rendering
 {
-	class SceneObject
+	class SceneObject : DeviceAccess
 	{
 	public:
 
-		SceneObject(const Mesh<HairVertex>& mesh, std::shared_ptr<VertexShader> vertexShader);
+		SceneObject(std::shared_ptr<Mesh> mesh);
 
 		virtual void Update();
 
 		Transform& GetTransform();
 
-		std::shared_ptr<VertexBuffer<HairVertex>> GetVertexBuffer();
-		std::shared_ptr<IndexBuffer> GetIndexBuffer();
-		Mesh<HairVertex>& GetMesh();
+		std::shared_ptr<Mesh> GetMesh();
 
-	private:
+		virtual void IssueRenderCommands() override;
 
-		std::shared_ptr<VertexBuffer<HairVertex>> vertexBuffer = nullptr;
-		std::shared_ptr<IndexBuffer> indexBuffer = nullptr;
-		std::shared_ptr<VertexShader> vertexShader = nullptr;
-
+		std::shared_ptr<Mesh> mesh = nullptr;
+		std::shared_ptr<Material> material = nullptr;
 	
 	protected:
+
 		Transform transform = {};
-		Mesh<HairVertex> mesh = {};
 	};
 }

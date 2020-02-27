@@ -9,16 +9,15 @@ using Microsoft::WRL::ComPtr;
 
 namespace Rendering
 {
-	template<typename VertexType>
 	class VertexBuffer : public DeviceAccess
 	{
 	public:
 
-		VertexBuffer(const std::vector<VertexType>& vertices)
+		VertexBuffer(const std::vector<Vertex>& vertices)
 		{
 			D3D11_BUFFER_DESC bufferDescription = {};
 
-			bufferDescription.ByteWidth = UINT(sizeof(VertexType) * vertices.size());
+			bufferDescription.ByteWidth = UINT(sizeof(Vertex) * vertices.size());
 			bufferDescription.Usage = D3D11_USAGE_DEFAULT;
 			bufferDescription.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 			
@@ -40,7 +39,7 @@ namespace Rendering
 			return vertexBuffer;
 		}
 
-		static const UINT STRIDE = sizeof(VertexType);
+		static const UINT STRIDE = sizeof(Vertex);
 
 	private:
 
