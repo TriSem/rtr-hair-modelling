@@ -77,6 +77,8 @@ void Application::Init()
 		"E:/Programming/DirectX11/RTRHairModelling/ModelData/AngelinaDiffuseTex2048.raw", options);
 
 	options.type = TextureType::Mixed;
+	options.width = 512;
+	options.height = 512;
 	Rendering::Color color = { 0, 0, 0, 0 };
 	shared_ptr<Texture> paintTexture = make_shared<Texture>(color, options);
 	
@@ -94,7 +96,7 @@ void Application::Init()
 	hairMaterial.SetTexture(paintTexture);
 	head->materials.push_back(diffuseMaterial);
 
-	shared_ptr<Mesh> quadMesh = Mesh::CreateQuad(2048, 2048);
+	shared_ptr<Mesh> quadMesh = Mesh::CreateQuad(100, 100);
 	shared_ptr<SceneObject> canvas = make_shared<SceneObject>(quadMesh);
 	
 	
