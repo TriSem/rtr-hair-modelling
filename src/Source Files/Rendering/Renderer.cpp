@@ -20,6 +20,18 @@ namespace Rendering
 
 	void Renderer::Render(Scene& scene)
 	{
+		/*
+			Things to set:
+				1. Primitive topology
+				2. Input layout
+				3. Shaders
+				4. ConstantBuffers
+				5. Samplers
+				6. Shader Resources
+				7. Rasterizer State
+				8. RenderTargets
+		*/
+
 		Clear();
 		ID3D11DeviceContext* context = device->GetContext();
 		context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -43,36 +55,6 @@ namespace Rendering
 			ViewportIndexCBT viewportIndex;
 			viewportIndex.index = 1;
 			viewportIndexBuffer->SetData(viewportIndex);
-
-			SetRenderMode(RenderMode::SOLID);
-			std::shared_ptr<VertexBuffer<HairVertex>> vertexBuffer = object->GetVertexBuffer();
-			std::shared_ptr<IndexBuffer> indexBuffer = object->GetIndexBuffer(); 
-			context->IASetInputLayout(vertexShader->GetInputLayout().Get());
-			const UINT offsets[] = { 0 };
-			context->IASetVertexBuffers(0, 1, vertexBuffer->Data().GetAddressOf(), &vertexBuffer->STRIDE, offsets);
-			context->IASetIndexBuffer(indexBuffer->Data().Get(), DXGI_FORMAT_R32_UINT, 0);
-			context->VSSetConstantBuffers(0, 1, mvpConstantBuffer->Data().GetAddressOf());
-			context->VSSetShader(vertexShader->GetShader().Get(), nullptr, 0);
-			context->GSSetConstantBuffers(0, 1, viewportIndexBuffer->Data().GetAddressOf());
-			context->GSSetShader(standardGeometryShader->GetShader().Get(), nullptr, 0);
-			context->PSSetConstantBuffers(0, 1, lightingConstantBuffer->Data().GetAddressOf());
-			context->PSSetShader(litPixelShader->GetShader().Get(), nullptr, 0);
-			context->DrawIndexed(indexBuffer->GetIndexCount(), 0, 0);
-
-			// Hair pass
-			context->VSSetShader(hairVertexShader->GetShader().Get(), nullptr, 0);
-			context->GSSetShader(hairGeometryShader->GetShader().Get(), nullptr, 0);
-			context->PSSetShader(litLinePixelShader->GetShader().Get(), nullptr, 0);
-			context->DrawIndexed(indexBuffer->GetIndexCount(), 0, 0);
-
-			SetRenderMode(RenderMode::WIREFRAME);
-			viewportIndex.index = 0;
-			viewportIndexBuffer->SetData(viewportIndex);
-			context->VSSetShader(flatVertexShader->GetShader().Get(), nullptr, 0);
-			context->GSGetConstantBuffers(0, 1, viewportIndexBuffer->Data().GetAddressOf());
-			context->GSSetShader(standardGeometryShader->GetShader().Get(), nullptr, 0);
-			context->PSSetShader(unlitPixelShader->GetShader().Get(), nullptr, 0);
-			context->DrawIndexed(indexBuffer->GetIndexCount(), 0, 0);
 		}
 
 		swapChain->Present(0, 0);
@@ -87,12 +69,6 @@ namespace Rendering
 		BindViewsToPipeline();
 		splitScreen = std::make_unique<SplitScreen>(ScreenSectioning::HALVED, static_cast<float>(width), static_cast<float>(height));
 		CreateRasterizerStates();
-		CreateShaders();
-
-		TextureOptions options = { "E:/Programming/DirectX11/RTRHairModelling/ModelData/AngelinaDiffuseTex2048.raw", 2048, 2048 };
-		diffuseTexture = std::make_unique<Texture>(options);
-		device->GetContext()->PSSetShaderResources(0, 1, diffuseTexture->ResourceView().GetAddressOf());
-		device->GetContext()->PSSetSamplers(0, 1, diffuseTexture->SamplerState().GetAddressOf());
 
 		mvpConstantBuffer = std::make_shared<ConstantBuffer<MVPMatricesCBT>>();
 		viewportIndexBuffer = std::make_shared<ConstantBuffer<ViewportIndexCBT>>();
@@ -214,42 +190,6 @@ namespace Rendering
 		device->GetContext()->OMSetRenderTargets(1, backBufferView.GetAddressOf(), depthStencilView.Get());
 	}
 
-	void Renderer::CreateRasterizerStates()
-	{
-		D3D11_RASTERIZER_DESC rasterizerDescription = {};
-
-		rasterizerDescription.FillMode = D3D11_FILL_WIREFRAME;
-		rasterizerDescription.CullMode = D3D11_CULL_NONE;
-		MessageAndThrowIfFailed(
-			device->GetDevice()->CreateRasterizerState(&rasterizerDescription, rasterizerStateWireframe.ReleaseAndGetAddressOf()),
-			L"Failed to create rasterizer state: WIREFRAME."
-		);
-
-		rasterizerDescription.FillMode = D3D11_FILL_SOLID;
-		MessageAndThrowIfFailed(
-			device->GetDevice()->CreateRasterizerState(&rasterizerDescription, rasterizerStateSolid.ReleaseAndGetAddressOf()),
-			L"Failed to create rasterizer state: SOLID."
-		);
-
-		if(renderMode == RenderMode::SOLID)
-			device->GetContext()->RSSetState(rasterizerStateSolid.Get());
-		else
-			device->GetContext()->RSSetState(rasterizerStateWireframe.Get());
-	}
-
-	void Renderer::CreateShaders()
-	{
-		InputLayoutDescription hairVertexDescription = InputLayoutDescription::HairVertex();
-		vertexShader = std::make_shared<VertexShader>(L"StandardVS", hairVertexDescription);
-		flatVertexShader = std::make_shared<VertexShader>(L"FlatVS", hairVertexDescription);
-		hairVertexShader = std::make_shared<VertexShader>(L"HairVS", hairVertexDescription);
-		litPixelShader = std::make_shared<PixelShader>(L"LitPS");
-		litLinePixelShader = std::make_shared<PixelShader>(L"LitLinesPS");
-		unlitPixelShader = std::make_shared<PixelShader>(L"UnlitPS"); 
-		standardGeometryShader = std::make_shared<GeometryShader>(L"StandardGS");
-		hairGeometryShader = std::make_shared<GeometryShader>(L"HairGS");
-	}
-
 	void Renderer::Clear()
 	{
 		DirectX::SimpleMath::Color clearColor = DirectX::Colors::CornflowerBlue.v;
@@ -264,29 +204,5 @@ namespace Rendering
 			multisampleCount = count;
 		else
 			multisampleCount = 1;
-	}
-
-	void Renderer::SetRenderMode(RenderMode renderMode)
-	{
-		if (this->renderMode == renderMode)
-			return;
-		else
-		{
-			this->renderMode = renderMode;
-			if (renderMode == RenderMode::SOLID)
-				device->GetContext()->RSSetState(rasterizerStateSolid.Get());
-			else
-				device->GetContext()->RSSetState(rasterizerStateWireframe.Get());
-		}
-	}
-
-	const ComPtr<ID3D11Device> Renderer::GetDevice() const
-	{
-		return device->GetDevice();
-	}
-
-	const std::shared_ptr<VertexShader> Renderer::GetVertexShader() const
-	{
-		return vertexShader;
 	}
 }
