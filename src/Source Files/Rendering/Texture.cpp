@@ -23,10 +23,7 @@ namespace Rendering
 		uint32_t resolution = options.width * options.height;
 		std::vector<Color> colorData(resolution);
 
-		for (int i = 0; i < resolution; i++)
-		{
-			colorData.push_back(color);
-		}
+		std::fill(colorData.begin(), colorData.end(), color);
 
 		CreateTexture(colorData, options);
 		CreateSamplerState();
