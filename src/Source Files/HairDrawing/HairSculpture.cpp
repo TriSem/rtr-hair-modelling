@@ -30,6 +30,17 @@ HairSculpture::HairSculpture(shared_ptr<Rendering::Texture> hairTexture)
 
 void HairSculpture::Update()
 {
+	if (keyTracker.pressed.D1)
+		materials.at(1).SetAlbedo(hairColorPresets.at(0));
+	if (keyTracker.pressed.D2)
+		materials.at(1).SetAlbedo(hairColorPresets.at(1));
+	if (keyTracker.pressed.D3)
+		materials.at(1).SetAlbedo(hairColorPresets.at(2));
+	if (keyTracker.pressed.D4)
+		materials.at(1).SetAlbedo(hairColorPresets.at(3));
+	if(keyTracker.pressed.D5)
+		materials.at(1).SetAlbedo(hairColorPresets.at(4));
+
 	Vector3 direction = Vector3::Zero;
 	if (keys.Left)
 		direction.x = -1;

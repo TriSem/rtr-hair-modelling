@@ -9,10 +9,16 @@ struct DirectionalLight
     float3 direction;
 };
 
-cbuffer Lighting
+cbuffer Lighting : register(b0)
 {
     DirectionalLight directionalLight;
     float3 viewPoint;
+};
+
+cbuffer Material : register(b1)
+{
+    float4 albedo;
+    float roughness;
 };
 
 struct PSInput

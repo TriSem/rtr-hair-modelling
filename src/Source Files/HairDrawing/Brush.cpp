@@ -1,6 +1,8 @@
 #include <Brush.h>
 
-Brush::Brush(std::shared_ptr<Canvas> canvas) :
+using namespace Rendering;
+
+Brush::Brush() :
 	canvas(canvas)
 {
 	TextureOptions options = { TextureType::ShaderResource, 1, 1 };
