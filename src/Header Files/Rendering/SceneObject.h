@@ -9,6 +9,7 @@
 #include "Material.h"
 #include "RenderMode.h"
 #include "ShaderCollection.h"
+#include <framework.h>
 
 using namespace DirectX::SimpleMath;
 
@@ -31,6 +32,8 @@ namespace Rendering
 
 		std::vector<Material> materials;
 		uint8_t outputViewport = 0;
+
+		static void SetInput(const DirectX::Mouse::ButtonStateTracker& mouseTracker, const DirectX::Keyboard::KeyboardStateTracker& keyTracker);
 	
 	protected:
 
@@ -39,8 +42,11 @@ namespace Rendering
 		bool visible = true;
 
 		static unique_ptr<ShaderCollection> SHADER;
+		static DirectX::Mouse::ButtonStateTracker mouse;
+		static DirectX::Keyboard::KeyboardStateTracker keys;
 
 	private:
+
 
 		void Initialize();
 		void CreateRasterizerStates();

@@ -91,59 +91,10 @@ void Application::Input()
 	keyTracker.Update(keyState);
 	mouseTracker.Update(mouseState);
 
+	SceneObject::SetInput(mouseTracker, keyTracker);
+
 	if (keyTracker.pressed.Escape)
 		PostQuitMessage(0);
-	else if (keyTracker.pressed.S)
-	{
-		// Save hairstyle
-	}
-	else if (keyTracker.pressed.X)
-	{
-		// Load hairstyle
-	}
-	else if (keyTracker.pressed.N)
-	{
-		// Load next predefined hairstyle
-	}
-	else if (keyTracker.pressed.L)
-	{
-	}
-	else if (keyTracker.pressed.C)
-	{
-	}
-	else if (keyTracker.pressed.T)
-	{
-	}
-	else if (keyTracker.pressed.R)
-	{
-	}
-	else if (keyTracker.pressed.D)
-	{
-		// toggle overlay
-	}
-	else if (keyTracker.pressed.D1 || keyTracker.pressed.D2 || keyTracker.pressed.D3 || keyTracker.pressed.D4 || keyTracker.pressed.D5)
-	{
-		// change hair color
-	}
-
-	if (keyState.LeftShift)
-	{
-		// Inverse bend angle
-	}
-	else if (keyState.OemPlus)
-	{
-		// Increase brush size
-	}
-	else if (keyState.OemMinus)
-	{
-		// decrease brush size
-	}
-	else if (keyState.P)
-	{
-	}
-	else if (keyState.M)
-	{
-	}
 }
 
 void Application::Update()

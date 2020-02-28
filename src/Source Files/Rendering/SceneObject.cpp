@@ -29,7 +29,7 @@ namespace Rendering
 
 	void SceneObject::IssueRenderCommands()
 	{
-		if (mesh == nullptr)
+		if (mesh == nullptr || !visible)
 			return;
 
 		SetRenderMode(renderMode);
@@ -40,6 +40,12 @@ namespace Rendering
 			it->IssueRenderCommands();
 			device->GetContext()->DrawIndexed(mesh->GetIndexCount(), 0, 0);
 		}
+	}
+
+	void SceneObject::SetInput(const DirectX::Mouse::ButtonStateTracker& mouseTracker, const DirectX::Keyboard::KeyboardStateTracker& keyTracker)
+	{
+		mouse = mouseTracker;
+		keys = keyTracker;
 	}
 
 	void SceneObject::Initialize()
@@ -90,4 +96,6 @@ namespace Rendering
 	ComPtr<ID3D11RasterizerState> SceneObject::rasterizerStateSolid = nullptr;
 	ComPtr<ID3D11RasterizerState> SceneObject::rasterizerStateWireframe = nullptr;
 	unique_ptr<ShaderCollection> SceneObject::SHADER = nullptr;
+	DirectX::Mouse::ButtonStateTracker SceneObject::mouse;
+	DirectX::Keyboard::KeyboardStateTracker SceneObject::keys;
 }
