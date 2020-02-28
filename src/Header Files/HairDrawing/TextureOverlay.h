@@ -8,8 +8,4 @@ public:
     
     TextureOverlay();
     TextureOverlay(std::shared_ptr<Rendering::Mesh> mesh);
-
-private:
-
-    bool visible = true;
 };
