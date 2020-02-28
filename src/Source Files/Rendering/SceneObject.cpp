@@ -42,10 +42,12 @@ namespace Rendering
 		}
 	}
 
-	void SceneObject::SetInput(const DirectX::Mouse::ButtonStateTracker& mouseTracker, const DirectX::Keyboard::KeyboardStateTracker& keyTracker)
+	void SceneObject::SetInput(const DirectX::Mouse::State& mouseState, const DirectX::Keyboard::State& keyState)
 	{
-		mouse = mouseTracker;
-		keys = keyTracker;
+		mouse = mouseState;
+		keys = keyState;
+		mouseTracker.Update(mouseState);
+		keyTracker.Update(keyState);
 	}
 
 	void SceneObject::Initialize()
@@ -96,6 +98,8 @@ namespace Rendering
 	ComPtr<ID3D11RasterizerState> SceneObject::rasterizerStateSolid = nullptr;
 	ComPtr<ID3D11RasterizerState> SceneObject::rasterizerStateWireframe = nullptr;
 	unique_ptr<ShaderCollection> SceneObject::SHADER = nullptr;
-	DirectX::Mouse::ButtonStateTracker SceneObject::mouse;
-	DirectX::Keyboard::KeyboardStateTracker SceneObject::keys;
+	DirectX::Mouse::State SceneObject::mouse = {};
+	DirectX::Keyboard::State SceneObject::keys = {};
+	DirectX::Mouse::ButtonStateTracker SceneObject::mouseTracker = DirectX::Mouse::ButtonStateTracker();
+	DirectX::Keyboard::KeyboardStateTracker SceneObject::keyTracker = DirectX::Keyboard::KeyboardStateTracker();
 }

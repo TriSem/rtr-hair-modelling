@@ -20,6 +20,6 @@ TextureOverlay::TextureOverlay(std::shared_ptr<Rendering::Mesh> mesh) :
 
 void TextureOverlay::Update()
 {
-	if (keys.pressed.D)
+	if (keyTracker.pressed.D)
 		visible = !visible;
 }

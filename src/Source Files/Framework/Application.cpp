@@ -91,7 +91,7 @@ void Application::Input()
 	keyTracker.Update(keyState);
 	mouseTracker.Update(mouseState);
 
-	SceneObject::SetInput(mouseTracker, keyTracker);
+	SceneObject::SetInput(mouseState, keyState);
 
 	if (keyTracker.pressed.Escape)
 		PostQuitMessage(0);

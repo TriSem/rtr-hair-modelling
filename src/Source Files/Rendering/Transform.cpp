@@ -49,7 +49,7 @@ namespace Rendering
 	{
 		float toRadian = 3.141592f / 180.0f;
 		eulerAngles *= toRadian;
-		this->rotation = Quaternion::CreateFromYawPitchRoll(eulerAngles.y, eulerAngles.z, eulerAngles.x);
+		this->rotation = Quaternion::CreateFromYawPitchRoll(eulerAngles.x, eulerAngles.y, eulerAngles.z);
 	}
 
 	void Transform::SetScale(float scale)

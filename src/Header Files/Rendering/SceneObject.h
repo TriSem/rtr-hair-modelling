@@ -33,7 +33,7 @@ namespace Rendering
 		std::vector<Material> materials;
 		uint8_t outputViewport = 0;
 
-		static void SetInput(const DirectX::Mouse::ButtonStateTracker& mouseTracker, const DirectX::Keyboard::KeyboardStateTracker& keyTracker);
+		static void SetInput(const DirectX::Mouse::State& mouseState, const DirectX::Keyboard::State& keyState);
 	
 	protected:
 
@@ -42,8 +42,10 @@ namespace Rendering
 		bool visible = true;
 
 		static unique_ptr<ShaderCollection> SHADER;
-		static DirectX::Mouse::ButtonStateTracker mouse;
-		static DirectX::Keyboard::KeyboardStateTracker keys;
+		static DirectX::Mouse::State mouse;
+		static DirectX::Keyboard::State keys;
+		static DirectX::Mouse::ButtonStateTracker mouseTracker;
+		static DirectX::Keyboard::KeyboardStateTracker keyTracker;
 
 	private:
 
