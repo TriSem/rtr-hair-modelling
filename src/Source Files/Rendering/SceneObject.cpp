@@ -28,8 +28,8 @@ namespace Rendering
 		if (mesh == nullptr)
 			return;
 
-		mesh->IssueRenderCommands();
 		SetRenderMode(renderMode);
+		mesh->IssueRenderCommands();
 
 		for (auto it = materials.begin(); it != materials.end(); it++)
 		{
