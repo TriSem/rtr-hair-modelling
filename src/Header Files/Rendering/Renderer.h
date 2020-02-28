@@ -21,7 +21,7 @@ namespace Rendering
 		~Renderer();
 
 		void Render(Scene &scene);
-		void SetMultisampleCount(UINT count);
+		void SetMultisampleCount(uint32_t count);
 
 	private:
 

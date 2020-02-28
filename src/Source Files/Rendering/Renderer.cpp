@@ -193,7 +193,7 @@ namespace Rendering
 			D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 	}
 
-	void Renderer::SetMultisampleCount(UINT count)
+	void Renderer::SetMultisampleCount(uint32_t count)
 	{
 		if (count >= 1)
 			multisampleCount = count;

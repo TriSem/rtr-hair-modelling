@@ -42,7 +42,7 @@ namespace Rendering
 	{
 		D3D11_RASTERIZER_DESC rasterizerDescription = {};
 
-		if (rasterizerStateSolid == nullptr)
+		if (rasterizerStateWireframe == nullptr)
 		{
 			rasterizerDescription.FillMode = D3D11_FILL_WIREFRAME;
 			rasterizerDescription.CullMode = D3D11_CULL_NONE;
@@ -52,7 +52,7 @@ namespace Rendering
 			);
 		}
 
-		if (rasterizerStateWireframe == nullptr)
+		if (rasterizerStateSolid== nullptr)
 		{
 			rasterizerDescription.FillMode = D3D11_FILL_SOLID;
 
