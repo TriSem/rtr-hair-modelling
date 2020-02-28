@@ -24,8 +24,9 @@ private:
 	void DecreaseRadius();
 	float radiusChange = 0.05f;
 	float minimumRadius = 0.01f;
-	uint8_t strengthChange = 1;
-	uint8_t minimumStrength = 1;
+	float strengthChange = 0.05f;
+	float minimumStrength = 0.01f;
+
 	BrushData data = { 5, 0.5f, PaintChannel::Length, BrushMode::Paint };
 
 	std::shared_ptr<Canvas> canvas = nullptr;

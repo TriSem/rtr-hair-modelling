@@ -64,7 +64,7 @@ void Application::Init()
 	options.type = TextureType::Mixed;
 	options.width = 512;
 	options.height = 512;
-	Rendering::Color color = { 0, 0, 0, 0 };
+	Color color = { 0, 0, 0, 0 };
 	shared_ptr<Texture> paintTexture = make_shared<Texture>(color, options);
 	
 	shared_ptr<SceneObject> head = make_shared<HairSculpture>(paintTexture);

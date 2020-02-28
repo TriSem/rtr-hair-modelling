@@ -12,11 +12,11 @@ private:
 
 	virtual void Update() override;
 
-	std::vector<Rendering::Color> hairColorPresets = 
+	std::vector<Color> hairColorPresets = 
 	{
-		{ 125, 0, 0, 255 } ,
-		{ 0, 125, 0, 255 } ,
-		{ 0, 0, 255, 255 } ,
+		{ 0.5f, 0, 0, 1 } ,
+		{ 0, 0.5f, 0, 1 } ,
+		{ 0, 0, 0.5f, 1 } ,
 	};
 
 	Vector3 eulerAngles = { 0, 0, 0 };

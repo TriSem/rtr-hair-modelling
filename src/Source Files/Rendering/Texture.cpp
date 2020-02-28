@@ -1,5 +1,7 @@
 #include <Texture.h>
 
+using DirectX::SimpleMath::Color;
+
 namespace Rendering
 {
 	Texture::Texture(std::string path, TextureOptions options)
@@ -63,7 +65,7 @@ namespace Rendering
 		textureDescription.Width = options.width;
 		textureDescription.Height = options.height;
 		textureDescription.MipLevels = 1;
-		textureDescription.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+		textureDescription.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
 		textureDescription.SampleDesc = sampleDescription;
 		textureDescription.BindFlags = bindFlags;
 		textureDescription.ArraySize = 1;
@@ -119,7 +121,7 @@ namespace Rendering
 		subresource.MipSlice = 0;
 
 		D3D11_RENDER_TARGET_VIEW_DESC viewDescription = {};
-		viewDescription.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+		viewDescription.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
 		viewDescription.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
 		viewDescription.Texture2D = subresource;
 
@@ -136,7 +138,7 @@ namespace Rendering
 		srv.MostDetailedMip = 0;
 
 		D3D11_SHADER_RESOURCE_VIEW_DESC viewDescription = {};
-		viewDescription.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+		viewDescription.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
 		viewDescription.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
 		viewDescription.Texture2D = srv;
 

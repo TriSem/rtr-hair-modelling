@@ -1,15 +1,14 @@
 #include <Brush.h>
 
-using namespace Rendering;
-
-Brush::Brush()
+Brush::Brush(std::shared_ptr<Canvas> canvas) :
+	canvas(canvas)
 {
 	TextureOptions options = { TextureType::ShaderResource, 1, 1 };
 	Material material;
 	material.vertexShader = SHADER->flatVertexShader;
 	material.geometryShader = SHADER->standardGeometryShader;
 	material.pixelShader = SHADER->monoColorPixelShader;
-	material.SetTexture(make_shared<Texture>(Rendering::Color(255, 255, 255, 255), options));
+	material.SetTexture(make_shared<Texture>(Color(1, 1, 1, 1), options));
 	materials.push_back(material);
 	SetPaintChannel(PaintChannel::Length);
 }
@@ -18,16 +17,16 @@ void Brush::SetPaintChannel(PaintChannel channel)
 {
 	data.paintChannel = channel;
 	Material& material = materials.at(0);
-	Rendering::Color newColor = { 0, 0, 0, data.strength };
+	Color newColor = { 0, 0, 0, data.strength };
 
 	switch (channel)
 	{
 	case PaintChannel::Length:
-		newColor.red = 255; break;
+		newColor.x = 1; break;
 	case PaintChannel::Curl :
-		newColor.green = 255; break;
+		newColor.y = 1; break;
 	case PaintChannel::Twist :
-		newColor.blue = 255;
+		newColor.z = 255;
 
 		material.SetAlbedo(newColor);
 	}

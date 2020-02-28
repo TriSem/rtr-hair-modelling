@@ -6,6 +6,7 @@
 
 using DirectX::SimpleMath::Rectangle;
 using DirectX::SimpleMath::Vector2;
+using DirectX::SimpleMath::Color;
 
 class Canvas
 {
@@ -19,5 +20,5 @@ public:
 private:
 
 	DirectX::SimpleMath::Rectangle area;
-	std::vector<Rendering::Color> colors;
+	std::vector<Color> colors;
 };
