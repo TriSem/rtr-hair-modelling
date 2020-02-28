@@ -7,7 +7,7 @@ TextureOverlay::TextureOverlay()
 	Material overlayMaterial;
 	overlayMaterial.vertexShader = SHADER->flatVertexShader;
 	overlayMaterial.geometryShader = SHADER->standardGeometryShader;
-	overlayMaterial.pixelShader = SHADER->unlitPixelShader;
+	overlayMaterial.pixelShader = SHADER->monoColorPixelShader;
 	materials.push_back(overlayMaterial);
 	SetRenderMode(RenderMode::WireFrame);
 }

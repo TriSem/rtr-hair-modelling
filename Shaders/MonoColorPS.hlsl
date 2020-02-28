@@ -7,5 +7,5 @@ struct PSInput
 
 float4 main(PSInput input, uint viewport : SV_ViewportArrayIndex) : SV_TARGET
 {
-    return float4(0.0f, 1.0f, 1.0f, 1.0f);
+    return float4(0.4f, 0.4f, 0.4f, 8.0f);
 }
