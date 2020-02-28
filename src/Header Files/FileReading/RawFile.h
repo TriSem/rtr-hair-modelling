@@ -7,8 +7,6 @@
 #include "Vertex.h"
 #include "Color.h"
 
-using DirectX::SimpleMath::Color;
-
 class RawFile
 {
 	using byte = char;
@@ -39,7 +37,7 @@ public:
 		return returnData;
 	}
 
-	std::vector<Color> InterpretAsTexture();
+	std::vector<Rendering::Color> InterpretAsTexture();
 
 private:
 

@@ -13,7 +13,7 @@ enum class BrushMode
 
 struct BrushData
 {
-	float strength;
+	int strength;
 	float radius;
 	PaintChannel paintChannel;
 	BrushMode mode;
