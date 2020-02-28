@@ -18,11 +18,13 @@ namespace Rendering
 		virtual void IssueRenderCommands() override;
 
 		void SetAlbedo(Color albedo);
-
 		// Roughness is clamped between 0 and 1.
 		void SetRoughness(float roughness);
-
 		void SetTexture(std::shared_ptr<Texture> colorMap);
+
+		Color GetAlbedo() const;
+		float GetRoughness() const;
+
 
 		std::shared_ptr<VertexShader> vertexShader = nullptr;
 		std::shared_ptr<PixelShader> pixelShader = nullptr;
@@ -32,8 +34,7 @@ namespace Rendering
 
 		Color albedo = { 255, 255, 255, 255 };
 		float roughness = 1;
-		std::shared_ptr<Texture> colorMap;
-		std::shared_ptr <ConstantBuffer<MaterialCBT>> materialConstantBuffer;
-		
+		shared_ptr<Texture> colorMap = nullptr;
+		shared_ptr <ConstantBuffer<MaterialCBT>> materialConstantBuffer = make_shared<ConstantBuffer<MaterialCBT>>();
 	};
 }

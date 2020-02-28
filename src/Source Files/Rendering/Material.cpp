@@ -25,7 +25,7 @@ namespace Rendering
 		if (colorMap != nullptr)
 			colorMap->IssueRenderCommands();
 			
-		//device->GetContext()->PSSetConstantBuffers(1, 1, materialConstantBuffer->Data().GetAddressOf());
+		device->GetContext()->PSSetConstantBuffers(1, 1, materialConstantBuffer->Data().GetAddressOf());
 	}
 
 	void Material::SetAlbedo(Color albedo)
@@ -51,5 +51,15 @@ namespace Rendering
 	void Material::SetTexture(std::shared_ptr<Texture> colorMap)
 	{
 		this->colorMap = colorMap;
+	}
+
+	Color Material::GetAlbedo() const
+	{
+		return albedo;
+	}
+
+	float Material::GetRoughness() const
+	{
+		return roughness;
 	}
 }

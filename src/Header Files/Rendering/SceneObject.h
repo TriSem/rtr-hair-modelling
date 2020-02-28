@@ -30,11 +30,12 @@ namespace Rendering
 		virtual void Update();
 		virtual void IssueRenderCommands() override;
 
+		static void SetInput(const DirectX::Mouse::State& mouseState, const DirectX::Keyboard::State& keyState);
+
+
 		std::vector<Material> materials;
 		uint8_t outputViewport = 0;
 
-		static void SetInput(const DirectX::Mouse::State& mouseState, const DirectX::Keyboard::State& keyState);
-	
 	protected:
 
 		Transform transform = Transform();
@@ -48,7 +49,6 @@ namespace Rendering
 		static DirectX::Keyboard::KeyboardStateTracker keyTracker;
 
 	private:
-
 
 		void Initialize();
 		void CreateRasterizerStates();

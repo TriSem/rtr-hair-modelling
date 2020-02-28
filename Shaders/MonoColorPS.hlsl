@@ -1,3 +1,13 @@
+struct albedo
+{
+    
+};
+
+cbuffer Material : register(b1)
+{
+    
+};
+
 struct PSInput
 {
     float4 position : SV_POSITION;

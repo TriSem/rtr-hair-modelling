@@ -53,6 +53,7 @@ namespace Rendering
 		std::shared_ptr<ConstantBuffer<MVPMatricesCBT>> mvpConstantBuffer = nullptr;
 		std::shared_ptr<ConstantBuffer<ViewportIndexCBT>> viewportIndexBuffer = nullptr;
 		std::shared_ptr<ConstantBuffer<LightingCBT>> lightingConstantBuffer = nullptr;
+		std::shared_ptr<ConstantBuffer<MaterialCBT>> materialConstantBuffer = nullptr;
 	};
 }
 
