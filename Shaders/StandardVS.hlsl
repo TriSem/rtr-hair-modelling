@@ -28,6 +28,6 @@ VSOutput main(VSInput vertex)
     mvp = mul(mvp, model);
     output.position = mul(mvp, float4(vertex.position, 1.0f));
     output.textureCoordinate = vertex.textureCoordinate;
-    output.normal = vertex.normal;
+    output.normal = mul(mvp, float4(vertex.normal, 0));
     return output;
 }

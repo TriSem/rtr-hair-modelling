@@ -8,9 +8,9 @@ namespace Rendering
 		CreateShader();
 	}
 
-	ComPtr<ID3D11PixelShader> PixelShader::GetShader() const
+	void PixelShader::IssueRenderCommands()
 	{
-		return shader;
+		device->GetContext()->PSSetShader(shader.Get(), nullptr, 0);
 	}
 
 	void PixelShader::CreateShader()

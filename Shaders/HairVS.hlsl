@@ -46,7 +46,7 @@ VSOutput main(VSInput vertex)
     hairVertex.tangent = (float3) mul(mv, float4(vertex.tangent, 0));
     hairVertex.bitangent = (float3) mul(mv, float4(vertex.bitangent, 0));
     
-    HairProperties properties = { 0.05, 0, 0 };
+    HairProperties properties = { 0.2f, 0.0f, 1.0f };
     
     VSOutput output;
     output.hairVertex = hairVertex;

@@ -73,29 +73,29 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)src\Header Files\Framework;$(SolutionDir)src\Header Files\Rendering;$(SolutionDir)src\Header Files\HairDrawing;$(SolutionDir)src\Header Files\FileReading;$(SolutionDir)Libraries\FX11\Inc;$(SolutionDir)Libraries\DirectXTK\Inc;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Libraries\FX11\Libs\Win32\Debug;$(SolutionDir)Libraries\DirectXTK\Libs\x86\Debug;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)src\Header Files\Framework;$(SolutionDir)src\Header Files\Rendering;$(SolutionDir)src\Header Files\HairDrawing;$(SolutionDir)src\Header Files\FileReading;$(SolutionDir)Libraries\DirectXTK\Inc;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)Libraries\DirectXTK\Libs\x86\Debug;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <LibraryPath>$(SolutionDir)Libraries\FX11\Libs\x64\Debug;$(SolutionDir)Libraries\DirectXTK\Libs\x64\Debug;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)Libraries\DirectXTK\Libs\x64\Debug;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutDir>
-    <IncludePath>$(SolutionDir)src\Header Files\Framework;$(SolutionDir)src\Header Files\Rendering;$(SolutionDir)src\Header Files\HairDrawing;$(SolutionDir)src\Header Files\FileReading;$(SolutionDir)Libraries\FX11\Inc;$(SolutionDir)Libraries\DirectXTK\Inc;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)src\Header Files\Framework;$(SolutionDir)src\Header Files\Rendering;$(SolutionDir)src\Header Files\HairDrawing;$(SolutionDir)src\Header Files\FileReading;$(SolutionDir)Libraries\DirectXTK\Inc;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)src\Header Files\Framework;$(SolutionDir)src\Header Files\Rendering;$(SolutionDir)src\Header Files\HairDrawing;$(SolutionDir)src\Header Files\FileReading;$(SolutionDir)Libraries\FX11\Inc;$(SolutionDir)Libraries\DirectXTK\Inc;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Libraries\FX11\Libs\Win32\Release;$(SolutionDir)Libraries\DirectXTK\Libs\x86\Release;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)src\Header Files\Framework;$(SolutionDir)src\Header Files\Rendering;$(SolutionDir)src\Header Files\HairDrawing;$(SolutionDir)src\Header Files\FileReading;$(SolutionDir)Libraries\DirectXTK\Inc;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)Libraries\DirectXTK\Libs\x86\Release;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)bin\$(Platform)$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <LibraryPath>$(SolutionDir)Libaries\FX11\Libs\x64\Release;$(SolutionDir)Libraries\DirectXTK\Libs\x64\Release;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)Libraries\DirectXTK\Libs\x64\Release;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutDir>
-    <IncludePath>$(SolutionDir)src\Header Files\Framework;$(SolutionDir)src\Header Files\Rendering;$(SolutionDir)src\Header Files\HairDrawing;$(SolutionDir)src\Header Files\FileReading;$(SolutionDir)Libraries\FX11\Inc;$(SolutionDir)Libraries\DirectXTK\Inc;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)src\Header Files\Framework;$(SolutionDir)src\Header Files\Rendering;$(SolutionDir)src\Header Files\HairDrawing;$(SolutionDir)src\Header Files\FileReading;$(SolutionDir)Libraries\DirectXTK\Inc;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -111,7 +111,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>DirectXTK.lib;Effects11d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>DirectXTK.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <FxCompile>
       <ShaderModel>5.0</ShaderModel>
@@ -131,7 +131,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>DirectXTK.lib;Effects11d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>DirectXTK.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <FxCompile>
       <ShaderModel>5.0</ShaderModel>
@@ -155,7 +155,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>DirectXTK.lib;Effects11.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>DirectXTK.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <FxCompile>
       <ShaderModel>5.0</ShaderModel>
@@ -179,7 +179,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>DirectXTK.lib;Effects11.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>DirectXTK.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <FxCompile>
       <ShaderModel>5.0</ShaderModel>
@@ -260,6 +260,9 @@
     <ClInclude Include="src\Header Files\HairDrawing\Brush.h" />
     <ClInclude Include="src\Header Files\HairDrawing\BrushData.h" />
     <ClInclude Include="src\Header Files\HairDrawing\Canvas.h" />
+    <ClInclude Include="src\Header Files\HairDrawing\HairDrawing.h" />
+    <ClInclude Include="src\Header Files\HairDrawing\HairSculpture.h" />
+    <ClInclude Include="src\Header Files\HairDrawing\TextureOverlay.h" />
     <ClInclude Include="src\Header Files\Rendering\Camera.h" />
     <ClInclude Include="src\Header Files\Rendering\Color.h" />
     <ClInclude Include="src\Header Files\Rendering\ConstantBuffer.h" />
@@ -268,11 +271,14 @@
     <ClInclude Include="src\Header Files\Rendering\Graphics.h" />
     <ClInclude Include="src\Header Files\Rendering\IndexBuffer.h" />
     <ClInclude Include="src\Header Files\Rendering\Light.h" />
+    <ClInclude Include="src\Header Files\Rendering\Material.h" />
     <ClInclude Include="src\Header Files\Rendering\Mesh.h" />
     <ClInclude Include="src\Header Files\Rendering\Renderer.h" />
+    <ClInclude Include="src\Header Files\Rendering\RenderMode.h" />
     <ClInclude Include="src\Header Files\Rendering\Scene.h" />
     <ClInclude Include="src\Header Files\Rendering\SceneObject.h" />
     <ClInclude Include="src\Header Files\Rendering\Shader.h" />
+    <ClInclude Include="src\Header Files\Rendering\ShaderCollection.h" />
     <ClInclude Include="src\Header Files\Rendering\SplitScreen.h" />
     <ClInclude Include="src\Header Files\Rendering\Texture.h" />
     <ClInclude Include="src\Header Files\Rendering\Transform.h" />
@@ -292,11 +298,15 @@
     <ClCompile Include="src\Source Files\Framework\Window.cpp" />
     <ClCompile Include="src\Source Files\HairDrawing\Brush.cpp" />
     <ClCompile Include="src\Source Files\HairDrawing\Canvas.cpp" />
+    <ClCompile Include="src\Source Files\HairDrawing\HairSculpture.cpp" />
+    <ClCompile Include="src\Source Files\HairDrawing\TextureOverlay.cpp" />
     <ClCompile Include="src\Source Files\Rendering\Camera.cpp" />
     <ClCompile Include="src\Source Files\Rendering\Device.cpp" />
     <ClCompile Include="src\Source Files\Rendering\DeviceAccess.cpp" />
     <ClCompile Include="src\Source Files\Rendering\GeometryShader.cpp" />
     <ClCompile Include="src\Source Files\Rendering\IndexBuffer.cpp" />
+    <ClCompile Include="src\Source Files\Rendering\Material.cpp" />
+    <ClCompile Include="src\Source Files\Rendering\Mesh.cpp" />
     <ClCompile Include="src\Source Files\Rendering\PixelShader.cpp" />
     <ClCompile Include="src\Source Files\Rendering\Renderer.cpp" />
     <ClCompile Include="src\Source Files\Rendering\Scene.cpp" />
@@ -305,6 +315,7 @@
     <ClCompile Include="src\Source Files\Rendering\SplitScreen.cpp" />
     <ClCompile Include="src\Source Files\Rendering\Texture.cpp" />
     <ClCompile Include="src\Source Files\Rendering\Transform.cpp" />
+    <ClCompile Include="src\Source Files\Rendering\VertexBuffer.cpp" />
     <ClCompile Include="src\Source Files\Rendering\VertexShader.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

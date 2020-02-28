@@ -6,34 +6,54 @@
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
 #include "Mesh.h"
+#include "Material.h"
+#include "RenderMode.h"
+#include "ShaderCollection.h"
+#include <framework.h>
 
 using namespace DirectX::SimpleMath;
 
 namespace Rendering
 {
-	class SceneObject
+	class SceneObject : public DeviceAccess
 	{
 	public:
 
-		SceneObject(const Mesh<HairVertex>& mesh, std::shared_ptr<VertexShader> vertexShader);
-
-		virtual void Update();
+		SceneObject();
+		SceneObject(std::shared_ptr<Mesh> mesh);
 
 		Transform& GetTransform();
+		std::shared_ptr<Mesh> GetMesh() const;
 
-		std::shared_ptr<VertexBuffer<HairVertex>> GetVertexBuffer();
-		std::shared_ptr<IndexBuffer> GetIndexBuffer();
-		Mesh<HairVertex>& GetMesh();
+		void SetRenderMode(RenderMode renderMode);
+
+		virtual void Update();
+		virtual void IssueRenderCommands() override;
+
+		static void SetInput(const DirectX::Mouse::State& mouseState, const DirectX::Keyboard::State& keyState);
+
+
+		std::vector<Material> materials;
+		uint8_t outputViewport = 0;
+
+	protected:
+
+		Transform transform = Transform();
+		std::shared_ptr<Mesh> mesh = nullptr;
+		bool visible = true;
+
+		static unique_ptr<ShaderCollection> SHADER;
+		static DirectX::Mouse::State mouse;
+		static DirectX::Keyboard::State keys;
+		static DirectX::Mouse::ButtonStateTracker mouseTracker;
+		static DirectX::Keyboard::KeyboardStateTracker keyTracker;
 
 	private:
 
-		std::shared_ptr<VertexBuffer<HairVertex>> vertexBuffer = nullptr;
-		std::shared_ptr<IndexBuffer> indexBuffer = nullptr;
-		std::shared_ptr<VertexShader> vertexShader = nullptr;
-
-	
-	protected:
-		Transform transform = {};
-		Mesh<HairVertex> mesh = {};
+		void Initialize();
+		void CreateRasterizerStates();
+		RenderMode renderMode = RenderMode::Solid;
+		static ComPtr<ID3D11RasterizerState> rasterizerStateSolid;
+		static ComPtr<ID3D11RasterizerState> rasterizerStateWireframe;
 	};
 }

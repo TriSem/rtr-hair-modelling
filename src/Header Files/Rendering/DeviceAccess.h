@@ -15,6 +15,8 @@ namespace Rendering
 		DeviceAccess();
 		~DeviceAccess();
 
+		virtual void IssueRenderCommands() = 0;
+
 		static Device* device;
 	};
 }

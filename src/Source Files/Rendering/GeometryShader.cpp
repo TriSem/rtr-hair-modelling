@@ -8,9 +8,9 @@ namespace Rendering
 		CreateShader();
 	}
 
-	ComPtr<ID3D11GeometryShader> GeometryShader::GetShader() const
+	void GeometryShader::IssueRenderCommands()
 	{
-		return shader;
+		device->GetContext()->GSSetShader(shader.Get(), nullptr, 0);
 	}
 
 	void GeometryShader::CreateShader()

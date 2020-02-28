@@ -47,6 +47,11 @@ namespace Rendering
 		}
 
 	private:
+
+		virtual void IssueRenderCommands() override
+		{
+
+		}
 		
 		ComPtr<ID3D11Buffer> constantBuffer = nullptr;
 		BufferType data = {};
@@ -70,5 +75,11 @@ namespace Rendering
 	{
 		DirectionalLight directionalLight;
 		Vector3 viewPoint;
+	};
+
+	struct MaterialCBT
+	{
+		Color albedo;
+		float roughness;
 	};
 }

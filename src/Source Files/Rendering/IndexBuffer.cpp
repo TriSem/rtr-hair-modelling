@@ -24,13 +24,13 @@ namespace Rendering
 		);
 	}
 
-	ComPtr<ID3D11Buffer> IndexBuffer::Data()
-	{
-		return indexBuffer;
-	}
-
 	uint32_t IndexBuffer::GetIndexCount()
 	{
 		return indexCount;
+	}
+
+	void IndexBuffer::IssueRenderCommands()
+	{
+		device->GetContext()->IASetIndexBuffer(indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 	}
 }

@@ -14,12 +14,6 @@ using Microsoft::WRL::ComPtr;
 
 namespace Rendering
 {
-	enum class RenderMode
-	{
-		SOLID,
-		WIREFRAME
-	};
-
 	class Renderer : public DeviceAccess
 	{
 	public:
@@ -27,23 +21,17 @@ namespace Rendering
 		~Renderer();
 
 		void Render(Scene &scene);
-		void SetMultisampleCount(UINT count);
-
-		void SetRenderMode(RenderMode renderMode);
-
-		const ComPtr<ID3D11Device> GetDevice() const;
-		const std::shared_ptr<VertexShader> GetVertexShader() const;
+		void SetMultisampleCount(uint32_t count);
 
 	private:
 
+		virtual void IssueRenderCommands() override;
 		void Initialize();
 		void CheckMultisamplingSupport();
 		void CreateSwapChain();
 		void CreateBackBufferView();
 		void CreateDepthStencilView();
 		void BindViewsToPipeline();
-		void CreateRasterizerStates();
-		void CreateShaders();
 		void Clear();
 
 		Scene scene = {};
@@ -54,30 +42,18 @@ namespace Rendering
 
 		int width;
 		int height;
-		RenderMode renderMode = RenderMode::SOLID;
 
 		ComPtr<IDXGISwapChain> swapChain = nullptr;
 		ComPtr<ID3D11Texture2D> depthStencilBuffer = nullptr;
 		ComPtr<ID3D11RenderTargetView> backBufferView = nullptr;
 		ComPtr<ID3D11DepthStencilView> depthStencilView = nullptr;
-		ComPtr<ID3D11RasterizerState> rasterizerStateSolid = nullptr;
-		ComPtr<ID3D11RasterizerState> rasterizerStateWireframe = nullptr;
 
 		std::unique_ptr<SplitScreen> splitScreen = nullptr;
-		std::unique_ptr<Texture> diffuseTexture = nullptr;
 
-		std::shared_ptr<VertexShader> vertexShader = nullptr;
-		std::shared_ptr<VertexShader> hairVertexShader = nullptr;
-		std::shared_ptr<VertexShader> flatVertexShader = nullptr;
-		std::shared_ptr<PixelShader> unlitPixelShader = nullptr;
-		std::shared_ptr<PixelShader> litPixelShader = nullptr;
-		std::shared_ptr<PixelShader> litLinePixelShader = nullptr;
-		std::shared_ptr<GeometryShader> standardGeometryShader = nullptr;
-		std::shared_ptr<GeometryShader> hairGeometryShader = nullptr;
 		std::shared_ptr<ConstantBuffer<MVPMatricesCBT>> mvpConstantBuffer = nullptr;
 		std::shared_ptr<ConstantBuffer<ViewportIndexCBT>> viewportIndexBuffer = nullptr;
 		std::shared_ptr<ConstantBuffer<LightingCBT>> lightingConstantBuffer = nullptr;
-
+		std::shared_ptr<ConstantBuffer<MaterialCBT>> materialConstantBuffer = nullptr;
 	};
 }
 
