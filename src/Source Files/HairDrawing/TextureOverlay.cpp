@@ -17,3 +17,9 @@ TextureOverlay::TextureOverlay(std::shared_ptr<Rendering::Mesh> mesh) :
 {
 	this->mesh = mesh;
 }
+
+void TextureOverlay::Update()
+{
+	if (keys.pressed.D)
+		visible = !visible;
+}

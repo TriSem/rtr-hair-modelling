@@ -8,4 +8,8 @@ public:
     
     TextureOverlay();
     TextureOverlay(std::shared_ptr<Rendering::Mesh> mesh);
+
+protected:
+
+    virtual void Update() override;
 };
