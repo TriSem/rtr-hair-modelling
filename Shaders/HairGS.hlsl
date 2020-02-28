@@ -49,8 +49,8 @@ float mapToPiInterval(unorm float value)
 
 HairVertex interpolateBarycentric(HairVertex corners[3], float3 barycentricCoordinate)
 {
-    HairVertex hairVertex;
-    float3 position;
+    HairVertex hairVertex = { { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 } };
+    float3 position = { 0, 0, 0 };
     for (int i = 0; i < 3; i++)
     {
         position += corners[i].position * barycentricCoordinate[i];
