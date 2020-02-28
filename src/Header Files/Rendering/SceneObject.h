@@ -36,6 +36,7 @@ namespace Rendering
 
 		Transform transform = Transform();
 		std::shared_ptr<Mesh> mesh = nullptr;
+		bool visible = true;
 
 		static unique_ptr<ShaderCollection> SHADER;
 
