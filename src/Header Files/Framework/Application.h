@@ -4,17 +4,15 @@
 #include "framework.h"
 #include <vector>
 #include "Window.h"
-#include <Mouse.h>
-#include <Keyboard.h>
-#include "SceneObject.h"
 #include "RawFile.h"
 #include <Vertex.h>
-#include <Brush.h>
 #include <ShaderCollection.h>
-#include <RenderMode.h>
+#include <HairDrawing.h>
 
 using DirectX::Keyboard;
 using DirectX::Mouse;
+using ButtonState = DirectX::Mouse::ButtonStateTracker::ButtonState;
+
 
 class Application
 {
@@ -24,7 +22,8 @@ public:
 	Application(HINSTANCE instanceHandle, int nCmdShow, std::wstring appTitle);
 	~Application();
 
-	static Keyboard::KeyboardStateTracker INPUT;
+	Keyboard::KeyboardStateTracker keyTracker;
+	Mouse::ButtonStateTracker mouseTracker;
 
 private:
 
@@ -36,12 +35,9 @@ private:
 	std::unique_ptr<Rendering::Renderer> renderer = nullptr;
 	std::unique_ptr<Rendering::ShaderCollection> shaderCollection = nullptr;
 	std::shared_ptr<Rendering::Scene> mainScene = nullptr;
-	std::shared_ptr<Canvas> canvas = nullptr;
-	std::shared_ptr<Brush> brush = nullptr;
 
 	std::unique_ptr<Keyboard> keyboard = nullptr;
 	std::unique_ptr<Mouse> mouse = nullptr;
-	Keyboard::State state = {};
 
 	void Init();
 	void Input();

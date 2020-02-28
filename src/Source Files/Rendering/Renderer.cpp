@@ -25,6 +25,7 @@ namespace Rendering
 		context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		LightingCBT lightingData;
 		lightingData.directionalLight = scene.GetLight();
+		lightingData.directionalLight.direction.Normalize();
 		lightingData.viewPoint = scene.GetCamera().Position();
 		lightingConstantBuffer->SetData(lightingData);
 

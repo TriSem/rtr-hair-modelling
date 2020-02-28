@@ -18,14 +18,12 @@ PaintChannel Brush::GetPaintChannel()
 
 void Brush::Paint(Vector2 position)
 {
-	data.mode = BrushMode::Paint;
-	canvas->PaintInto(data, position);
+	
 }
 
 void Brush::Erase(Vector2 position)
 {
-	data.mode = BrushMode::Erase;
-	canvas->PaintInto(data, position);
+	
 }
 
 void Brush::IncreaseStrength()

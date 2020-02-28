@@ -2,11 +2,15 @@
 
 namespace Rendering
 {
+	SceneObject::SceneObject()
+	{
+		Initialize();
+	}
+
 	SceneObject::SceneObject(std::shared_ptr<Mesh> mesh) :
 		mesh(mesh)
 	{
-		CreateRasterizerStates();
-		SetRenderMode(RenderMode::Solid);
+		Initialize();
 	}
 
 	void SceneObject::Update()
@@ -18,7 +22,7 @@ namespace Rendering
 		return transform;
 	}
 
-	std::shared_ptr<Mesh> SceneObject::GetMesh()
+	std::shared_ptr<Mesh> SceneObject::GetMesh() const
 	{
 		return mesh;
 	}
@@ -35,6 +39,17 @@ namespace Rendering
 		{
 			it->IssueRenderCommands();
 			device->GetContext()->DrawIndexed(mesh->GetIndexCount(), 0, 0);
+		}
+	}
+
+	void SceneObject::Initialize()
+	{
+		CreateRasterizerStates();
+		SetRenderMode(RenderMode::Solid);
+
+		if (SHADER == nullptr)
+		{
+			SHADER = make_unique<ShaderCollection>();
 		}
 	}
 
@@ -74,4 +89,5 @@ namespace Rendering
 
 	ComPtr<ID3D11RasterizerState> SceneObject::rasterizerStateSolid = nullptr;
 	ComPtr<ID3D11RasterizerState> SceneObject::rasterizerStateWireframe = nullptr;
+	unique_ptr<ShaderCollection> SceneObject::SHADER = nullptr;
 }

@@ -2,8 +2,7 @@
 
 using namespace DirectX::SimpleMath;
 
-Canvas::Canvas(long width, long height) :
-	area(DirectX::SimpleMath::Rectangle(0, 0, width, height))
+Canvas::Canvas()
 {
 }
 
@@ -16,9 +15,6 @@ void Canvas::LoadFromRaw(std::string path)
 {
 }
 
-void Canvas::PaintInto(BrushData brushData, Vector2 brushPosition)
-{
-}
 
 void Canvas::Clear()
 {

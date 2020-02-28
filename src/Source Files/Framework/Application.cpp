@@ -1,13 +1,8 @@
 #include "Application.h"
 #include <commdlg.h>
+#include <HairSculpture.h>
 
 using namespace Rendering;
-using std::shared_ptr;
-using std::make_shared;
-using std::unique_ptr;
-using std::make_unique;
-
-Keyboard::KeyboardStateTracker Application::INPUT;
 
 Application::Application(HINSTANCE instanceHandle, int nCmdShow, std::wstring appTitle) :
 	instanceHandle(instanceHandle),
@@ -65,124 +60,89 @@ void Application::Init()
 	keyboard = make_unique<Keyboard>();
 	mouse = make_unique<Mouse>();
 
-	canvas = make_shared<Canvas>(WIDTH, HEIGHT);
-	brush = make_shared<Brush>(canvas);
-
-	RawFile vertexFile("./ModelData/AngelinaHeadVB.raw");
-	RawFile indexFile("./ModelData/AngelinaHeadIB.raw");
-	shared_ptr<Mesh> headMesh = make_shared<Mesh>(vertexFile.InterpretAsBuffer<Vertex>(), indexFile.InterpretAsBuffer<uint32_t>());
-
-	TextureOptions options = { TextureType::ShaderResource, 2048, 2048 };
-	shared_ptr<Texture> diffuseTexture = make_shared<Texture>(
-		"./ModelData/AngelinaDiffuseTex2048.raw", options);
-
+	TextureOptions options;
 	options.type = TextureType::Mixed;
 	options.width = 512;
 	options.height = 512;
 	Rendering::Color color = { 0, 0, 0, 0 };
 	shared_ptr<Texture> paintTexture = make_shared<Texture>(color, options);
 	
-	shared_ptr<SceneObject> head = make_shared<SceneObject>(headMesh);
-	head->outputViewport = 1;
-	Material diffuseMaterial;
-	diffuseMaterial.vertexShader = shaderCollection->standardVertexShader;
-	diffuseMaterial.geometryShader = shaderCollection->standardGeometryShader;
-	diffuseMaterial.pixelShader = shaderCollection->unlitPixelShader;
-	diffuseMaterial.SetTexture(diffuseTexture);
-
-	Material hairMaterial;
-	hairMaterial.vertexShader = shaderCollection->hairVertexShader;
-	hairMaterial.geometryShader = shaderCollection->hairGeometryShader;
-	hairMaterial.pixelShader = shaderCollection->litLinesPixelShader;
-	hairMaterial.SetTexture(paintTexture);
-	head->materials.push_back(diffuseMaterial);
-	//head->materials.push_back(hairMaterial);
+	shared_ptr<SceneObject> head = make_shared<HairSculpture>(paintTexture);
+	shared_ptr<SceneObject> overlay = make_shared<TextureOverlay>(head->GetMesh());
 
 	shared_ptr<Mesh> quadMesh = Mesh::CreateQuad(100, 100);
 	shared_ptr<SceneObject> canvas = make_shared<SceneObject>(quadMesh);
 	
-	shared_ptr<SceneObject> overlay = make_shared<SceneObject>(headMesh);
-	Material overlayMaterial;
-	overlayMaterial.vertexShader = shaderCollection->flatVertexShader;
-	overlayMaterial.geometryShader = shaderCollection->standardGeometryShader;
-	overlayMaterial.pixelShader = shaderCollection->unlitPixelShader;
-	overlay->SetRenderMode(RenderMode::WireFrame);
-	overlay->materials.push_back(overlayMaterial);
+	
 
 	mainScene->AddSceneObject(head);
 	mainScene->AddSceneObject(overlay);
 
-	//head->SetRenderMode(RenderMode::WireFrame);
-
 	head->GetTransform().SetScale(0.5f);
-	head->GetTransform().SetRotation(Vector3(0.0f, 180.0f, 0.0f));
+	head->GetTransform().SetRotation(Vector3(0.0f, 135.0f, 0.0f));
 
 	ShowWindow(mainWindow.WindowHandle(), nCmdShow);
 }
 
 void Application::Input()
 {
-	state = keyboard->GetState();
-	INPUT.Update(state);
+	auto keyState = keyboard->GetState();
+	auto mouseState = mouse->GetState();
+	keyTracker.Update(keyState);
+	mouseTracker.Update(mouseState);
 
-	if (INPUT.pressed.Escape)
+	if (keyTracker.pressed.Escape)
 		PostQuitMessage(0);
-	else if (INPUT.pressed.S)
+	else if (keyTracker.pressed.S)
 	{
 		// Save hairstyle
 	}
-	else if (INPUT.pressed.X)
+	else if (keyTracker.pressed.X)
 	{
 		// Load hairstyle
 	}
-	else if (INPUT.pressed.N)
+	else if (keyTracker.pressed.N)
 	{
 		// Load next predefined hairstyle
 	}
-	else if (INPUT.pressed.L)
+	else if (keyTracker.pressed.L)
 	{
-		brush->SetPaintChannel(PaintChannel::Length);
 	}
-	else if (INPUT.pressed.C)
+	else if (keyTracker.pressed.C)
 	{
-		brush->SetPaintChannel(PaintChannel::Curl);
 	}
-	else if (INPUT.pressed.T)
+	else if (keyTracker.pressed.T)
 	{
-		brush->SetPaintChannel(PaintChannel::Twist);
 	}
-	else if (INPUT.pressed.R)
+	else if (keyTracker.pressed.R)
 	{
-		canvas->Clear();
 	}
-	else if (INPUT.pressed.D)
+	else if (keyTracker.pressed.D)
 	{
 		// toggle overlay
 	}
-	else if (INPUT.pressed.D1 || INPUT.pressed.D2 || INPUT.pressed.D3 || INPUT.pressed.D4 || INPUT.pressed.D5)
+	else if (keyTracker.pressed.D1 || keyTracker.pressed.D2 || keyTracker.pressed.D3 || keyTracker.pressed.D4 || keyTracker.pressed.D5)
 	{
 		// change hair color
 	}
 
-	if (state.LeftShift)
+	if (keyState.LeftShift)
 	{
 		// Inverse bend angle
 	}
-	else if (state.OemPlus)
+	else if (keyState.OemPlus)
 	{
 		// Increase brush size
 	}
-	else if (state.OemMinus)
+	else if (keyState.OemMinus)
 	{
 		// decrease brush size
 	}
-	else if (state.P)
+	else if (keyState.P)
 	{
-		brush->IncreaseStrength();
 	}
-	else if (state.M)
+	else if (keyState.M)
 	{
-		brush->DecreaseStrength();
 	}
 }
 
