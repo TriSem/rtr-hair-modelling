@@ -1,14 +1,36 @@
 #include <Brush.h>
 
-Brush::Brush(std::shared_ptr<Canvas> canvas) :
-	canvas(canvas)
-{
+using namespace Rendering;
 
+Brush::Brush()
+{
+	TextureOptions options = { TextureType::ShaderResource, 1, 1 };
+	Material material;
+	material.vertexShader = SHADER->flatVertexShader;
+	material.geometryShader = SHADER->standardGeometryShader;
+	material.pixelShader = SHADER->monoColorPixelShader;
+	material.SetTexture(make_shared<Texture>(Rendering::Color(255, 255, 255, 255), options));
+	materials.push_back(material);
+	SetPaintChannel(PaintChannel::Length);
 }
 
 void Brush::SetPaintChannel(PaintChannel channel)
 {
 	data.paintChannel = channel;
+	Material& material = materials.at(0);
+	Rendering::Color newColor = { 0, 0, 0, data.strength };
+
+	switch (channel)
+	{
+	case PaintChannel::Length:
+		newColor.red = 255; break;
+	case PaintChannel::Curl :
+		newColor.green = 255; break;
+	case PaintChannel::Twist :
+		newColor.blue = 255;
+
+		material.SetAlbedo(newColor);
+	}
 }
 
 PaintChannel Brush::GetPaintChannel()
@@ -33,5 +55,40 @@ void Brush::IncreaseStrength()
 
 void Brush::DecreaseStrength()
 {
-	data.strength -= strengthChange;
+	if (data.strength <= strengthChange)
+		data.strength = minimumStrength;
+	else
+		data.strength -= strengthChange;
+}
+
+void Brush::IncreaseRadius()
+{
+	data.radius += radiusChange;
+	transform.SetScale(data.radius);
+}
+
+void Brush::DecreaseRadius()
+{
+	data.radius -= radiusChange;
+	if (data.radius < 0.01f)
+		data.radius = 0.01f;
+	transform.SetScale(data.radius);
+}
+
+void Brush::Update()
+{
+	if (keyTracker.pressed.L)
+		SetPaintChannel(PaintChannel::Length);
+	else if (keyTracker.pressed.C)
+		SetPaintChannel(PaintChannel::Curl);
+	else if (keyTracker.pressed.T)
+		SetPaintChannel(PaintChannel::Twist);
+	else if (keys.P)
+		IncreaseStrength();
+	else if (keys.M)
+		DecreaseStrength();
+	else if (keys.OemPlus)
+		IncreaseRadius();
+	else if (keys.OemMinus)
+		DecreaseRadius();
 }
