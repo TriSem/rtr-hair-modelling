@@ -1,5 +1,7 @@
 #include <Texture.h>
 
+using DirectX::SimpleMath::Color;
+
 namespace Rendering
 {
 	Texture::Texture(TextureOptions options)
@@ -12,7 +14,7 @@ namespace Rendering
 		textureDescription.Width = options.width;
 		textureDescription.Height = options.height;
 		textureDescription.MipLevels = 1;
-		textureDescription.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+		textureDescription.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
 		textureDescription.SampleDesc = sampleDescription;
 		textureDescription.BindFlags = D3D11_BIND_SHADER_RESOURCE;
 		textureDescription.ArraySize = 1;
@@ -45,13 +47,38 @@ namespace Rendering
 			device->GetDevice()->CreateSamplerState(&samplerDescription, samplerState.GetAddressOf()),
 			L"Failed to create sampler state!"
 		);
+	}
+
+	void Texture::CreateViews(TextureType type)
+	{
+		if (type == TextureType::RenderTarget || type == TextureType::Mixed)
+			CreateRenderTargetView();
+		if (type == TextureType::ShaderResource || type == TextureType::Mixed)
+			CreateShaderResourceView();
+	}
+
+	void Texture::CreateRenderTargetView()
+	{
+		D3D11_TEX2D_RTV subresource;
+		subresource.MipSlice = 0;
+
+		D3D11_RENDER_TARGET_VIEW_DESC viewDescription = {};
+		viewDescription.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+		viewDescription.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
+		viewDescription.Texture2D = subresource;
+
+		MessageAndThrowIfFailed(
+			device->GetDevice()->CreateRenderTargetView(texture.Get(), &viewDescription, renderTargetView.GetAddressOf()),
+			L"Failed to create shader resource view!"
+		);
+	}
 
 		D3D11_TEX2D_SRV srv = {};
 		srv.MipLevels = 1;
 		srv.MostDetailedMip = 0;
 
 		D3D11_SHADER_RESOURCE_VIEW_DESC viewDescription = {};
-		viewDescription.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+		viewDescription.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
 		viewDescription.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
 		viewDescription.Texture2D = srv;
 		

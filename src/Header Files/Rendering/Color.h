@@ -2,7 +2,7 @@
 
 namespace Rendering
 {
-	struct Color
+	/*struct Color
 	{
 		Color()
 		{
@@ -21,5 +21,5 @@ namespace Rendering
 		uint8_t green = 0;
 		uint8_t blue = 0;
 		uint8_t alpha = 255;
-	};
+	};*/
 }

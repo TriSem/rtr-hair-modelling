@@ -18,7 +18,18 @@ public:
 
 private:
 
-	uint8_t strengthChange = 5;
+
+	virtual void Update() override;
+	void SetPaintChannel(PaintChannel channel);
+	void IncreaseStrength();
+	void DecreaseStrength();
+	void IncreaseRadius();
+	void DecreaseRadius();
+	float radiusChange = 0.05f;
+	float minimumRadius = 0.01f;
+	float strengthChange = 0.05f;
+	float minimumStrength = 0.01f;
+
 	BrushData data = { 5, 0.5f, PaintChannel::Length, BrushMode::Paint };
 
 	std::shared_ptr<Canvas> canvas = nullptr;
