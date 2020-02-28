@@ -16,3 +16,10 @@
 #include <random>
 #include "ErrorHandling.h"
 #include <wrl.h>
+#include <Mouse.h>
+#include <Keyboard.h>
+
+using std::shared_ptr;
+using std::make_shared;
+using std::unique_ptr;
+using std::make_unique;
