@@ -270,7 +270,6 @@
     <ClInclude Include="src\Header Files\HairDrawing\HairSculpture.h" />
     <ClInclude Include="src\Header Files\HairDrawing\TextureOverlay.h" />
     <ClInclude Include="src\Header Files\Rendering\Camera.h" />
-    <ClInclude Include="src\Header Files\Rendering\Color.h" />
     <ClInclude Include="src\Header Files\Rendering\ConstantBuffer.h" />
     <ClInclude Include="src\Header Files\Rendering\Device.h" />
     <ClInclude Include="src\Header Files\Rendering\DeviceAccess.h" />
