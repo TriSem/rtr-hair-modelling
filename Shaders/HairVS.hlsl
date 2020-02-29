@@ -53,7 +53,7 @@ VSOutput main(VSInput vertex)
     uint2 pos = uint2(vertex.textureCoordinate.x * texWidth, (1 - vertex.textureCoordinate.y) * texHeight);
     
     float3 rgb = hairTexture[ pos ];
-    HairProperties properties = { rgb.r, -0.5f, rgb.b };
+    HairProperties properties = { rgb.r, rgb.g, rgb.b };
     
     VSOutput output;
     output.hairVertex = hairVertex;

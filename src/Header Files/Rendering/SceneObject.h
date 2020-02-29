@@ -42,6 +42,7 @@ namespace Rendering
 		std::shared_ptr<Mesh> mesh = nullptr;
 		bool visible = true;
 
+
 		std::shared_ptr<ConstantBuffer<ViewportIndexCBT>> viewportIndexBuffer = make_shared<ConstantBuffer<ViewportIndexCBT>>();
 		static unique_ptr<ShaderCollection> SHADER;
 		static DirectX::Mouse::State mouse;
@@ -51,8 +52,9 @@ namespace Rendering
 
 	private:
 
-		void Initialize();
 		void CreateRasterizerStates();
+		void Initialize();
+
 		RenderMode renderMode = RenderMode::Solid;
 		static ComPtr<ID3D11RasterizerState> rasterizerStateSolid;
 		static ComPtr<ID3D11RasterizerState> rasterizerStateWireframe;

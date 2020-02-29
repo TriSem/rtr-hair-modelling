@@ -91,7 +91,7 @@ void Application::Input()
 	SceneObject::SetInput(mouseState, keyState);
 
 	DirectX::SimpleMath::Rectangle rectangle(0, 0, WIDTH / 2, HEIGHT);
-	if (rectangle.Contains(Vector2(mouseState.x, mouseState.y)))
+	if (rectangle.Contains(Vector2((float)mouseState.x, (float)mouseState.y)))
 		mouse->SetVisible(false);
 	else
 		mouse->SetVisible(true);

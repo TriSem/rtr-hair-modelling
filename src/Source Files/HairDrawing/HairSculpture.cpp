@@ -71,7 +71,7 @@ void HairSculpture::Update()
 
 void HairSculpture::Rotate(Vector3 direction)
 {
-	float step = 0.05;
+	float step = 0.05f;
 	float degree = 10;
 
 	eulerAngles += direction * degree * step;

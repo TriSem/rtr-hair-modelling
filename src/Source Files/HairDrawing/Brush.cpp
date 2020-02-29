@@ -15,6 +15,7 @@ Brush::Brush(shared_ptr<Texture> paintTexture) :
 	mesh = Mesh::CreateQuad(24, 24);
 	SetPaintChannel(PaintChannel::Length);
 	transform.SetScale(data.radius);
+	CreateBlendState();
 }
 
 void Brush::SetPaintChannel(PaintChannel channel)
@@ -61,6 +62,28 @@ void Brush::DecreaseRadius()
 	transform.SetScale(data.radius);
 }
 
+void Brush::StartErasing()
+{
+	erasing = true;
+	materials.at(0).SetAlbedo(Color(0, 0, 0, 1));
+}
+
+void Brush::StopErasing()
+{
+	erasing = false;
+	UpdateColor();
+}
+
+void Brush::TurnOnBlending()
+{
+	device->GetContext()->OMSetBlendState(blendState.Get(), nullptr, UINT_MAX);	
+}
+
+void Brush::TurnOffBlending()
+{
+	device->GetContext()->OMSetBlendState(nullptr, nullptr, UINT_MAX);
+}
+
 void Brush::Update()
 {
 	if (keyTracker.pressed.L)
@@ -79,9 +102,9 @@ void Brush::Update()
 		DecreaseRadius();
 
 	if (mouseTracker.rightButton == mouseTracker.PRESSED)
-		materials.at(0).SetAlbedo(Color(0, 0, 0, 1));
+		StartErasing();
 	else if (mouseTracker.rightButton == mouseTracker.RELEASED)
-		UpdateColor();
+		StopErasing();
 
 	Vector3 mousePosition(2 * (mouse.x / 960.0f) - 1, 2 * (-mouse.y / 560.0f) + 1, -5.0f);
 	transform.SetPosition(mousePosition);
@@ -100,14 +123,17 @@ void Brush::IssueRenderCommands()
 
 	if (mouse.leftButton || mouse.rightButton)
 	{
+		if (!erasing)
+			TurnOnBlending();
 		viewportIndex.index = outputViewport = 2;
 		viewportIndexBuffer->SetData(viewportIndex);
 		device->GetContext()->GSSetConstantBuffers(0, 1, viewportIndexBuffer->Data().GetAddressOf());
 		paintTexture->UseAsRenderTarget(true);
 		paintTexture->IssueRenderCommands();
 		device->GetContext()->DrawIndexed(mesh->GetIndexCount(), 0, 0);
+		TurnOffBlending();
+		paintTexture->UseAsRenderTarget(false);
 	}
-	paintTexture->UseAsRenderTarget(false);
 }
 
 void Brush::UpdateColor()
@@ -126,4 +152,23 @@ void Brush::UpdateColor()
 	}
 
 	material.SetAlbedo(newColor);
+}
+
+void Brush::CreateBlendState()
+{
+	D3D11_BLEND_DESC blendDesc = {};
+	D3D11_RENDER_TARGET_BLEND_DESC& rtbDescription = blendDesc.RenderTarget[0];
+	rtbDescription.BlendEnable = true;
+	rtbDescription.SrcBlend = D3D11_BLEND_SRC_COLOR;
+	rtbDescription.DestBlend = D3D11_BLEND_INV_SRC_COLOR;
+	rtbDescription.BlendOp = D3D11_BLEND_OP_ADD;
+	rtbDescription.SrcBlendAlpha = D3D11_BLEND_ZERO;
+	rtbDescription.DestBlendAlpha = D3D11_BLEND_ZERO;
+	rtbDescription.BlendOpAlpha = D3D11_BLEND_OP_ADD;
+	rtbDescription.RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+
+	MessageAndThrowIfFailed(
+		device->GetDevice()->CreateBlendState(&blendDesc, blendState.GetAddressOf()),
+		L"Failed to create blend state!"
+	);
 }
