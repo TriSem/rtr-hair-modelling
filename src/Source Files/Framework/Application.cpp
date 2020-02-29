@@ -63,15 +63,15 @@ void Application::Init()
 
 	TextureOptions options;
 	options.type = TextureType::Mixed;
-	options.width = 512;
-	options.height = 512;
+	options.width = 1920;
+	options.height = 1080;
 	Color color = { 0, 0, 0, 1 };
 	shared_ptr<Texture> paintTexture = make_shared<Texture>(color, options);
 	
 	shared_ptr<SceneObject> head = make_shared<HairSculpture>(paintTexture);
 	shared_ptr<SceneObject> overlay = make_shared<TextureOverlay>(head->GetMesh());
 	shared_ptr<SceneObject> canvas = make_shared<Canvas>(paintTexture);
-	shared_ptr<SceneObject> brush = make_shared<Brush>();
+	shared_ptr<SceneObject> brush = make_shared<Brush>(paintTexture);
 
 	
 	

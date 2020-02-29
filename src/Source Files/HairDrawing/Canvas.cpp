@@ -22,9 +22,10 @@ void Canvas::Clear()
 		*it = { 0, 0, 0, 1 };
 	}
 	
-	
 }
 
 void Canvas::Update()
 {
+	if (keyTracker.pressed.R)
+		Clear();
 }

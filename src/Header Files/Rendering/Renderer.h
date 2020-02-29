@@ -35,7 +35,7 @@ namespace Rendering
 		void Clear();
 
 		Scene scene = {};
-		uint32_t multisampleCount = 4;
+		uint32_t multisampleCount = 1;
 		uint32_t msaaQuality = 1;
 
 		HWND windowHandle;

@@ -11,7 +11,16 @@ struct PSInput
     float3 normal : NORMAL;
 };
 
-float4 main(PSInput input, uint viewport : SV_ViewportArrayIndex) : SV_TARGET
+struct PSOutput
 {
-    return albedo;
+    float4 color1 : SV_Target0;
+    float4 color2 : SV_Target1;
+};
+
+PSOutput main(PSInput input, uint viewport : SV_ViewportArrayIndex)
+{
+    PSOutput output;
+    output.color1 = albedo;
+    output.color2 = albedo;
+    return output;
 }

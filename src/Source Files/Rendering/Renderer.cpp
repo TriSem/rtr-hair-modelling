@@ -52,6 +52,10 @@ namespace Rendering
 			device->GetContext()->GSSetConstantBuffers(0, 1, viewportIndexBuffer->Data().GetAddressOf());
 
 			object->IssueRenderCommands();
+
+			ComPtr<ID3D11ShaderResourceView> srv = nullptr;
+			context->PSSetShaderResources(0, 1, srv.GetAddressOf());
+			BindViewsToPipeline();
 		}
 
 		swapChain->Present(0, 0);
@@ -183,7 +187,10 @@ namespace Rendering
 
 	void Renderer::BindViewsToPipeline()
 	{
-		device->GetContext()->OMSetRenderTargets(1, backBufferView.GetAddressOf(), depthStencilView.Get());
+		ComPtr<ID3D11RenderTargetView> rtvs[2];
+		rtvs[0] = backBufferView;
+		rtvs[1] = nullptr;
+		device->GetContext()->OMSetRenderTargets(2, rtvs->GetAddressOf(), depthStencilView.Get());
 	}
 
 	void Renderer::Clear()

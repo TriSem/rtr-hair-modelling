@@ -8,15 +8,14 @@ class Brush : public Rendering::SceneObject
 {
 public:
 
-	Brush();
+	Brush(shared_ptr<Rendering::Texture> paintTexture);
 
 	PaintChannel GetPaintChannel();
-	void Paint(Vector2 position);
-	void Erase(Vector2 position);
 
 private:
 
 	virtual void Update() override;
+	virtual void IssueRenderCommands() override;
 	void UpdateColor();
 
 	void SetPaintChannel(PaintChannel channel);
@@ -31,5 +30,5 @@ private:
 
 	BrushData data = { 0.5f, 0.2f, PaintChannel::Length, BrushMode::Paint };
 
-	std::shared_ptr<Canvas> canvas = nullptr;
+	shared_ptr<Rendering::Texture> paintTexture = nullptr;
 };

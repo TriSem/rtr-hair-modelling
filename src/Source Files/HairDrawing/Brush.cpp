@@ -2,7 +2,8 @@
 
 using namespace Rendering;
 
-Brush::Brush()
+Brush::Brush(shared_ptr<Texture> paintTexture) :
+	paintTexture(paintTexture)
 {
 	TextureOptions options = { TextureType::ShaderResource, 1, 1 };
 	Material material;
@@ -25,16 +26,6 @@ void Brush::SetPaintChannel(PaintChannel channel)
 PaintChannel Brush::GetPaintChannel()
 {
 	return data.paintChannel;
-}
-
-void Brush::Paint(Vector2 position)
-{
-	
-}
-
-void Brush::Erase(Vector2 position)
-{
-	
 }
 
 void Brush::IncreaseStrength()
@@ -87,8 +78,24 @@ void Brush::Update()
 	else if (keys.OemMinus)
 		DecreaseRadius();
 
+	if (mouseTracker.rightButton == mouseTracker.PRESSED)
+		materials.at(0).SetAlbedo(Color(0, 0, 0, 1));
+	else if (mouseTracker.rightButton == mouseTracker.RELEASED)
+		UpdateColor();
+
 	Vector3 mousePosition(2 * (mouse.x / 960.0f) - 1, 2 * (-mouse.y / 560.0f) + 1, -5.0f);
 	transform.SetPosition(mousePosition);
+}
+
+void Brush::IssueRenderCommands()
+{
+	if (mouse.leftButton || mouse.rightButton)
+	{
+		paintTexture->UseAsRenderTarget(true);
+		paintTexture->IssueRenderCommands();
+	}
+	SceneObject::IssueRenderCommands();
+	paintTexture->UseAsRenderTarget(false);
 }
 
 void Brush::UpdateColor()

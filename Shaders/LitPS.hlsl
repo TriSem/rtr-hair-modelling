@@ -62,11 +62,11 @@ float4 main(PSInput input, uint viewport : SV_ViewportArrayIndex) : SV_TARGET
 {
     float4 ambientValue = directionalLight.ambient;
     
-    float4 specularValue = directionalLight.specular * 0.0f; // TODO: inplement specular texture support
+    float4 specularValue = directionalLight.specular * (1.0f - roughness);
     specularValue *= scatterSpecular((float3) input.position, input.normal, 1);
     
     float4 diffuseValue = diffuseTexture.Sample(samplerState, input.textureCoordinate);
     diffuseValue *= directionalLight.diffuse;
-    diffuseValue *= scatterDiffuse(input.normal);
+    diffuseValue *= scatterDiffuse(normalize(input.normal));
     return ambientValue + diffuseValue + specularValue;
 }

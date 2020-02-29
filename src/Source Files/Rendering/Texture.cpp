@@ -77,6 +77,9 @@ namespace Rendering
 
 	void Texture::CreateTexture(std::vector<Color> colorData, TextureOptions options)
 	{
+		width = options.width;
+		height = options.height;
+
 		D3D11_SUBRESOURCE_DATA resource = {};
 		resource.pSysMem = colorData.data();
 		resource.SysMemPitch = sizeof(Color) * options.width;
@@ -150,12 +153,35 @@ namespace Rendering
 
 	void Texture::IssueRenderCommands()
 	{
-		if (resourceView != nullptr)
+		if (renderTargetView != nullptr && isRenderTarget)
+		{
+			ComPtr<ID3D11RenderTargetView> rtvs[2];
+			rtvs[1] = renderTargetView;
+			ComPtr<ID3D11DepthStencilView> dsv;
+			device->GetContext()->OMGetRenderTargets(1, rtvs->GetAddressOf(), dsv.GetAddressOf());
+			device->GetContext()->OMSetRenderTargets(2, rtvs->GetAddressOf(), dsv.Get());
+		}
+		else if (resourceView != nullptr)
 		{
 			device->GetContext()->PSSetShaderResources(0, 1, resourceView.GetAddressOf());
 		}
 		
 		device->GetContext()->VSSetSamplers(0, 1, samplerState.GetAddressOf());
 		device->GetContext()->PSSetSamplers(0, 1, samplerState.GetAddressOf());
+	}
+
+	uint32_t Texture::GetWidth()
+	{
+		return width;
+	}
+
+	uint32_t Texture::GetHeight()
+	{
+		return height;
+	}
+
+	void Texture::UseAsRenderTarget(bool isRenderTarget)
+	{
+		this->isRenderTarget = isRenderTarget;
 	}
 }
