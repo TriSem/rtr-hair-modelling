@@ -28,11 +28,6 @@ struct PSInput
     float3 normal : NORMAL;
 };
 
-float4 calculateDirectionalLighting()
-{
-    return float4(1.0f, 1.0f, 1.0f, 1.0f);
-}
-
 // WARNING: Not providing unit vectors for both parameters will produce incorrect results!
 float scatterDiffuse(float3 surfaceNormal)
 {
