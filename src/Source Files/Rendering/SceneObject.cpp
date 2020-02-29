@@ -32,6 +32,11 @@ namespace Rendering
 		if (mesh == nullptr || !visible)
 			return;
 
+		ViewportIndexCBT viewportIndex;
+		viewportIndex.index = outputViewport;
+		viewportIndexBuffer->SetData(viewportIndex);
+		device->GetContext()->GSSetConstantBuffers(0, 1, viewportIndexBuffer->Data().GetAddressOf());
+
 		SetRenderMode(renderMode);
 		mesh->IssueRenderCommands();
 

@@ -155,11 +155,10 @@ namespace Rendering
 	{
 		if (renderTargetView != nullptr && isRenderTarget)
 		{
-			ComPtr<ID3D11RenderTargetView> rtvs[2];
-			rtvs[1] = renderTargetView;
+			ComPtr<ID3D11RenderTargetView> rtvs[1];
 			ComPtr<ID3D11DepthStencilView> dsv;
 			device->GetContext()->OMGetRenderTargets(1, rtvs->GetAddressOf(), dsv.GetAddressOf());
-			device->GetContext()->OMSetRenderTargets(2, rtvs->GetAddressOf(), dsv.Get());
+			device->GetContext()->OMSetRenderTargets(1, renderTargetView.GetAddressOf(), nullptr);
 		}
 		else if(resourceView != nullptr)
 		{

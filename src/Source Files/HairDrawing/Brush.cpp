@@ -89,12 +89,24 @@ void Brush::Update()
 
 void Brush::IssueRenderCommands()
 {
+	ViewportIndexCBT viewportIndex;
+	viewportIndex.index = outputViewport = 0;
+	viewportIndexBuffer->SetData(viewportIndex);
+	device->GetContext()->GSSetConstantBuffers(0, 1, viewportIndexBuffer->Data().GetAddressOf());
+
+	mesh->IssueRenderCommands();
+	materials.at(0).IssueRenderCommands();
+	device->GetContext()->DrawIndexed(mesh->GetIndexCount(), 0, 0);
+
 	if (mouse.leftButton || mouse.rightButton)
 	{
+		viewportIndex.index = outputViewport = 2;
+		viewportIndexBuffer->SetData(viewportIndex);
+		device->GetContext()->GSSetConstantBuffers(0, 1, viewportIndexBuffer->Data().GetAddressOf());
 		paintTexture->UseAsRenderTarget(true);
 		paintTexture->IssueRenderCommands();
+		device->GetContext()->DrawIndexed(mesh->GetIndexCount(), 0, 0);
 	}
-	SceneObject::IssueRenderCommands();
 	paintTexture->UseAsRenderTarget(false);
 }
 

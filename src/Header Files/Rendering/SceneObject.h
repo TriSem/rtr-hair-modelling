@@ -42,6 +42,7 @@ namespace Rendering
 		std::shared_ptr<Mesh> mesh = nullptr;
 		bool visible = true;
 
+		std::shared_ptr<ConstantBuffer<ViewportIndexCBT>> viewportIndexBuffer = make_shared<ConstantBuffer<ViewportIndexCBT>>();
 		static unique_ptr<ShaderCollection> SHADER;
 		static DirectX::Mouse::State mouse;
 		static DirectX::Keyboard::State keys;
