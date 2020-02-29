@@ -17,7 +17,7 @@ Canvas::Canvas(shared_ptr<Texture> paintTexture)
 
 void Canvas::Clear()
 {
-	
+	// TODO: Implement resetting the texture.
 }
 
 void Canvas::Update()

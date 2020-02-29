@@ -19,6 +19,7 @@ VSOutput main(VSInput vertex)
     VSOutput output;
     output.position = float4(2 * vertex.textureCoordinate.r - 1, 2 * vertex.textureCoordinate.g - 1, 0.0f, 1.0f);
     output.textureCoordinate = vertex.textureCoordinate;
+    output.textureCoordinate.y = 1 - output.textureCoordinate.y;
     output.normal = vertex.normal;
     return output;
 }

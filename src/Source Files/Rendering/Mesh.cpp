@@ -34,7 +34,7 @@ namespace Rendering
 		float deltaY = 1.0f / vertexCountY;
 
 		Vector3 position(-0.5, -0.5, 0);
-		Vector2 texCoord(0, 0);
+		Vector2 texCoord(0, 1);
 		Vector3 normal(0, 0, -1);
 		Vector3 tangent(0, 1, 0);
 		Vector3 bitangent(1, 0, 0);
@@ -60,9 +60,9 @@ namespace Rendering
 					vertices[current].textureCoordinates.x += xIncrement;
 
 				if (y == vertexCountY - 1)
-					vertices[current].textureCoordinates.y = 1;
+					vertices[current].textureCoordinates.y = 0;
 				else
-					vertices[current].textureCoordinates.y += yIncrement;
+					vertices[current].textureCoordinates.y -= yIncrement;
 			}
 		}
 
