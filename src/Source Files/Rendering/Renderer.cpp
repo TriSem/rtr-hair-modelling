@@ -44,14 +44,14 @@ namespace Rendering
 			mvp.projection = camera.ProjectionMatrix();
 			mvpConstantBuffer->SetData(mvp);
 
-			ViewportIndexCBT viewportIndex;
-			viewportIndex.index = object->outputViewport;
-			viewportIndexBuffer->SetData(viewportIndex);
-
 			device->GetContext()->VSSetConstantBuffers(0, 1, mvpConstantBuffer->Data().GetAddressOf());
-			device->GetContext()->GSSetConstantBuffers(0, 1, viewportIndexBuffer->Data().GetAddressOf());
 
 			object->IssueRenderCommands();
+
+			ComPtr<ID3D11ShaderResourceView> srv = nullptr;
+			context->VSSetShaderResources(0, 1, srv.GetAddressOf());
+			context->PSSetShaderResources(0, 1, srv.GetAddressOf());
+			BindViewsToPipeline();
 		}
 
 		swapChain->Present(0, 0);
@@ -67,7 +67,6 @@ namespace Rendering
 		splitScreen = std::make_unique<SplitScreen>(ScreenSectioning::HALVED, static_cast<float>(width), static_cast<float>(height));
 
 		mvpConstantBuffer = std::make_shared<ConstantBuffer<MVPMatricesCBT>>();
-		viewportIndexBuffer = std::make_shared<ConstantBuffer<ViewportIndexCBT>>();
 		lightingConstantBuffer = std::make_shared<ConstantBuffer<LightingCBT>>();
 	}
 
@@ -183,7 +182,10 @@ namespace Rendering
 
 	void Renderer::BindViewsToPipeline()
 	{
-		device->GetContext()->OMSetRenderTargets(1, backBufferView.GetAddressOf(), depthStencilView.Get());
+		ComPtr<ID3D11RenderTargetView> rtvs[2];
+		rtvs[0] = backBufferView;
+		rtvs[1] = nullptr;
+		device->GetContext()->OMSetRenderTargets(2, rtvs->GetAddressOf(), depthStencilView.Get());
 	}
 
 	void Renderer::Clear()

@@ -1,3 +1,5 @@
+Texture2D hairTexture : register(t0);
+
 cbuffer mvpMatrix
 {
     float4x4 model;
@@ -41,12 +43,17 @@ VSOutput main(VSInput vertex)
     float4x4 mv = mul(view, model);
     
     HairVertex hairVertex;
-    hairVertex.position = mul(mv, float4(vertex.position, 1));
-    hairVertex.normal = (float3) mul(mv, float4(vertex.normal, 0));
-    hairVertex.tangent = (float3) mul(mv, float4(vertex.tangent, 0));
-    hairVertex.bitangent = (float3) mul(mv, float4(vertex.bitangent, 0));
+    hairVertex.position = mul(mv, float4(vertex.position, 1)).xyz;
+    hairVertex.normal = mul(mv, float4(vertex.normal, 0)).xyz;
+    hairVertex.tangent = mul(mv, float4(vertex.tangent, 0)).xyz;
+    hairVertex.bitangent = mul(mv, float4(vertex.bitangent, 0)).xyz;
     
-    HairProperties properties = { 0.2f, 0.0f, 1.0f };
+    uint texWidth, texHeight;
+    hairTexture.GetDimensions(texWidth, texHeight);
+    uint2 pos = uint2(vertex.textureCoordinate.x * texWidth, (1 - vertex.textureCoordinate.y) * texHeight);
+    
+    float3 rgb = hairTexture[ pos ];
+    HairProperties properties = { rgb.r, rgb.g, rgb.b };
     
     VSOutput output;
     output.hairVertex = hairVertex;

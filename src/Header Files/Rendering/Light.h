@@ -22,7 +22,7 @@ namespace Rendering
 		Vector4 ambient = { 0.1f, 0.1f, 0.1f, 1.0f };
 		Vector4 diffuse = { 1.0f, 1.0f, 1.0f, 1.0f };
 		Vector4 specular = { 1.0f, 1.0f, 1.0f, 1.0f };
-		Vector3 direction = { -1, -1, -1};
+		Vector3 direction = { 0, 0, 1 };
 	};
 }
 

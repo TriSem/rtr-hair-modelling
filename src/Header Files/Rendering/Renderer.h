@@ -35,7 +35,7 @@ namespace Rendering
 		void Clear();
 
 		Scene scene = {};
-		uint32_t multisampleCount = 4;
+		uint32_t multisampleCount = 1;
 		uint32_t msaaQuality = 1;
 
 		HWND windowHandle;
@@ -51,7 +51,6 @@ namespace Rendering
 		std::unique_ptr<SplitScreen> splitScreen = nullptr;
 
 		std::shared_ptr<ConstantBuffer<MVPMatricesCBT>> mvpConstantBuffer = nullptr;
-		std::shared_ptr<ConstantBuffer<ViewportIndexCBT>> viewportIndexBuffer = nullptr;
 		std::shared_ptr<ConstantBuffer<LightingCBT>> lightingConstantBuffer = nullptr;
 		std::shared_ptr<ConstantBuffer<MaterialCBT>> materialConstantBuffer = nullptr;
 	};

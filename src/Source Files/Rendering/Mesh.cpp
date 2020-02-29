@@ -28,7 +28,7 @@ namespace Rendering
 	{
 		size_t resolution = (size_t) vertexCountX * vertexCountY;
 		std::vector<Vertex> vertices(resolution);
-		std::vector<uint32_t> indices(6 * resolution);
+		std::vector<uint32_t> indices(6 * ((size_t)vertexCountX - 1) * (vertexCountY - 1));
 
 		float deltaX = 1.0f / vertexCountX;
 		float deltaY = 1.0f / vertexCountY;
@@ -48,20 +48,35 @@ namespace Rendering
 		{
 			for (uint32_t x = 0; x < vertexCountX; x++)
 			{
-				indices[quadIndex++] = x;
-				indices[quadIndex++] = x + vertexCountX;
-				indices[quadIndex++] = x + vertexCountX + 1;
-				indices[quadIndex++] = x;
-				indices[quadIndex++] = x + vertexCountX + 1;
-				indices[quadIndex++] = x + 1;
-
-				size_t current = (size_t)x + (size_t)y * vertexCountX;
 				float xIncrement = deltaX * x;
 				float yIncrement = deltaY * y;
+				uint32_t current = x + y * vertexCountX;
 				vertices[current].position.x += xIncrement;
 				vertices[current].position.y += yIncrement;
-				vertices[current].textureCoordinates.x += xIncrement;
-				vertices[current].textureCoordinates.y += yIncrement;
+				
+				if (x == vertexCountX - 1)
+					vertices[current].textureCoordinates.x = 1;
+				else
+					vertices[current].textureCoordinates.x += xIncrement;
+
+				if (y == vertexCountY - 1)
+					vertices[current].textureCoordinates.y = 0;
+				else
+					vertices[current].textureCoordinates.y -= yIncrement;
+			}
+		}
+
+		for (uint32_t y = 0; y < vertexCountY - 1; y++)
+		{
+			for (uint32_t x = 0; x < vertexCountX - 1; x++)
+			{
+				uint32_t currentVertex = x + y * vertexCountX;
+				indices[quadIndex++] = currentVertex;
+				indices[quadIndex++] = currentVertex + vertexCountX;
+				indices[quadIndex++] = currentVertex + vertexCountX + 1;
+				indices[quadIndex++] = currentVertex;
+				indices[quadIndex++] = currentVertex + vertexCountX + 1;
+				indices[quadIndex++] = currentVertex + 1;
 			}
 		}
 

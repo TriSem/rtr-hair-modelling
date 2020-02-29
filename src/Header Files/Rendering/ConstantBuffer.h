@@ -68,12 +68,17 @@ namespace Rendering
 
 	struct ViewportIndexCBT
 	{
-		UINT index;
+		uint32_t index;
 	};
 
 	struct LightingCBT
 	{
 		DirectionalLight directionalLight;
+
+	private:
+		float pad;
+
+	public:
 		Vector3 viewPoint;
 	};
 

@@ -11,12 +11,15 @@ public:
 private:
 
 	virtual void Update() override;
+	void Rotate(Vector3 direction);
 
-	std::vector<Rendering::Color> hairColorPresets = 
+	std::vector<Color> hairColorPresets = 
 	{
-		{ 125, 0, 0, 255 } ,
-		{ 0, 125, 0, 255 } ,
-		{ 0, 0, 255, 255 } ,
+		{ 242 / 255.0f, 218 / 255.0f, 145 / 255.0f, 1 } ,
+		{ 140 / 255.0f, 104 / 255.0f, 74 / 255.0f, 1 } ,
+		{ 44 / 255.0f, 34 / 255.0f, 43 / 255.0f, 1 },
+		{ 181 / 255.0f, 82 / 255.0f, 57 / 255.0f, 1 },
+		{ 183 / 255.0f, 166 / 255.0f, 158 / 255.0f, 1 },
 	};
 
 	Vector3 eulerAngles = { 0, 0, 0 };

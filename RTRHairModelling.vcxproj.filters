@@ -83,6 +83,9 @@
     <FxCompile Include="Shaders\LitLinesPS.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
+    <FxCompile Include="Shaders\CursorVS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="RTRHairModelling.rc">

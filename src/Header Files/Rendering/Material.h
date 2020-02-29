@@ -32,7 +32,7 @@ namespace Rendering
 
 	private:
 
-		Color albedo = { 255, 255, 255, 255 };
+		Color albedo = { 1, 1, 1, 1 };
 		float roughness = 1;
 		shared_ptr<Texture> colorMap = nullptr;
 		shared_ptr <ConstantBuffer<MaterialCBT>> materialConstantBuffer = make_shared<ConstantBuffer<MaterialCBT>>();

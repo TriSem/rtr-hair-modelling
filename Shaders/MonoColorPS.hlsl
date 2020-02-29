@@ -1,11 +1,7 @@
-struct albedo
-{
-    
-};
-
 cbuffer Material : register(b1)
 {
-    
+    float4 albedo;
+    float roughness;
 };
 
 struct PSInput
@@ -15,7 +11,7 @@ struct PSInput
     float3 normal : NORMAL;
 };
 
-float4 main(PSInput input, uint viewport : SV_ViewportArrayIndex) : SV_TARGET
+float4 main(PSInput input, uint viewport : SV_ViewportArrayIndex) : SV_Target
 {
-    return float4(0.4f, 0.4f, 0.4f, 8.0f);
+    return albedo;
 }

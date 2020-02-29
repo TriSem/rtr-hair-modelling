@@ -24,10 +24,9 @@ struct VSOutput
 VSOutput main(VSInput vertex)
 {
     VSOutput output;
-    float4x4 mvp = mul(projection, view);
-    mvp = mul(mvp, model);
-    output.position = mul(mvp, float4(vertex.position, 1.0f));
+    float4x4 mv = (view, model);
+    output.position = mul(mv, float4(vertex.position, 1));
     output.textureCoordinate = vertex.textureCoordinate;
-    output.normal = mul(mvp, float4(vertex.normal, 0)).xyz;
+    output.normal = mul(model, float4(vertex.normal, 0)).xyz;
     return output;
 }

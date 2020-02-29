@@ -24,7 +24,9 @@ namespace Rendering
 		pixelShader->IssueRenderCommands();
 		if (colorMap != nullptr)
 			colorMap->IssueRenderCommands();
-			
+		
+		MaterialCBT constant = { albedo, roughness };
+		materialConstantBuffer->SetData(constant);
 		device->GetContext()->PSSetConstantBuffers(1, 1, materialConstantBuffer->Data().GetAddressOf());
 	}
 

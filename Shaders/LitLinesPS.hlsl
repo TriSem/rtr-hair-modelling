@@ -13,11 +13,17 @@ struct DirectionalLight
     float3 direction;
 };
 
-cbuffer Lighting
+cbuffer Lighting : register(b0)
 {
     DirectionalLight directionalLight;
     float3 viewPoint;
 };
+
+cbuffer Material : register(b1)
+{
+    float4 albedo;
+    float roughness;
+}
 
 float dotReplacement(float3 direction, float3 lightVector)
 {
@@ -52,7 +58,7 @@ float scatterSpecular(float3 surfacePoint, float3 direction, float specularPower
 
 float4 main(PSInput input, uint viewport : SV_ViewportArrayIndex) : SV_TARGET
 {
-    float4 hairBaseColor = { 1 , 0, 1, 1 };
+    float4 hairBaseColor = albedo;
     float4 hairSpecularColor = { 0.3f, 0.3f, 0.3f, 1 };
     float4 hairAmbientColor = { 1, 0, 1, 1 };
     float specularPower = 2;

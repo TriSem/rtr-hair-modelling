@@ -64,8 +64,8 @@ HairVertex interpolateBarycentric(HairVertex corners[3], float3 barycentricCoord
 
 float3x3 createHairSegmentRotation(HairProperties properties)
 {
-    float tangentRotationAngle = properties.tangent;
-    float bitangentRotationAngle = properties.bitangent;
+    float tangentRotationAngle = properties.tangent / properties.length;
+    float bitangentRotationAngle = properties.bitangent / properties.length;
         
     float3x3 tangentRotation =
     {

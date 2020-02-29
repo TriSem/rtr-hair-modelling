@@ -9,10 +9,16 @@ struct DirectionalLight
     float3 direction;
 };
 
-cbuffer Lighting
+cbuffer Lighting : register(b0)
 {
     DirectionalLight directionalLight;
     float3 viewPoint;
+};
+
+cbuffer Material : register(b1)
+{
+    float4 albedo;
+    float roughness;
 };
 
 struct PSInput
@@ -21,11 +27,6 @@ struct PSInput
     float2 textureCoordinate : TEXCOORD;
     float3 normal : NORMAL;
 };
-
-float4 calculateDirectionalLighting()
-{
-    return float4(1.0f, 1.0f, 1.0f, 1.0f);
-}
 
 // WARNING: Not providing unit vectors for both parameters will produce incorrect results!
 float scatterDiffuse(float3 surfaceNormal)
@@ -56,11 +57,11 @@ float4 main(PSInput input, uint viewport : SV_ViewportArrayIndex) : SV_TARGET
 {
     float4 ambientValue = directionalLight.ambient;
     
-    float4 specularValue = directionalLight.specular * 0.0f; // TODO: inplement specular texture support
+    float4 specularValue = directionalLight.specular * (1.0f - roughness);
     specularValue *= scatterSpecular((float3) input.position, input.normal, 1);
     
     float4 diffuseValue = diffuseTexture.Sample(samplerState, input.textureCoordinate);
     diffuseValue *= directionalLight.diffuse;
-    diffuseValue *= scatterDiffuse(input.normal);
+    diffuseValue *= scatterDiffuse(normalize(input.normal));
     return ambientValue + diffuseValue + specularValue;
 }

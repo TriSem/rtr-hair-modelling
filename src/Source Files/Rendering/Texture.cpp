@@ -1,5 +1,7 @@
 #include <Texture.h>
 
+using DirectX::SimpleMath::Color;
+
 namespace Rendering
 {
 	Texture::Texture(std::string path, TextureOptions options)
@@ -63,7 +65,7 @@ namespace Rendering
 		textureDescription.Width = options.width;
 		textureDescription.Height = options.height;
 		textureDescription.MipLevels = 1;
-		textureDescription.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+		textureDescription.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
 		textureDescription.SampleDesc = sampleDescription;
 		textureDescription.BindFlags = bindFlags;
 		textureDescription.ArraySize = 1;
@@ -75,6 +77,9 @@ namespace Rendering
 
 	void Texture::CreateTexture(std::vector<Color> colorData, TextureOptions options)
 	{
+		width = options.width;
+		height = options.height;
+
 		D3D11_SUBRESOURCE_DATA resource = {};
 		resource.pSysMem = colorData.data();
 		resource.SysMemPitch = sizeof(Color) * options.width;
@@ -91,8 +96,8 @@ namespace Rendering
 	{
 		D3D11_SAMPLER_DESC samplerDescription = {};
 		samplerDescription.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-		samplerDescription.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
-		samplerDescription.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+		samplerDescription.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
+		samplerDescription.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
 		samplerDescription.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
 		samplerDescription.MaxAnisotropy = 1;
 		samplerDescription.ComparisonFunc = D3D11_COMPARISON_NEVER;
@@ -119,7 +124,7 @@ namespace Rendering
 		subresource.MipSlice = 0;
 
 		D3D11_RENDER_TARGET_VIEW_DESC viewDescription = {};
-		viewDescription.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+		viewDescription.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
 		viewDescription.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
 		viewDescription.Texture2D = subresource;
 
@@ -136,7 +141,7 @@ namespace Rendering
 		srv.MostDetailedMip = 0;
 
 		D3D11_SHADER_RESOURCE_VIEW_DESC viewDescription = {};
-		viewDescription.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+		viewDescription.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
 		viewDescription.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
 		viewDescription.Texture2D = srv;
 
@@ -148,12 +153,35 @@ namespace Rendering
 
 	void Texture::IssueRenderCommands()
 	{
-		if (resourceView != nullptr)
+		if (renderTargetView != nullptr && isRenderTarget)
 		{
+			ComPtr<ID3D11RenderTargetView> rtvs[1];
+			ComPtr<ID3D11DepthStencilView> dsv;
+			device->GetContext()->OMGetRenderTargets(1, rtvs->GetAddressOf(), dsv.GetAddressOf());
+			device->GetContext()->OMSetRenderTargets(1, renderTargetView.GetAddressOf(), nullptr);
+		}
+		else if(resourceView != nullptr)
+		{
+			device->GetContext()->VSSetShaderResources(0, 1, resourceView.GetAddressOf());
 			device->GetContext()->PSSetShaderResources(0, 1, resourceView.GetAddressOf());
 		}
 		
 		device->GetContext()->VSSetSamplers(0, 1, samplerState.GetAddressOf());
 		device->GetContext()->PSSetSamplers(0, 1, samplerState.GetAddressOf());
+	}
+
+	uint32_t Texture::GetWidth()
+	{
+		return width;
+	}
+
+	uint32_t Texture::GetHeight()
+	{
+		return height;
+	}
+
+	void Texture::UseAsRenderTarget(bool isRenderTarget)
+	{
+		this->isRenderTarget = isRenderTarget;
 	}
 }

@@ -32,6 +32,10 @@ namespace Rendering
 		ComPtr<ID3D11ShaderResourceView> ResourceView();
 		ComPtr<ID3D11SamplerState> SamplerState();
 		virtual void IssueRenderCommands() override;
+		uint32_t GetWidth();
+		uint32_t GetHeight();
+
+		void UseAsRenderTarget(bool isRenderTarget);
 
 
 	private:
@@ -40,6 +44,8 @@ namespace Rendering
 		ComPtr<ID3D11Texture2D> texture = nullptr;
 		ComPtr<ID3D11ShaderResourceView> resourceView = nullptr;
 		ComPtr<ID3D11RenderTargetView> renderTargetView = nullptr;
+		uint32_t width;
+		uint32_t height;
 
 		D3D11_TEXTURE2D_DESC CreateTextureDescription(TextureOptions options);
 		void CreateTexture(std::vector<Color> colorData, TextureOptions options);
@@ -47,5 +53,7 @@ namespace Rendering
 		void CreateViews(TextureType type);
 		void CreateRenderTargetView();
 		void CreateShaderResourceView();
+
+		bool isRenderTarget = false;
 	};
 }
