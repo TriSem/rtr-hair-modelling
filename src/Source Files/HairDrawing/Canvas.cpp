@@ -17,10 +17,6 @@ Canvas::Canvas(shared_ptr<Texture> paintTexture)
 
 void Canvas::Clear()
 {
-	for (auto it = colors.begin(); it != colors.end(); it++)
-	{
-		*it = { 0, 0, 0, 1 };
-	}
 	
 }
 

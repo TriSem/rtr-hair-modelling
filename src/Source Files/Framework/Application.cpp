@@ -73,12 +73,9 @@ void Application::Init()
 	shared_ptr<SceneObject> canvas = make_shared<Canvas>(paintTexture);
 	shared_ptr<SceneObject> brush = make_shared<Brush>(paintTexture);
 
-	
-	
-
 	mainScene->AddSceneObject(head);
-	mainScene->AddSceneObject(overlay);
 	mainScene->AddSceneObject(brush);
+	mainScene->AddSceneObject(overlay);
 	mainScene->AddSceneObject(canvas);
 
 	ShowWindow(mainWindow.WindowHandle(), nCmdShow);

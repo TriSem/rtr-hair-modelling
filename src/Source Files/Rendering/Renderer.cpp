@@ -54,6 +54,7 @@ namespace Rendering
 			object->IssueRenderCommands();
 
 			ComPtr<ID3D11ShaderResourceView> srv = nullptr;
+			context->VSSetShaderResources(0, 1, srv.GetAddressOf());
 			context->PSSetShaderResources(0, 1, srv.GetAddressOf());
 			BindViewsToPipeline();
 		}

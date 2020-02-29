@@ -161,8 +161,9 @@ namespace Rendering
 			device->GetContext()->OMGetRenderTargets(1, rtvs->GetAddressOf(), dsv.GetAddressOf());
 			device->GetContext()->OMSetRenderTargets(2, rtvs->GetAddressOf(), dsv.Get());
 		}
-		else if (resourceView != nullptr)
+		else if(resourceView != nullptr)
 		{
+			device->GetContext()->VSSetShaderResources(0, 1, resourceView.GetAddressOf());
 			device->GetContext()->PSSetShaderResources(0, 1, resourceView.GetAddressOf());
 		}
 		

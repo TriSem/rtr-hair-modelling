@@ -49,6 +49,7 @@ namespace Rendering
 	{
 		D3D11_VIEWPORT leftViewport;
 		D3D11_VIEWPORT rightViewport;
+		D3D11_VIEWPORT fullScreen;
 
 		leftViewport.TopLeftX = 0.0f;
 		leftViewport.TopLeftY = 0.0f;
@@ -64,15 +65,24 @@ namespace Rendering
 		rightViewport.MinDepth = 0.0f;
 		rightViewport.MaxDepth = 1.0f;
 
+		fullScreen.TopLeftY = 0.0f;
+		fullScreen.Width = screenWidth;
+		fullScreen.TopLeftX = 0.0f;
+		fullScreen.Height = screenHeight;
+		fullScreen.MinDepth = 0.0f;
+		fullScreen.MaxDepth = 1.0f;
+
 		viewports.clear();
 		viewports.push_back(leftViewport);
 		viewports.push_back(rightViewport);
+		viewports.push_back(fullScreen);
 
 		IssueRenderCommands();
 	}
 
 	void SplitScreen::QuarterScreen()
 	{
+		D3D11_VIEWPORT fullScreen;
 		D3D11_VIEWPORT topLeft, topRight, bottomLeft, bottomRight;
 
 		topLeft.TopLeftX = 0.0f;
@@ -108,6 +118,14 @@ namespace Rendering
 		viewports.push_back(topRight);
 		viewports.push_back(bottomLeft);
 		viewports.push_back(bottomRight);
+		viewports.push_back(fullScreen);
+
+		fullScreen.TopLeftY = 0.0f;
+		fullScreen.Width = screenWidth;
+		fullScreen.TopLeftX = 0.0f;
+		fullScreen.Height = screenHeight;
+		fullScreen.MinDepth = 0.0f;
+		fullScreen.MaxDepth = 1.0f;
 
 		IssueRenderCommands();
 	}

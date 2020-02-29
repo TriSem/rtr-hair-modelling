@@ -48,7 +48,11 @@ VSOutput main(VSInput vertex)
     hairVertex.tangent = mul(mv, float4(vertex.tangent, 0)).xyz;
     hairVertex.bitangent = mul(mv, float4(vertex.bitangent, 0)).xyz;
     
-    float3 rgb = hairTexture[ vertex.textureCoordinate ];
+    uint texWidth, texHeight;
+    hairTexture.GetDimensions(texWidth, texHeight);
+    uint2 pos = uint2(vertex.textureCoordinate.x * texWidth, vertex.textureCoordinate.y * texHeight);
+    
+    float3 rgb = hairTexture[ pos ];
     HairProperties properties = { rgb.r, rgb.g, rgb.b };
     
     VSOutput output;
