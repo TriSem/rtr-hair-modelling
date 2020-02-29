@@ -55,7 +55,6 @@ void Application::Init()
 		mainWindow.Height()
 	);
 
-	shaderCollection = make_unique<ShaderCollection>();
 	mainScene = make_shared<Scene>();
 	keyboard = make_unique<Keyboard>();
 	mouse = make_unique<Mouse>();

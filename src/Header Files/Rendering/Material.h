@@ -12,7 +12,7 @@ namespace Rendering
 	public: 
 		
 		Material();
-		Material(std::shared_ptr<Texture> colorMap);
+		Material(shared_ptr<Texture> colorMap);
 
 		// No render commands will be issued if one of the shaders is not initialized.
 		virtual void IssueRenderCommands() override;
@@ -20,15 +20,15 @@ namespace Rendering
 		void SetAlbedo(Color albedo);
 		// Roughness is clamped between 0 and 1.
 		void SetRoughness(float roughness);
-		void SetTexture(std::shared_ptr<Texture> colorMap);
+		void SetTexture(shared_ptr<Texture> colorMap);
 
 		Color GetAlbedo() const;
 		float GetRoughness() const;
 
 
-		std::shared_ptr<VertexShader> vertexShader = nullptr;
-		std::shared_ptr<PixelShader> pixelShader = nullptr;
-		std::shared_ptr<GeometryShader> geometryShader = nullptr;
+		shared_ptr<PixelShader> pixelShader = nullptr;
+		shared_ptr<VertexShader> vertexShader = nullptr;
+		shared_ptr<GeometryShader> geometryShader = nullptr;
 
 	private:
 

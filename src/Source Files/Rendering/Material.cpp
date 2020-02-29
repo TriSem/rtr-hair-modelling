@@ -6,7 +6,7 @@ namespace Rendering
 	{
 	}
 
-	Material::Material(std::shared_ptr<Texture> colorMap) :
+	Material::Material(shared_ptr<Texture> colorMap) :
 		colorMap(colorMap)
 	{
 		
@@ -50,7 +50,7 @@ namespace Rendering
 		materialConstantBuffer->SetData(newData);
 	}
 
-	void Material::SetTexture(std::shared_ptr<Texture> colorMap)
+	void Material::SetTexture(shared_ptr<Texture> colorMap)
 	{
 		this->colorMap = colorMap;
 	}

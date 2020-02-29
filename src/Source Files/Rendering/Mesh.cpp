@@ -9,8 +9,8 @@ namespace Rendering
 
 	void Mesh::SetTriangles(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices)
 	{
-		vertexBuffer = std::make_unique<VertexBuffer>(vertices);
-		indexBuffer = std::make_unique<IndexBuffer>(indices);
+		vertexBuffer = make_unique<VertexBuffer>(vertices);
+		indexBuffer = make_unique<IndexBuffer>(indices);
 	}
 
 	void Mesh::IssueRenderCommands()
@@ -80,6 +80,6 @@ namespace Rendering
 			}
 		}
 
-		return std::make_shared<Mesh>(vertices, indices);
+		return make_shared<Mesh>(vertices, indices);
 	}
 }

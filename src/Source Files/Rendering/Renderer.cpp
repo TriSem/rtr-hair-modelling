@@ -31,12 +31,12 @@ namespace Rendering
 
 		device->GetContext()->PSSetConstantBuffers(0, 1, lightingConstantBuffer->Data().GetAddressOf());
 
-		vector<std::shared_ptr<SceneObject>>& objects = scene.GetSceneObjects();
+		vector<shared_ptr<SceneObject>>& objects = scene.GetSceneObjects();
 
 		for (auto it = objects.begin(); it != objects.end(); it++)
 		{
 			Camera& camera = scene.GetCamera();
-			std::shared_ptr<SceneObject> object = *it;
+			shared_ptr<SceneObject> object = *it;
 
 			MVPMatricesCBT mvp;
 			mvp.model = object->GetTransform().TransformationMatrix();
@@ -64,10 +64,10 @@ namespace Rendering
 		CreateBackBufferView();
 		CreateDepthStencilView();
 		BindViewsToPipeline();
-		splitScreen = std::make_unique<SplitScreen>(ScreenSectioning::HALVED, static_cast<float>(width), static_cast<float>(height));
+		splitScreen = make_unique<SplitScreen>(ScreenSectioning::HALVED, static_cast<float>(width), static_cast<float>(height));
 
-		mvpConstantBuffer = std::make_shared<ConstantBuffer<MVPMatricesCBT>>();
-		lightingConstantBuffer = std::make_shared<ConstantBuffer<LightingCBT>>();
+		mvpConstantBuffer = make_shared<ConstantBuffer<MVPMatricesCBT>>();
+		lightingConstantBuffer = make_shared<ConstantBuffer<LightingCBT>>();
 	}
 
 	void Renderer::CheckMultisamplingSupport()

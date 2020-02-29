@@ -7,7 +7,7 @@ namespace Rendering
 		Initialize();
 	}
 
-	SceneObject::SceneObject(std::shared_ptr<Mesh> mesh) :
+	SceneObject::SceneObject(shared_ptr<Mesh> mesh) :
 		mesh(mesh)
 	{
 		Initialize();
@@ -22,7 +22,7 @@ namespace Rendering
 		return transform;
 	}
 
-	std::shared_ptr<Mesh> SceneObject::GetMesh() const
+	shared_ptr<Mesh> SceneObject::GetMesh() const
 	{
 		return mesh;
 	}

@@ -10,15 +10,15 @@ namespace Rendering
 
 		ShaderCollection() {}
 
-		const std::shared_ptr<VertexShader> standardVertexShader = std::make_shared<VertexShader>(L"StandardVS");
-		const std::shared_ptr<VertexShader> hairVertexShader = std::make_shared<VertexShader>(L"HairVS");
-		const std::shared_ptr<VertexShader> flatVertexShader = std::make_shared<VertexShader>(L"FlatVS");
-		const std::shared_ptr<VertexShader> cursorVertexShader = std::make_shared<VertexShader>(L"CursorVS");
-		const std::shared_ptr<PixelShader> unlitPixelShader = std::make_shared<PixelShader>(L"UnlitPS");
-		const std::shared_ptr<PixelShader> litPixelShader = std::make_shared<PixelShader>(L"LitPS");
-		const std::shared_ptr<PixelShader> litLinesPixelShader = std::make_shared<PixelShader>(L"LitLinesPS");
-		const std::shared_ptr<PixelShader> monoColorPixelShader = std::make_shared<PixelShader>(L"MonoColorPS");
-		const std::shared_ptr<GeometryShader> standardGeometryShader = std::make_shared<GeometryShader>(L"StandardGS");
-		const std::shared_ptr<GeometryShader> hairGeometryShader = std::make_shared<GeometryShader>(L"HairGS");
+		const shared_ptr<VertexShader> standardVertexShader = make_shared<VertexShader>(L"StandardVS");
+		const shared_ptr<VertexShader> hairVertexShader = make_shared<VertexShader>(L"HairVS");
+		const shared_ptr<VertexShader> flatVertexShader = make_shared<VertexShader>(L"FlatVS");
+		const shared_ptr<VertexShader> cursorVertexShader = make_shared<VertexShader>(L"CursorVS");
+		const shared_ptr<PixelShader> unlitPixelShader = make_shared<PixelShader>(L"UnlitPS");
+		const shared_ptr<PixelShader> litPixelShader = make_shared<PixelShader>(L"LitPS");
+		const shared_ptr<PixelShader> litLinesPixelShader = make_shared<PixelShader>(L"LitLinesPS");
+		const shared_ptr<PixelShader> monoColorPixelShader = make_shared<PixelShader>(L"MonoColorPS");
+		const shared_ptr<GeometryShader> standardGeometryShader = make_shared<GeometryShader>(L"StandardGS");
+		const shared_ptr<GeometryShader> hairGeometryShader = make_shared<GeometryShader>(L"HairGS");
 	};
 }

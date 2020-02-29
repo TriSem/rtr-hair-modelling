@@ -48,11 +48,11 @@ namespace Rendering
 		ComPtr<ID3D11RenderTargetView> backBufferView = nullptr;
 		ComPtr<ID3D11DepthStencilView> depthStencilView = nullptr;
 
-		std::unique_ptr<SplitScreen> splitScreen = nullptr;
 
-		std::shared_ptr<ConstantBuffer<MVPMatricesCBT>> mvpConstantBuffer = nullptr;
-		std::shared_ptr<ConstantBuffer<LightingCBT>> lightingConstantBuffer = nullptr;
-		std::shared_ptr<ConstantBuffer<MaterialCBT>> materialConstantBuffer = nullptr;
+		unique_ptr<SplitScreen> splitScreen = nullptr;
+		shared_ptr<ConstantBuffer<MVPMatricesCBT>> mvpConstantBuffer = nullptr;
+		shared_ptr<ConstantBuffer<LightingCBT>> lightingConstantBuffer = nullptr;
+		shared_ptr<ConstantBuffer<MaterialCBT>> materialConstantBuffer = nullptr;
 	};
 }
 

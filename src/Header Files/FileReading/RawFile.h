@@ -5,7 +5,6 @@
 #include <array>
 #include <vector>
 #include "Vertex.h"
-#include "Color.h"
 
 using DirectX::SimpleMath::Color;
 

@@ -13,6 +13,7 @@ Brush::Brush(shared_ptr<Texture> paintTexture) :
 	material.SetTexture(make_shared<Texture>(Color(1, 1, 1, 1), options));
 	materials.push_back(material);
 	mesh = Mesh::CreateQuad(24, 24);
+
 	SetPaintChannel(PaintChannel::Length);
 	transform.SetScale(data.radius);
 	CreateBlendState();

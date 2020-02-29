@@ -14,7 +14,7 @@ namespace Rendering
 		Scene();
 
 		void Update();
-		void AddSceneObject(std::shared_ptr<SceneObject> object);
+		void AddSceneObject(shared_ptr<SceneObject> object);
 		void DeleteSceneObject(int index);
 		void SetLight(DirectionalLight light);
 

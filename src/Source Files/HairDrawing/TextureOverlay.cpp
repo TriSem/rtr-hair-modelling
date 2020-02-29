@@ -13,7 +13,7 @@ TextureOverlay::TextureOverlay()
 	SetRenderMode(RenderMode::WireFrame);
 }
 
-TextureOverlay::TextureOverlay(std::shared_ptr<Rendering::Mesh> mesh) :
+TextureOverlay::TextureOverlay(shared_ptr<Mesh> mesh) :
 	TextureOverlay()
 {
 	this->mesh = mesh;

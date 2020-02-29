@@ -1,6 +1,5 @@
 #pragma once
 #include <framework.h>
-#include <Color.h>
 #include <BrushData.h>
 #include <Graphics.h>
 #include <SceneObject.h>

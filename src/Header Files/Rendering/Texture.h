@@ -2,7 +2,6 @@
 
 #include <framework.h>
 #include "DeviceAccess.h"
-#include "Color.h"
 #include <RawFile.h>
 
 namespace Rendering 

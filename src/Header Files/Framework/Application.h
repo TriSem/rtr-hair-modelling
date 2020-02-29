@@ -32,12 +32,11 @@ private:
 	std::vector<Window> windows;
 	std::wstring appTitle;
 
-	std::unique_ptr<Rendering::Renderer> renderer = nullptr;
-	std::unique_ptr<Rendering::ShaderCollection> shaderCollection = nullptr;
-	std::shared_ptr<Rendering::Scene> mainScene = nullptr;
+	unique_ptr<Rendering::Renderer> renderer = nullptr;
+	shared_ptr<Rendering::Scene> mainScene = nullptr;
 
-	std::unique_ptr<Keyboard> keyboard = nullptr;
-	std::unique_ptr<Mouse> mouse = nullptr;
+	unique_ptr<Keyboard> keyboard = nullptr;
+	unique_ptr<Mouse> mouse = nullptr;
 
 	void Init();
 	void Input();

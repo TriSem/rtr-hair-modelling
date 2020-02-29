@@ -20,10 +20,10 @@ namespace Rendering
 	public:
 
 		SceneObject();
-		SceneObject(std::shared_ptr<Mesh> mesh);
+		SceneObject(shared_ptr<Mesh> mesh);
 
 		Transform& GetTransform();
-		std::shared_ptr<Mesh> GetMesh() const;
+		shared_ptr<Mesh> GetMesh() const;
 
 		void SetRenderMode(RenderMode renderMode);
 
@@ -39,11 +39,11 @@ namespace Rendering
 	protected:
 
 		Transform transform = Transform();
-		std::shared_ptr<Mesh> mesh = nullptr;
+		shared_ptr<Mesh> mesh = nullptr;
 		bool visible = true;
 
 
-		std::shared_ptr<ConstantBuffer<ViewportIndexCBT>> viewportIndexBuffer = make_shared<ConstantBuffer<ViewportIndexCBT>>();
+		shared_ptr<ConstantBuffer<ViewportIndexCBT>> viewportIndexBuffer = make_shared<ConstantBuffer<ViewportIndexCBT>>();
 		static unique_ptr<ShaderCollection> SHADER;
 		static DirectX::Mouse::State mouse;
 		static DirectX::Keyboard::State keys;

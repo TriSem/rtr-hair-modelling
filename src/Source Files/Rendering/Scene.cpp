@@ -17,7 +17,7 @@ namespace Rendering
 		}
 	}
 
-	void Scene::AddSceneObject(std::shared_ptr<SceneObject> object)
+	void Scene::AddSceneObject(shared_ptr<SceneObject> object)
 	{
 		sceneObjects.push_back(object);
 	}
@@ -32,7 +32,7 @@ namespace Rendering
 		this->light = light;
 	}
 
-	std::vector<std::shared_ptr<SceneObject>>& Scene::GetSceneObjects()
+	std::vector<shared_ptr<SceneObject>>& Scene::GetSceneObjects()
 	{
 		return sceneObjects;
 	}

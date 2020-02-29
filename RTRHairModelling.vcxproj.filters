@@ -180,9 +180,6 @@
     <ClInclude Include="src\Header Files\Rendering\Material.h">
       <Filter>Headerdateien\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="src\Header Files\Rendering\Color.h">
-      <Filter>Headerdateien\Rendering</Filter>
-    </ClInclude>
     <ClInclude Include="src\Header Files\Rendering\RenderMode.h">
       <Filter>Headerdateien\Rendering</Filter>
     </ClInclude>

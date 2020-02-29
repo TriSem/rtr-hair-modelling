@@ -20,11 +20,11 @@ namespace Rendering
 
 		uint32_t GetIndexCount() const;
 
-		static std::shared_ptr<Mesh> CreateQuad(uint32_t vertexCountX, uint32_t vertexCountY);
+		static shared_ptr<Mesh> CreateQuad(uint32_t vertexCountX, uint32_t vertexCountY);
 
 	private:
 
-		std::shared_ptr<VertexBuffer> vertexBuffer = nullptr;
-		std::shared_ptr<IndexBuffer> indexBuffer = nullptr;
+		shared_ptr<VertexBuffer> vertexBuffer = nullptr;
+		shared_ptr<IndexBuffer> indexBuffer = nullptr;
 	};
 }
