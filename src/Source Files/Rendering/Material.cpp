@@ -26,7 +26,7 @@ namespace Rendering
 			colorMap->IssueRenderCommands();
 		
 		MaterialCBT constant = { albedo, roughness };
-		device->GetContext()->UpdateSubresource(materialConstantBuffer->Data().Get(), 0, nullptr, &constant, 0, 0);
+		materialConstantBuffer->SetData(constant);
 		device->GetContext()->PSSetConstantBuffers(1, 1, materialConstantBuffer->Data().GetAddressOf());
 	}
 

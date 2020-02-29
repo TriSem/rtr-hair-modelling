@@ -4,7 +4,7 @@
 
 enum class BrushMode;
 
-class Brush : Rendering::SceneObject
+class Brush : public Rendering::SceneObject
 {
 public:
 
@@ -17,17 +17,19 @@ public:
 private:
 
 	virtual void Update() override;
+	void UpdateColor();
+
 	void SetPaintChannel(PaintChannel channel);
 	void IncreaseStrength();
 	void DecreaseStrength();
 	void IncreaseRadius();
 	void DecreaseRadius();
-	float radiusChange = 0.05f;
+	float radiusChange = 0.001f;
 	float minimumRadius = 0.01f;
-	float strengthChange = 0.05f;
+	float strengthChange = 0.001f;
 	float minimumStrength = 0.01f;
 
-	BrushData data = { 5, 0.5f, PaintChannel::Length, BrushMode::Paint };
+	BrushData data = { 0.5f, 0.2f, PaintChannel::Length, BrushMode::Paint };
 
 	std::shared_ptr<Canvas> canvas = nullptr;
 };

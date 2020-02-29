@@ -2,36 +2,24 @@
 
 using namespace Rendering;
 
-Brush::Brush() :
-	canvas(canvas)
+Brush::Brush()
 {
 	TextureOptions options = { TextureType::ShaderResource, 1, 1 };
 	Material material;
-	material.vertexShader = SHADER->flatVertexShader;
+	material.vertexShader = SHADER->cursorVertexShader;
 	material.geometryShader = SHADER->standardGeometryShader;
 	material.pixelShader = SHADER->monoColorPixelShader;
 	material.SetTexture(make_shared<Texture>(Color(1, 1, 1, 1), options));
 	materials.push_back(material);
+	mesh = Mesh::CreateQuad(24, 24);
 	SetPaintChannel(PaintChannel::Length);
+	transform.SetScale(data.radius);
 }
 
 void Brush::SetPaintChannel(PaintChannel channel)
 {
 	data.paintChannel = channel;
-	Material& material = materials.at(0);
-	Color newColor = { 0, 0, 0, data.strength };
-
-	switch (channel)
-	{
-	case PaintChannel::Length:
-		newColor.x = 1; break;
-	case PaintChannel::Curl :
-		newColor.y = 1; break;
-	case PaintChannel::Twist :
-		newColor.z = 255;
-
-		material.SetAlbedo(newColor);
-	}
+	UpdateColor();
 }
 
 PaintChannel Brush::GetPaintChannel()
@@ -52,6 +40,10 @@ void Brush::Erase(Vector2 position)
 void Brush::IncreaseStrength()
 {
 	data.strength += strengthChange;
+	if (data.strength > 1)
+		data.strength = 1;
+
+	UpdateColor();
 }
 
 void Brush::DecreaseStrength()
@@ -60,6 +52,8 @@ void Brush::DecreaseStrength()
 		data.strength = minimumStrength;
 	else
 		data.strength -= strengthChange;
+
+	UpdateColor();
 }
 
 void Brush::IncreaseRadius()
@@ -92,4 +86,25 @@ void Brush::Update()
 		IncreaseRadius();
 	else if (keys.OemMinus)
 		DecreaseRadius();
+
+	Vector3 mousePosition((mouse.x / 960.0f) - 1, (-mouse.y / 560.0f) + 1, -5.0f);
+	transform.SetPosition(mousePosition);
+}
+
+void Brush::UpdateColor()
+{
+	Material& material = materials.at(0);
+	Color newColor = { 0, 0, 0, 1 };
+
+	switch (data.paintChannel)
+	{
+	case PaintChannel::Length:
+		newColor.x = 1 * data.strength; break;
+	case PaintChannel::Curl:
+		newColor.y = 1 * data.strength; break;
+	case PaintChannel::Twist:
+		newColor.z = 1 * data.strength; break;
+	}
+
+	material.SetAlbedo(newColor);
 }

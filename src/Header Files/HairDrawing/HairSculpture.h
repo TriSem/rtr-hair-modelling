@@ -11,6 +11,7 @@ public:
 private:
 
 	virtual void Update() override;
+	void Rotate(Vector3 direction);
 
 	std::vector<Color> hairColorPresets = 
 	{

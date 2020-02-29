@@ -59,6 +59,7 @@ void Application::Init()
 	mainScene = make_shared<Scene>();
 	keyboard = make_unique<Keyboard>();
 	mouse = make_unique<Mouse>();
+	mouse->SetWindow(mainWindow.WindowHandle());
 
 	TextureOptions options;
 	options.type = TextureType::Mixed;
@@ -69,6 +70,7 @@ void Application::Init()
 	
 	shared_ptr<SceneObject> head = make_shared<HairSculpture>(paintTexture);
 	shared_ptr<SceneObject> overlay = make_shared<TextureOverlay>(head->GetMesh());
+	shared_ptr<SceneObject> brush = make_shared<Brush>();
 
 	shared_ptr<Mesh> quadMesh = Mesh::CreateQuad(100, 100);
 	shared_ptr<SceneObject> canvas = make_shared<SceneObject>(quadMesh);
@@ -77,9 +79,7 @@ void Application::Init()
 
 	mainScene->AddSceneObject(head);
 	mainScene->AddSceneObject(overlay);
-
-	head->GetTransform().SetScale(0.5f);
-	head->GetTransform().SetRotation(Vector3(0.0f, 135.0f, 0.0f));
+	mainScene->AddSceneObject(brush);
 
 	ShowWindow(mainWindow.WindowHandle(), nCmdShow);
 }

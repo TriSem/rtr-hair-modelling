@@ -26,6 +26,11 @@ HairSculpture::HairSculpture(shared_ptr<Rendering::Texture> hairTexture)
 	hairMaterial.SetTexture(hairTexture);
 	materials.push_back(diffuseMaterial);
 	materials.push_back(hairMaterial);
+
+	Vector3 angles(180.0f, 0.0f, 0.0f);
+	transform.SetScale(0.5f);
+	transform.SetRotation(angles);
+	eulerAngles = angles;
 }
 
 void HairSculpture::Update()
@@ -43,19 +48,32 @@ void HairSculpture::Update()
 
 	Vector3 direction = Vector3::Zero;
 	if (keys.Left)
+	{
 		direction.x = -1;
+		Rotate(direction);
+	}
 	else if (keys.Right)
+	{
 		direction.x = 1;
+		Rotate(direction);
+	}
 	else if (keys.Up)
+	{
 		direction.y = 1;
+		Rotate(direction);
+	}
 	else if (keys.Down)
+	{
 		direction.y = -1;
+		Rotate(direction);
+	}
+}
 
+void HairSculpture::Rotate(Vector3 direction)
+{
 	float step = 0.05;
 	float degree = 10;
 
 	eulerAngles += direction * degree * step;
 	transform.SetRotation(eulerAngles);
 }
-
-
