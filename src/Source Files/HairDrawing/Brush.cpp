@@ -87,7 +87,7 @@ void Brush::Update()
 	else if (keys.OemMinus)
 		DecreaseRadius();
 
-	Vector3 mousePosition((mouse.x / 960.0f) - 1, (-mouse.y / 560.0f) + 1, -5.0f);
+	Vector3 mousePosition(2 * (mouse.x / 960.0f) - 1, 2 * (-mouse.y / 560.0f) + 1, -5.0f);
 	transform.SetPosition(mousePosition);
 }
 

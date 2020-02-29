@@ -53,7 +53,15 @@ namespace Rendering
 				uint32_t current = x + y * vertexCountX;
 				vertices[current].position.x += xIncrement;
 				vertices[current].position.y += yIncrement;
-				vertices[current].textureCoordinates.x += xIncrement;
+				
+				if (x == vertexCountX - 1)
+					vertices[current].textureCoordinates.x = 1;
+				else
+					vertices[current].textureCoordinates.x += xIncrement;
+
+				if (y == vertexCountY - 1)
+					vertices[current].textureCoordinates.y = 0;
+				else
 				vertices[current].textureCoordinates.y -= yIncrement;
 			}
 		}

@@ -28,7 +28,7 @@ HairSculpture::HairSculpture(shared_ptr<Rendering::Texture> hairTexture)
 	materials.push_back(hairMaterial);
 
 	Vector3 angles(180.0f, 0.0f, 0.0f);
-	transform.SetScale(0.5f);
+	transform.SetScale(0.4f);
 	transform.SetRotation(angles);
 	eulerAngles = angles;
 }

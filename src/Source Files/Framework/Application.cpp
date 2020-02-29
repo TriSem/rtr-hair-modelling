@@ -65,21 +65,21 @@ void Application::Init()
 	options.type = TextureType::Mixed;
 	options.width = 512;
 	options.height = 512;
-	Color color = { 0, 0, 0, 0 };
+	Color color = { 0, 0, 0, 1 };
 	shared_ptr<Texture> paintTexture = make_shared<Texture>(color, options);
 	
 	shared_ptr<SceneObject> head = make_shared<HairSculpture>(paintTexture);
 	shared_ptr<SceneObject> overlay = make_shared<TextureOverlay>(head->GetMesh());
+	shared_ptr<SceneObject> canvas = make_shared<Canvas>(paintTexture);
 	shared_ptr<SceneObject> brush = make_shared<Brush>();
 
-	shared_ptr<Mesh> quadMesh = Mesh::CreateQuad(100, 100);
-	shared_ptr<SceneObject> canvas = make_shared<SceneObject>(quadMesh);
 	
 	
 
 	mainScene->AddSceneObject(head);
 	mainScene->AddSceneObject(overlay);
 	mainScene->AddSceneObject(brush);
+	mainScene->AddSceneObject(canvas);
 
 	ShowWindow(mainWindow.WindowHandle(), nCmdShow);
 }
@@ -92,6 +92,12 @@ void Application::Input()
 	mouseTracker.Update(mouseState);
 
 	SceneObject::SetInput(mouseState, keyState);
+
+	DirectX::SimpleMath::Rectangle rectangle(0, 0, WIDTH / 2, HEIGHT);
+	if (rectangle.Contains(Vector2(mouseState.x, mouseState.y)))
+		mouse->SetVisible(false);
+	else
+		mouse->SetVisible(true);
 
 	if (keyTracker.pressed.Escape)
 		PostQuitMessage(0);
